@@ -1,0 +1,78 @@
+<div class="main-container">
+  <div class="alert alert-app-level">
+  </div>
+  <header class="header header-5">
+    <div class="branding">
+      <img src="../favicon.ico" class="nav-link nav-text" alt="logo" height="20" width="70"/>
+    </div>
+    <div class="header-nav">
+      <a href="javascript://" (click)="runCode()" class="nav-link nav-text">▶ RUN</a>
+      <a href="javascript://" (click)="beautifyContent()" class="nav-link nav-text">⦅ ⦆ BEAUTIFY</a>
+      <a href="javascript://" (click)="clearContent()" class="nav-link nav-text">✖ CLEAR</a>
+      <a href="javascript://" (click)="undoContent()" class="nav-link nav-text">↩ UNDO</a>
+      <a href="javascript://" class="nav-link nav-text">⬆ LOAD FILE</a>
+      <a href="javascript://" class="nav-link nav-text">⬇ DOWNLOAD FILE</a>
+      <a href="javascript://" class="nav-link nav-text">🐞 DEBUG</a>
+
+
+    </div>
+    <div class="header-actions">
+      <a href="javascript://" class="nav-link nav-icon" aria-label="settings">
+        <clr-icon shape="cog"></clr-icon>
+      </a>
+    </div>
+  </header>
+
+  <nav class="subnav">
+    <clr-tabs>
+      <clr-tab>
+        <button clrTabLink (click)="theme(1)">Black Theme</button>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink (click)="theme(2)">White Theme</button>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink (click)="theme(3)">Dark Theme</button>
+      </clr-tab>
+    </clr-tabs>
+  </nav>
+
+  <div class="content-container">
+
+    <div class="content-area">
+      <div class="row mb-4">
+        <div class="col">
+          <div class="code-editor" #codeEditor></div>
+        </div>
+      </div>
+
+        <div
+          class="label-box border"><span class="mx-4 font-weight-light">Output</span>
+        </div>
+        <textarea
+          class="form-control output" style="color: #24fcf5" rows="6" disabled="true" aria-label="output-textarea"
+          [innerHTML]="output">
+        </textarea>
+      </div>
+
+      <nav class="sidenav">
+        <section class="sidenav-content">
+          <a class="nav-link" (click)="addSentence(1)">
+            bp.registerBThread
+          </a>
+
+          <a class="nav-link" (click)="addSentence(2)">
+            bp.sync - waitFor
+          </a>
+
+          <a class="nav-link" (click)="addSentence(3)">
+            bp.sync - request
+          </a>
+
+          <a class="nav-link" (click)="addSentence(4)">
+            bp.sync - request + block
+         </a>
+        </section>
+    </nav>
+  </div>
+</div>
