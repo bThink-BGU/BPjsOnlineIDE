@@ -1,28 +1,27 @@
 package il.ac.bgu.cs.bp.samplebpjsproject;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.websocket.Session;
 
 
 public class RunLogger {
 
-	List<String> bpStream;
+	Session session;
 	int id;
 	
-	public RunLogger() {
-		this.bpStream = new LinkedList<String>();
+	public RunLogger(Session session) {
+		this.session = session;
 	}
 		
 	public void addBpStream(String type, String bpst) {
-		this.bpStream.add(bpst);
-	}
-	
-	public String sendBpStream() {
-		String str = "";
-		for(String s : this.bpStream) {
-			str += s + '\n';
+		try {
+			this.session.getBasicRemote().sendText("\n" + bpst);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		this.bpStream.clear();
-		return str;
 	}
 }

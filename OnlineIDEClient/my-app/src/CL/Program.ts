@@ -1,19 +1,10 @@
-import axios from 'axios';
+import {WebSocketService} from "./Connection";
 
 export const initCL = {
   func: init
 };
 
 function init(code) {
-  return new Promise((resolve, reject) => {
-    axios.post('http://localhost:8080/OnlineIDEServer/webapi/myresource/init', code, {
-      withCredentials: true,
-      headers: {'Content-Type': 'text/plain'}
-    })
-      .then(() => {
-        resolve();
-      }, (error) => {
-        reject(error);
-      });
-  });
+    WebSocketService.send_data('init', code);
 }
+

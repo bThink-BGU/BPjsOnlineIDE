@@ -1,4 +1,6 @@
 import {runCL} from '../CL/Runner';
+import {Observable} from "rxjs";
+import {WebSocketService} from "../CL/Connection";
 
 export const runner = {
   isError: false,
@@ -6,19 +8,25 @@ export const runner = {
   stderr: '',
 };
 
-export function run() {
-  return new Promise((resolve, reject) => {
-    runCL.func().then((codeOutput) => {
-      runner.stdout = codeOutput.toString();
-      runner.isError = false;
-      resolve(runner.stdout);
-    }, (errorMessage) => {
-      runner.stderr = errorMessage.toString();
-      runner.isError = true;
-      reject(runner.stderr);
-    });
-  });
 
+export function subscribe_output_stream(output_stream_class){
+
+  let observer = {
+    next: (output) => {
+
+
+      output_stream_class.output += '\n' + output.type;
+    },
+    error: (error) => {
+      output_stream_class.output = error;
+    }
+  };
+
+  WebSocketService.get_observable().subscribe(observer);
+}
+
+export function run() {
+  runCL.func();
 }
 
 

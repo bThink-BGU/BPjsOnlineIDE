@@ -1,4 +1,6 @@
 import {initCL} from '../CL/Program';
+import {Observable, Observer} from "rxjs";
+import {WebSocketService} from "../CL/Connection";
 
 export const program = {
   code: '',
@@ -7,5 +9,5 @@ export const program = {
 
 export function init(code) {
   program.code = code;
-  return initCL.func(code);
+  initCL.func(code);
 }

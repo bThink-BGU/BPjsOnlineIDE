@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.concurrent.ExecutorService;
 
+import javax.websocket.Session;
+
 import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
 import il.ac.bgu.cs.bp.bpjs.execution.listeners.PrintBProgramRunnerListener;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
@@ -22,9 +24,9 @@ public class Service {
 	private RunLogger runLogger;
 	
 	
-	public Service(ExecutorService execSvc) {
+	public Service(Session session, ExecutorService execSvc) {
 		this.execSvc = execSvc;
-		runLogger = new RunLogger();
+		runLogger = new RunLogger(session);
 	}
 
 	public RunLogger getRunLogger() {

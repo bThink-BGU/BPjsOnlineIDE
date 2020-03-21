@@ -1,5 +1,7 @@
 package il.ac.bgu.cs.bp.samplebpjsproject;
 
+import javax.websocket.Session;
+
 import il.ac.bgu.cs.bp.bpjs.execution.listeners.BProgramRunnerListener;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;

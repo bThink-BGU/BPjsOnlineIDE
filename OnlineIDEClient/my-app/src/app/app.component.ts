@@ -1,4 +1,4 @@
-import {Component, ViewChild, ElementRef, AfterViewInit, Input} from '@angular/core';
+import {Component, ViewChild, ElementRef, AfterViewInit, Input, OnDestroy} from '@angular/core';
 
 import * as ace from 'ace-builds';
 
@@ -10,7 +10,12 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/webpack-resolver';
 
-import {initSL, runSL, } from '../SL/Program';
+import {runSL, initSL} from "../SL/Program";
+import {init} from "../BL/Program"
+import {run} from "../BL/Runner";
+import {Subscription} from "rxjs";
+import {WebSocketService} from "../CL/Connection";
+import {subscribe_output_stream} from "../BL/Runner";
 
 @Component({
   selector: 'app-root',
@@ -48,6 +53,10 @@ import {initSL, runSL, } from '../SL/Program';
     this.codeEditor.setFontSize('16px');
 
     this.OnContentChange((code) => { this.code = code; });
+
+    // Subscribe the this.output variable which is binned with the output window
+    // to the observable that listens to the incoming messages from the server
+    subscribe_output_stream(this);
   }
 
   // for debugging
@@ -83,15 +92,10 @@ import {initSL, runSL, } from '../SL/Program';
 
 
   public runCode() {
-    initSL(this.code).then(() => {
-      runSL().then((codeOutput) => {
-        this.output = codeOutput.toString();
-      }, (errorMessage) => {
-        this.output = errorMessage;
-      });
-      }, (errorMessage) => {
-      this.output = errorMessage;
-    });
+    // Trigger the event chain that starts with init.
+    // Once a response from the init request comes from the server,
+    // The run() method will be called from the business layer
+    initSL(this.code);
   }
 
   public beautifyContent() {
