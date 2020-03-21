@@ -5,7 +5,7 @@ export const runCL = {
 };
 
 function run() {
-  WebSocketService.send_data('', 'THE RUN COMMAND');
+  WebSocketService.send_data('run', '');
 }
 
 

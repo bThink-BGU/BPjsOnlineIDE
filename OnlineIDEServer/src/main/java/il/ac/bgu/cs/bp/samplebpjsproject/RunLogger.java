@@ -16,9 +16,11 @@ public class RunLogger {
 		this.session = session;
 	}
 		
-	public void addBpStream(String type, String bpst) {
+	public void sendBpStream(String type, String bpst) {
+		Message message = new Message("run", bpst);
+		
 		try {
-			this.session.getBasicRemote().sendText("\n" + bpst);
+			this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(message));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

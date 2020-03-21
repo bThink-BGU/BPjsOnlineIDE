@@ -10,11 +10,7 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/webpack-resolver';
 
-import {runSL, initSL} from "../SL/Program";
 import {init} from "../BL/Program"
-import {run} from "../BL/Runner";
-import {Subscription} from "rxjs";
-import {WebSocketService} from "../CL/Connection";
 import {subscribe_output_stream} from "../BL/Runner";
 
 @Component({
@@ -95,7 +91,7 @@ import {subscribe_output_stream} from "../BL/Runner";
     // Trigger the event chain that starts with init.
     // Once a response from the init request comes from the server,
     // The run() method will be called from the business layer
-    initSL(this.code);
+    init(this.code);
   }
 
   public beautifyContent() {

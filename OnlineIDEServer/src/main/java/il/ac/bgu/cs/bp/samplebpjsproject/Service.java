@@ -26,7 +26,7 @@ public class Service {
 	
 	public Service(Session session, ExecutorService execSvc) {
 		this.execSvc = execSvc;
-		runLogger = new RunLogger(session);
+		this.runLogger = new RunLogger(session);
 	}
 
 	public RunLogger getRunLogger() {
@@ -44,17 +44,17 @@ public class Service {
 
 	
 	// need to delete only for checking
-	public void init(BProgram bprog) {
-		this.code = bprog.toString();
-		this.bprog = bprog;
-		String pathname = "output.txt";
-		File file = new File(pathname);
-		try {
-			this.aStream = new PrintStream(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+//	public void init(BProgram bprog) {
+//		this.code = bprog.toString();
+//		this.bprog = bprog;
+//		String pathname = "output.txt";
+//		File file = new File(pathname);
+//		try {
+//			this.aStream = new PrintStream(file);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 //	public Step step(BProgramSyncSnapshot snapshot) throws InterruptedException {
 //		return Step.step(execSvc, bprog, snapshot);

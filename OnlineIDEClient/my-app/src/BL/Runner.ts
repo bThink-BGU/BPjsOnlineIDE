@@ -12,10 +12,14 @@ export const runner = {
 export function subscribe_output_stream(output_stream_class){
 
   let observer = {
-    next: (output) => {
+    next: (response) => {
+      if(response.type === 'init'){
+        run();
+      }
+      else if (response.type === 'run'){
+        output_stream_class.output += '\n' + response.message;
+      }
 
-
-      output_stream_class.output += '\n' + output.type;
     },
     error: (error) => {
       output_stream_class.output = error;
