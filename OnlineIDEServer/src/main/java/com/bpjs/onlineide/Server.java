@@ -44,6 +44,9 @@ public class Server {
 			case "run":
 				this.service.run();	
 				break;
+			case "step":
+				this.service.step();
+				break;
 			default:
 				break;
 		}
@@ -57,6 +60,5 @@ public class Server {
     @OnError
     public void onError(Throwable t) {
     	t.printStackTrace();
-    }
-    
+    }    
 }

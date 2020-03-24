@@ -1,4 +1,4 @@
 
-export const breakPoint = {
-  line: Number
-};
+export function BreakPoint(line) {
+  this.line = line;
+}

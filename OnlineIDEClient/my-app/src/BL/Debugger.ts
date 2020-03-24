@@ -1,19 +1,27 @@
-import {stepCL} from '../CL/Debugger';
+import {nextStepCL} from '../CL/Debugger';
+import {DebugStep1} from './DebugStep';
+import {BreakPoint} from './BreakPoint';
 
-const bpDebugger = {
-  contTrace: [], // states' list
-  eventTrace: [], // BpEvents' list
-};
-
-
-
-// TODO
-function step() { // What to do with the event trace???
-  // const st = stepCL(getLastElement(bpDebugger.contTrace));
-  // debuggr.contTrace.push(st.cont);
-  // return st;
+function Debugger() {
+  this.contTrace = []; // states' list
+  this.eventTrace = []; // BpEvents' list
+  this.stepTrace = [];
+  this.breakPoints = []; // breakPoints' list
 }
 
-function getLastElement(l) {
-  return l[l.length - 1];
+export function nextStep() {
+  const traceLength = this.contTrace.length;
+  const cont = traceLength === 0 ? null : this.contTrace[traceLength - 1];
+  const s = nextStepCL(cont);
+  this.contTrace.push(s.cont);
+  this.eventTrace.push(s.event);
+  const currStep = new DebugStep1(s.reqList, s.waitList, s.blockList, s.bpStack);
+  this.stepTrace.push(currStep);
+  // function output ????
 }
+
+export function addBreakPoint(line) {
+  this.breakPoints.push(new BreakPoint(line));
+}
+
+

@@ -1,11 +1,11 @@
-import {WebSocketService} from "./Connection";
+import {WebSocketService} from './Connection';
 
 export const runCL = {
   func: run
 };
 
 function run() {
-  WebSocketService.send_data('run', '');
+  WebSocketService.sendData('run', '');
 }
 
 

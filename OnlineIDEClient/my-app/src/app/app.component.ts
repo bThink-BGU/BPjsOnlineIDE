@@ -10,8 +10,8 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/webpack-resolver';
 
-import {init} from "../BL/Program"
-import {subscribe_output_stream} from "../BL/Runner";
+import {init} from '../BL/Program';
+import {subscribeOutputStream} from '../BL/Program';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +28,7 @@ import {subscribe_output_stream} from "../BL/Runner";
     '  bp.sync({request:bp.Event("hello")});\n' +
     '  bp.sync({request:bp.Event("world")});\n' +
     '})';
-  private output: string = 'output';
+  private output = 'output';
 
   ngAfterViewInit() {
     this.codeEditor = ace.edit(this.codeEditorElmRef.nativeElement, this.getEditorOptions());
@@ -52,7 +52,7 @@ import {subscribe_output_stream} from "../BL/Runner";
 
     // Subscribe the this.output variable which is binned with the output window
     // to the observable that listens to the incoming messages from the server
-    subscribe_output_stream(this);
+    subscribeOutputStream(this);
   }
 
   // for debugging

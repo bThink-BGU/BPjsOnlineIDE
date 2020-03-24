@@ -20,27 +20,28 @@ public class Step {
 	public List<BEvent> block;
 	public BEvent selectedEvent;
 	
-//	public static Step step(ExecutorService execSvc, BProgram bprog, BProgramSyncSnapshot snapshot) throws InterruptedException {
-//		BProgramSyncSnapshot nextStep = null;
-//		if(snapshot == null) {
-//			nextStep = bprog.setup().start(execSvc); //first time
-//			return new Step(nextStep, null);
-//		}
-//		
-//		Set<BEvent> selectableEvents = bprog.getEventSelectionStrategy().selectableEvents(snapshot);
-//		ArrayList<BEvent> eventOrdered = new ArrayList<>(selectableEvents);
-//        Collections.shuffle(eventOrdered);
-//        BEvent e = eventOrdered.get(0);
-//        return new Step(BProgramSyncSnapshotCloner.clone(snapshot).triggerEvent(e, execSvc, Collections.emptyList()), e);
-//        
-//	}
+	public static Step step(ExecutorService execSvc, BProgram bprog, BProgramSyncSnapshot snapshot) throws InterruptedException {
+		BProgramSyncSnapshot nextStep = null;
+		if(snapshot == null) {
+			nextStep = bprog.setup().start(execSvc); //first time
+			return new Step(nextStep, null);
+		}
+		
+		Set<BEvent> selectableEvents = bprog.getEventSelectionStrategy().selectableEvents(snapshot);
+		ArrayList<BEvent> eventOrdered = new ArrayList<>(selectableEvents);
+        Collections.shuffle(eventOrdered);
+        BEvent e = eventOrdered.get(0);
+        return new Step(BProgramSyncSnapshotCloner.clone(snapshot).triggerEvent(e, execSvc, Collections.emptyList()), e);
+        
+	}
 	
-//	private Step(BProgramSyncSnapshot snapshot, BEvent e) {
-//		this.selectedEvent = e;
-//		this.snapshot = snapshot;
-//		this.stack = null;
-//		ArrayList<BEvent> requested = new ArrayList<>();
-//		snapshot.getStatements().forEach(s->requested.addAll(s.getRequest()));
-//		//...
-//	}
+	private Step(BProgramSyncSnapshot snapshot, BEvent e) {
+		this.selectedEvent = e;
+		this.snapshot = snapshot;
+		this.stack = null;
+		ArrayList<BEvent> requested = new ArrayList<>();
+		snapshot.getStatements().forEach(s->requested.addAll(s.getRequest()));
+		//...
+	}
+	
 }

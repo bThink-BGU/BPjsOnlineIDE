@@ -56,9 +56,15 @@ public class Service {
 //		}
 //	}
 
-//	public Step step(BProgramSyncSnapshot snapshot) throws InterruptedException {
-//		return Step.step(execSvc, bprog, snapshot);
-//	}
+	public Step step(BProgramSyncSnapshot snapshot) throws InterruptedException {
+		return Step.step(execSvc, bprog, snapshot);
+	}
+	
+	
+	// stub only, until we will know how to use step in BPjs
+	public String step() {
+		return "stub";
+	}
 
 	public RunLogger run() {
 		BProgramRunner rnr = new BProgramRunner(this.bprog);
