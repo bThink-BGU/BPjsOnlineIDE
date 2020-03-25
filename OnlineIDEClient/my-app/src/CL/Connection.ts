@@ -11,7 +11,7 @@ export class WebSocketService {
   });
 
   public static sendData(type: string, message: string) {
-    WebSocketService.connection.next({type, message});
+    WebSocketService.connection.next({type: type, message: message});
   }
 
   public static getObservable() {

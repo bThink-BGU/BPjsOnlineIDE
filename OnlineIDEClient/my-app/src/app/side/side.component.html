@@ -1,0 +1,53 @@
+<section *ngIf="!staticDebbuger; else debbug" class="sidenav-content">
+  <a class="nav-link" (click)="addSentence(1)">
+    bp.registerBThread
+  </a>
+
+  <a class="nav-link" (click)="addSentence(2)">
+    bp.sync - waitFor
+  </a>
+
+  <a class="nav-link" (click)="addSentence(3)">
+    bp.sync - request
+  </a>
+
+  <a class="nav-link" (click)="addSentence(4)">
+    bp.sync - request + block
+  </a>
+</section>
+
+<ng-template #debbug>
+
+  <section class="sidenav-content">
+    <a class="nav-link" (click)="addSentence(1)">
+      amir dirmi
+    </a>
+
+    <a class="nav-link" (click)="addSentence(2)">
+      ofek ashkenazi
+    </a>
+
+    <a class="nav-link" (click)="addSentence(3)">
+      guy shuster
+    </a>
+  </section>
+
+  <hr>
+
+  <section class="sidenav-content">
+    <a class="nav-link" (click)="addSentence(1)">
+      amir dirmi 1
+    </a>
+
+    <a class="nav-link" (click)="addSentence(2)">
+      ofek ashkenazi 2
+    </a>
+
+    <a class="nav-link" (click)="addSentence(3)">
+      guy shuster 3
+    </a>
+  </section>
+
+  <hr>
+</ng-template>
+

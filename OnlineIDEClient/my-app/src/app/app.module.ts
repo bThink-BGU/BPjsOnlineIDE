@@ -4,18 +4,26 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {WebSocketService} from "../CL/Connection";
+import { SideComponent } from './side/side.component';
+import { FormsModule} from '@angular/forms';
+import {HeaderComponent} from './header/header.component';
+import {CodeEditorComponent} from './codeEditor/codeEditor.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SideComponent,
+    HeaderComponent,
+    CodeEditorComponent
   ],
   imports: [
     BrowserModule,
     ClarityModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule
   ],
-  providers: [WebSocketService],
-  bootstrap: [AppComponent]
+  providers: [],
+  bootstrap: [AppComponent, CodeEditorComponent, HeaderComponent]
 })
 export class AppModule { }

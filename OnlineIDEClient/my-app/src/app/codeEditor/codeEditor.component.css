@@ -1,0 +1,27 @@
+div.code-editor {
+  margin-left: auto;
+  width: 100%;
+  padding: 10px;
+}
+
+.form-control {
+  border-radius: 0 !important;
+}
+
+.form-control:disabled {
+  background-color: rgba(10, 11, 10, 0.97) !important;
+  width: 100%;
+  margin-left: auto;
+}
+
+.output {
+  border-bottom-left-radius: .5rem!important;
+}
+
+.external-event {
+  background-color: rgba(10, 11, 10, 0.97) !important;
+  width: 100%;
+  margin-left: auto;
+  border-bottom-left-radius: .5rem!important;
+}
+
