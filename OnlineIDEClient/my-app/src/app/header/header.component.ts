@@ -39,27 +39,6 @@ export class HeaderComponent {
     }
   }
 
-  //Ask amir what to do - unused
-
-  public addSentence(n) {
-    if (n === 1) {
-      CodeEditorComponent.codeEditor.getSession().insert(CodeEditorComponent.codeEditor.getCursorPosition(),
-        '\nbp.registerBThread ("...",function(){\n' +
-        '            ...\n' +
-        '            })\n');
-    } else if (n === 2) {
-      CodeEditorComponent.codeEditor.getSession().insert(CodeEditorComponent.codeEditor.getCursorPosition(),
-        '\nbp.sync({waitFor:bp.Event("...")});\n');
-    } else if (n === 3) {
-      CodeEditorComponent.codeEditor.getSession().insert(CodeEditorComponent.codeEditor.getCursorPosition(),
-        '\nbp.sync({request:bp.Event("...")});\n');
-    } else if (n === 4) {
-      CodeEditorComponent.codeEditor.getSession().insert(CodeEditorComponent.codeEditor.getCursorPosition(),
-        '\nbp.sync({request:bp.Event("..."),' +
-        ' block:bp.Event("...")});\n');
-    }
-  }
-
   public theme(n) {
     if (n === 1) {
       CodeEditorComponent.codeEditor.setTheme('ace/theme/twilight');
@@ -76,7 +55,7 @@ export class HeaderComponent {
 
   public debuggerMode() {
     CodeEditorComponent.debbuger = !CodeEditorComponent.debbuger;
-    SideComponent.debbuger = !SideComponent.debbuger;
+    SideComponent.debugger = !SideComponent.debugger;
     HeaderComponent.debbuger = !HeaderComponent.debbuger;
   }
 

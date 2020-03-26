@@ -24,6 +24,6 @@ import {CodeEditorComponent} from './codeEditor/codeEditor.component';
     FormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent, CodeEditorComponent, HeaderComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

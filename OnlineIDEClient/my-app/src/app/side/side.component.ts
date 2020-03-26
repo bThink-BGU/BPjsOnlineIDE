@@ -12,9 +12,7 @@ export class SideComponent {
     return CodeEditorComponent.debbuger;
   }
 
-  static debbuger = false;
-
-  //Ask amir what to do - unused
+  static debugger = false;
 
   public addSentence(n) {
     if (n === 1) {

@@ -6,12 +6,14 @@ import 'ace-builds/src-noconflict/theme-twilight';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/webpack-resolver';
+import {subscribeOutputStream} from "../../BL/Program";
 
 @Component({
   selector: 'app-code-editor',
   templateUrl: './codeEditor.component.html',
   styleUrls: ['./codeEditor.component.css']
 })
+
 export class CodeEditorComponent implements AfterViewInit {
 
   get staticOutput() {
@@ -30,6 +32,7 @@ export class CodeEditorComponent implements AfterViewInit {
     '  bp.sync({request:bp.Event("world")});\n' +
     '})';
 
+  static aceLibrary = ace;
   static editorBeautify;
   static output = '';
   public input = 'Add External Event';
@@ -57,6 +60,7 @@ export class CodeEditorComponent implements AfterViewInit {
     this.OnContentChange((code) => {
       CodeEditorComponent.code = code;
     });
+
   }
 
   public getEditorOptions(): Partial<ace.Ace.EditorOptions> & { enableBasicAutocompletion?: boolean; } {
