@@ -14,4 +14,12 @@ public class EncodeDecode {
 		return gson.fromJson(message, Message.class);
 	}
 	
+	public static String encode(StepMessage message) {
+		return gson.toJson(message);
+	}
+	
+	public static StepMessage decodeStepMessage(String message) {
+		return gson.fromJson(message, StepMessage.class);
+	}
+	
 }

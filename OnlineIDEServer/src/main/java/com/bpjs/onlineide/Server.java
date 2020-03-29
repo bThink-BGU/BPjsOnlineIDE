@@ -1,6 +1,9 @@
 package com.bpjs.onlineide;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.json.Json;
 import javax.websocket.DecodeException;
@@ -17,6 +20,7 @@ import com.google.gson.Gson;
 import il.ac.bgu.cs.bp.samplebpjsproject.EncodeDecode;
 import il.ac.bgu.cs.bp.samplebpjsproject.Message;
 import il.ac.bgu.cs.bp.samplebpjsproject.Service;
+import il.ac.bgu.cs.bp.samplebpjsproject.StepMessage;
 
 @ServerEndpoint("/api")
 public class Server {
@@ -45,7 +49,18 @@ public class Server {
 				this.service.run();	
 				break;
 			case "step":
-				this.service.step();
+//				this.service.step();
+				HashMap<String, Integer> map = new HashMap<>();
+				map.put("a", 1);
+				List<String> lis = new LinkedList<>();
+				lis.add("a");
+				lis.add("b");
+				StepMessage stepMessage = new StepMessage(map, lis, lis, lis, "A");
+				
+				
+				this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(stepMessage));
+				
+				
 				break;
 			default:
 				break;

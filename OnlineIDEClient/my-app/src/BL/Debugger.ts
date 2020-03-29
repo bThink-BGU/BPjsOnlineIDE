@@ -24,4 +24,10 @@ export function addBreakPoint(line) {
   this.breakPoints.push(new BreakPoint(line));
 }
 
+export function postStep(outputStreamClass, response) {
 
+  // The fields of response are: type, stack, request, wait, block, selectedEvent.
+
+  // Only for checking
+  outputStreamClass.output += '\n' + response.selectedEvent;
+}

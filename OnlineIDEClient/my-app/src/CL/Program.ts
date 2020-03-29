@@ -5,6 +5,6 @@ export const initCL = {
 };
 
 function init(code) {
-    WebSocketService.sendData('init', code);
+    WebSocketService.sendData('step', code);
 }
 

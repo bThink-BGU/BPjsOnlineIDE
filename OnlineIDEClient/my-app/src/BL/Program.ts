@@ -1,6 +1,7 @@
 import {initCL} from '../CL/Program';
 import {WebSocketService} from '../CL/Connection';
 import {run, postRun} from './Runner';
+import {postStep} from './Debugger';
 
 
 export const Program = {
@@ -8,7 +9,7 @@ export const Program = {
 };
 
 export function subscribeOutputStream(outputStreamClass) {
-  const responseHandlers = {init : run, run : postRun};
+  const responseHandlers = {init: run, run: postRun, nextStep: postStep};
   const observer = {
     next: (response) => {
       responseHandlers[response.type](outputStreamClass, response);
@@ -21,7 +22,7 @@ export function subscribeOutputStream(outputStreamClass) {
 }
 
 export function init(code) {
-  code = code;
+  Program.code = code;
   initCL.func(code);
 }
 

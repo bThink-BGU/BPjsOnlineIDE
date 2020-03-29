@@ -2,6 +2,7 @@ package il.ac.bgu.cs.bp.samplebpjsproject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,4 +45,15 @@ public class Step {
 		//...
 	}
 	
+	private StepMessage stepToMessage() {
+		return new StepMessage(this.stack, bEventToStringList(this.request), bEventToStringList(this.wait), 
+				bEventToStringList(this.request), this.selectedEvent.getName());
+	}
+	
+	private List<String> bEventToStringList(List<BEvent> bList) {
+		List<String> bEvents = new LinkedList<>();
+		for (BEvent b : bList)
+			bEvents.add(b.getName());	
+		return bEvents;
+	}	
 }
