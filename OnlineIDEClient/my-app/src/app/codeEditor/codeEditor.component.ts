@@ -1,12 +1,10 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import * as ace from 'ace-builds';
 import {Ace} from 'ace-builds';
-import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/theme-twilight';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/webpack-resolver';
-import {subscribeOutputStream} from "../../BL/Program";
 
 @Component({
   selector: 'app-code-editor',
@@ -16,15 +14,7 @@ import {subscribeOutputStream} from "../../BL/Program";
 
 export class CodeEditorComponent implements AfterViewInit {
 
-  get staticOutput() {
-    return CodeEditorComponent.output;
-  }
-
-  get staticDebbuger() {
-    return CodeEditorComponent.debbuger;
-  }
-
-  static debbuger = false;
+  static debugger = false;
   static codeEditor: Ace.Editor;
   static code = '//*****Hello BPjs World*****\n\n' +
     'bp.registerBThread(function(){\n' +
@@ -32,42 +22,38 @@ export class CodeEditorComponent implements AfterViewInit {
     '  bp.sync({request:bp.Event("world")});\n' +
     '})';
 
-  static aceLibrary = ace;
   static editorBeautify;
   static output = '';
   public input = 'Add External Event';
 
-  // @ts-ignore
-  @ViewChild('codeEditor') codeEditorElmRef: ElementRef;
+  get staticOutput() {
+    return CodeEditorComponent.output;
+  }
+
+  @ViewChild('codeEditor', {static: false}) codeEditorElmRef: ElementRef;
 
   ngAfterViewInit(): void {
-    CodeEditorComponent.codeEditor = ace.edit(this.codeEditorElmRef.nativeElement, this.getEditorOptions());
-    ace.require('ace/ext/language_tools');
+    // Basic editor settings
+    CodeEditorComponent.codeEditor = ace.edit(this.codeEditorElmRef.nativeElement, CodeEditorComponent.getEditorOptions());
     CodeEditorComponent.codeEditor.setTheme('ace/theme/twilight');
     CodeEditorComponent.codeEditor.getSession().setMode('ace/mode/javascript');
     CodeEditorComponent.editorBeautify = ace.require('ace/ext/beautify');
-    CodeEditorComponent.codeEditor.setShowFoldWidgets(true);
-    CodeEditorComponent.codeEditor.setValue('//*****Hello BPjs World*****\n\n' +
-      'bp.registerBThread(function(){\n' +
-      '  bp.sync({request:bp.Event("hello")});\n' +
-      '  bp.sync({request:bp.Event("world")});\n' +
-      '})');
-    CodeEditorComponent.codeEditor.setOption('autoScrollEditorIntoView', true);
-    CodeEditorComponent.codeEditor.setOption('maxLines', 14);
-    CodeEditorComponent.codeEditor.setOption('minLines', 14);
-    CodeEditorComponent.codeEditor.setFontSize('16px');
+    CodeEditorComponent.codeEditor.setValue(CodeEditorComponent.code);
+    CodeEditorComponent.codeEditor.focus();
+    CodeEditorComponent.codeEditor.selection.clearSelection();
 
-    this.OnContentChange((code) => {
-      CodeEditorComponent.code = code;
-    });
-
+    // Custom editor settings
+    CodeEditorComponent.prepareEditor();
   }
 
-  public getEditorOptions(): Partial<ace.Ace.EditorOptions> & { enableBasicAutocompletion?: boolean; } {
+  private static getEditorOptions(): Partial<ace.Ace.EditorOptions> & { enableBasicAutocompletion?: boolean; } {
     const basicEditorOptions: Partial<ace.Ace.EditorOptions> = {
       highlightActiveLine: true,
+      autoScrollEditorIntoView: true,
+      showFoldWidgets: true,
       minLines: 14,
-      maxLines: Infinity,
+      maxLines: 14,
+      fontSize: 16,
     };
     const extraEditorOptions = {
       enableBasicAutocompletion: true
@@ -75,10 +61,38 @@ export class CodeEditorComponent implements AfterViewInit {
     return Object.assign(basicEditorOptions, extraEditorOptions);
   }
 
-  public OnContentChange(callback: (content: string, delta: ace.Ace.Delta) => void): void {
-    CodeEditorComponent.codeEditor.on('change', (delta) => {
-      const content = CodeEditorComponent.codeEditor.getValue();
-      callback(content, delta);
+  private static prepareEditor(){
+    CodeEditorComponent.bindCodeVariableAndValue();
+    CodeEditorComponent.enableBreakpoints();
+  }
+
+  private static bindCodeVariableAndValue(){
+    CodeEditorComponent.codeEditor.on('change', ()=>{
+      CodeEditorComponent.code = CodeEditorComponent.codeEditor.getValue();
     });
   }
+
+  private static enableBreakpoints(){
+    CodeEditorComponent.codeEditor.on('guttermousedown', (e)=>{
+      let mouseEvent = <MouseEvent> e;
+
+      if (CodeEditorComponent.codeEditor.renderer.getMouseEventTarget().className.indexOf('ace_scroller') == -1)
+        return;
+      if (!CodeEditorComponent.codeEditor.isFocused())
+        return;
+      if (mouseEvent.clientX > 25 + CodeEditorComponent.codeEditor.renderer.getMouseEventTarget().getBoundingClientRect().left)
+        return;
+
+      let row = CodeEditorComponent.codeEditor.renderer.screenToTextCoordinates(mouseEvent.clientX,
+        mouseEvent.clientY).row;
+      let breakpoints = CodeEditorComponent.codeEditor.getSession().getBreakpoints();
+
+      if(typeof breakpoints[row] === typeof undefined)
+        CodeEditorComponent.codeEditor.getSession().setBreakpoint(row, 'ace_breakpoint');
+      else
+        CodeEditorComponent.codeEditor.getSession().clearBreakpoint(row);
+    });
+  }
+
+
 }

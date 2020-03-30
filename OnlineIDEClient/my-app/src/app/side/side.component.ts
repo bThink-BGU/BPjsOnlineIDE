@@ -7,9 +7,10 @@ import {CodeEditorComponent} from '../codeEditor/codeEditor.component';
   templateUrl: './side.component.html',
   styleUrls: ['./side.component.css']
 })
+
 export class SideComponent {
   get staticDebbuger() {
-    return CodeEditorComponent.debbuger;
+    return CodeEditorComponent.debugger;
   }
 
   static debugger = false;

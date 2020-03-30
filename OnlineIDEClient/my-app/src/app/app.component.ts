@@ -10,7 +10,7 @@ import {subscribeOutputStream} from "../BL/Program";
 })
 
 export class AppComponent implements AfterViewInit {
-  private staticDebbuger = CodeEditorComponent.debbuger;
+  private staticDebbuger = CodeEditorComponent.debugger;
 
   ngAfterViewInit() {
     subscribeOutputStream(CodeEditorComponent);

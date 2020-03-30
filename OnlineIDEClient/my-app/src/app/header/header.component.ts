@@ -11,7 +11,7 @@ import {SideComponent} from '../side/side.component';
 export class HeaderComponent {
 
   get staticDebbuger() {
-    return CodeEditorComponent.debbuger;
+    return CodeEditorComponent.debugger;
   }
 
   static debbuger = false;
@@ -54,7 +54,7 @@ export class HeaderComponent {
   }
 
   public debuggerMode() {
-    CodeEditorComponent.debbuger = !CodeEditorComponent.debbuger;
+    CodeEditorComponent.debugger = !CodeEditorComponent.debugger;
     SideComponent.debugger = !SideComponent.debugger;
     HeaderComponent.debbuger = !HeaderComponent.debbuger;
   }
