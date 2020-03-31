@@ -1,7 +1,6 @@
 import {Component, AfterViewInit} from '@angular/core';
-
 import {CodeEditorComponent} from './codeEditor/codeEditor.component';
-import {subscribeOutputStream} from "../BL/Program";
+import {Program} from '../BL/Program';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +9,13 @@ import {subscribeOutputStream} from "../BL/Program";
 })
 
 export class AppComponent implements AfterViewInit {
+
   private staticDebbuger = CodeEditorComponent.debugger;
+  private program = new Program();
+
 
   ngAfterViewInit() {
-    subscribeOutputStream(CodeEditorComponent);
+    this.program.subscribeOutputStream(CodeEditorComponent);
   }
 
 }

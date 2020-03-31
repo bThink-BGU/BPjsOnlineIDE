@@ -1,29 +1,38 @@
-import {initCL} from '../CL/Program';
+import {initCL} from '../CL/BpService'
 import {WebSocketService} from '../CL/Connection';
-import {run, postRun} from './Runner';
-import {postStep} from './Debugger';
+import {Runner} from './Runner';
+import {Debugger} from './Debugger';
 
 
-export const Program = {
-  code: ''
-};
+export class Program {
 
-export function subscribeOutputStream(outputStreamClass) {
-  const responseHandlers = {init: run, run: postRun, nextStep: postStep};
-  const observer = {
-    next: (response) => {
-      responseHandlers[response.type](outputStreamClass, response);
-    },
-    error: (error) => {
-      outputStreamClass.output = error;
-    }
-  };
-  WebSocketService.getObservable().subscribe(observer);
-}
+  private runner: Runner;
+  private debugger: Debugger;
+  private code: string;
 
-export function init(code) {
-  Program.code = code;
-  initCL.func(code);
+  constructor() {
+    this.runner = new Runner();
+    this.debugger = new Debugger();
+    this.code = '';
+  }
+
+  subscribeOutputStream(outputStreamClass) {
+    const responseHandlers = {init: this.runner.run, run: this.runner.postRun, nextStep: this.debugger.postStep};
+    const observer = {
+      next: (response) => {
+        responseHandlers[response.type](outputStreamClass, response);
+      },
+      error: (error) => {
+        outputStreamClass.output = error;
+      }
+    };
+    WebSocketService.getObservable().subscribe(observer);
+  }
+
+  init(code) {
+    this.code = code;
+    initCL(code);
+  }
 }
 
 

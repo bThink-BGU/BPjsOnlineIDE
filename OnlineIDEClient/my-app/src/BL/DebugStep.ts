@@ -1,17 +1,19 @@
 
 
-export function DebugStep() {
-  this.reqList = []; // BpEvents' list
-  this.waitList = []; // BpEvents' list
-  this.blockList = []; // BpEvents' list
-  this.bpStack = []; // map of string (var) with value
-}
+export class DebugStep {
 
-export function DebugStep1(reqList, waitList, blockList, bpStack) {
-  this.reqList = reqList; // BpEvents' list
-  this.waitList = waitList; // BpEvents' list
-  this.blockList = blockList; // BpEvents' list
-  this.bpStack = bpStack; // map of string (var) with value
+  private reqList: string[];
+  private waitList: string[];
+  private blockList: string[];
+  private bpStack: any;
+
+  constructor(reqList: string[], waitList: string[], blockList: string[], bpStack: any) {
+    this.reqList = reqList; // BpEvents' list
+    this.waitList = waitList; // BpEvents' list
+    this.blockList = blockList; // BpEvents' list
+    this.bpStack = bpStack; // map of string (var) with value
+  }
+
 }
 
 

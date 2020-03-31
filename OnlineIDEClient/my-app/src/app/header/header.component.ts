@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {init} from "../../BL/Program";
 import {CodeEditorComponent} from '../codeEditor/codeEditor.component';
 import {SideComponent} from '../side/side.component';
+import {Program} from '../../BL/Program';
 
 @Component({
   selector: 'app-header',
@@ -14,10 +14,12 @@ export class HeaderComponent {
     return CodeEditorComponent.debugger;
   }
 
-  static debbuger = false;
+  static debugger = false;
+
+  private program = new Program();
 
   public runCode() {
-    init(CodeEditorComponent.code);
+    this.program.init(CodeEditorComponent.code);
   }
 
   public beautifyContent() {
@@ -56,7 +58,7 @@ export class HeaderComponent {
   public debuggerMode() {
     CodeEditorComponent.debugger = !CodeEditorComponent.debugger;
     SideComponent.debugger = !SideComponent.debugger;
-    HeaderComponent.debbuger = !HeaderComponent.debbuger;
+    HeaderComponent.debugger = !HeaderComponent.debugger;
   }
 
   public loadFile() {
