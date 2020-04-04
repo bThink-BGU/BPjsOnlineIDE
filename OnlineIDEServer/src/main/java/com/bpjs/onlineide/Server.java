@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import javax.json.Json;
 import javax.websocket.DecodeException;
@@ -13,6 +14,8 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+
+import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
 import org.json.simple.JSONObject;
 
 import com.google.gson.Gson;
@@ -24,7 +27,7 @@ import il.ac.bgu.cs.bp.samplebpjsproject.StepMessage;
 
 @ServerEndpoint("/api")
 public class Server {
-	
+	private final ExecutorService execSvc = ExecutorServiceMaker.makeWithName("executor" );
 	private Session session;
 	private Service service;
 	
@@ -33,7 +36,7 @@ public class Server {
     	System.out.println("Client"+ session.getId() +" is now connected...");
 		
     	this.session = session;
-    	this.service = new Service(this.session, null);
+    	this.service = new Service(this.session, execSvc);
     }
     
     @OnMessage
