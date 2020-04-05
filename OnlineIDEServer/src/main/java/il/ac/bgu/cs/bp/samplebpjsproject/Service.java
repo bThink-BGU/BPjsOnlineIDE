@@ -9,6 +9,7 @@ import javax.websocket.Session;
 
 import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
 import il.ac.bgu.cs.bp.bpjs.execution.listeners.PrintBProgramRunnerListener;
+import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
 import il.ac.bgu.cs.bp.bpjs.model.BProgramSyncSnapshot;
 import il.ac.bgu.cs.bp.bpjs.model.StringBProgram;
@@ -75,5 +76,9 @@ public class Service {
 		// go!
 		rnr.run();
 		return runLogger;
+	}
+	
+	public void addExternalEvent(String e) {
+		this.bprog.enqueueExternalEvent(new BEvent(e));
 	}
 }

@@ -1,4 +1,4 @@
-import {initCL} from '../CL/BpService'
+import {initCL, addExternalEventCL} from '../CL/BpService'
 import {WebSocketService} from '../CL/Connection';
 import {Runner} from './Runner';
 import {Debugger} from './Debugger';
@@ -32,6 +32,10 @@ export class Program {
   init(code) {
     this.code = code;
     initCL(code);
+  }
+
+  addExternalEvent(bEvent) {
+    addExternalEventCL(bEvent);
   }
 }
 

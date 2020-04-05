@@ -41,15 +41,14 @@ public class Server {
     
     @OnMessage
     public void onMessage(Session session, String message) throws IOException, DecodeException {
-    	Message decoded_message = EncodeDecode.decode(message);
+    	Message decodedMessage = EncodeDecode.decode(message);
     	
-    	switch (decoded_message.getType()) {
+    	switch (decodedMessage.getType()) {
 			case "init":
-				this.service.init(decoded_message.getMessage());
-				this.session.getBasicRemote().sendText(message);
+				init(decodedMessage);
 				break;
 			case "run":
-				this.service.run();	
+				run();
 				break;
 			case "step":
 //				this.service.step();
@@ -62,15 +61,19 @@ public class Server {
 				
 				
 				this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(stepMessage));
-				
-				
+			
+			case "externalEvent":
+				addExternalEvent(decodedMessage);
 				break;
 			default:
 				break;
 		}
     }
     
-    @OnClose
+    
+  
+
+	@OnClose
     public void onClose(Session session) throws IOException {
     	System.out.println("Client"+ session.getId() +" is now disconnected...");
     }
@@ -79,4 +82,35 @@ public class Server {
     public void onError(Throwable t) {
     	t.printStackTrace();
     }    
+    
+    private void init(Message message) {
+    	this.service.init(message.getMessage());
+		try {
+			this.session.getBasicRemote().sendText(EncodeDecode.encode(message));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
+	private void run() {
+    	if(this.service != null)
+			this.service.run();	
+		else
+			System.out.println("Not existing service");
+	}
+	
+	  private void addExternalEvent(Message message) {
+	    	if(this.service != null) {
+				this.service.addExternalEvent(message.getMessage());
+				try {
+					this.session.getBasicRemote().sendText(EncodeDecode.encode(message));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			}
+			else
+				System.out.println("Not existing service");	
+		}
 }

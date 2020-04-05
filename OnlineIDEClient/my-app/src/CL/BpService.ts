@@ -14,3 +14,7 @@ export function nextStepCL(cont) {
   return new State1('cont', 'e', ['r', 'l'], ['w', 'l'], ['b', 'l'],
     {a: 5, b: 7});
 }
+
+export function addExternalEventCL(bEvent) {
+  WebSocketService.sendData('externalEvent', bEvent);
+}
