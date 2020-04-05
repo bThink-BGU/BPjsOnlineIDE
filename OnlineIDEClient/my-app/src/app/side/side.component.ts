@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {CodeEditorComponent} from '../codeEditor/codeEditor.component';
+import {SharedService} from '../data.service';
 
 
 @Component({
@@ -8,27 +9,35 @@ import {CodeEditorComponent} from '../codeEditor/codeEditor.component';
   styleUrls: ['./side.component.css']
 })
 
-export class SideComponent {
-  get staticDebbuger() {
-    return CodeEditorComponent.debugger;
+export class SideComponent implements AfterViewInit {
+
+  debugger: boolean;
+
+  constructor(private sharedService: SharedService) { }
+
+  ngAfterViewInit(): void {
+    this.debugger = this.sharedService.sharedDebuggerMode;
   }
 
-  static debugger = false;
+  get staticDebugger() {
+    return this.sharedService.sharedDebuggerMode;
+  }
 
+  // buttons
   public addSentence(n) {
     if (n === 1) {
-      CodeEditorComponent.codeEditor.getSession().insert(CodeEditorComponent.codeEditor.getCursorPosition(),
+      this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),
         '\nbp.registerBThread ("...",function(){\n' +
         '            ...\n' +
         '            })\n');
     } else if (n === 2) {
-      CodeEditorComponent.codeEditor.getSession().insert(CodeEditorComponent.codeEditor.getCursorPosition(),
+      this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),
         '\nbp.sync({waitFor:bp.Event("...")});\n');
     } else if (n === 3) {
-      CodeEditorComponent.codeEditor.getSession().insert(CodeEditorComponent.codeEditor.getCursorPosition(),
+      this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),
         '\nbp.sync({request:bp.Event("...")});\n');
     } else if (n === 4) {
-      CodeEditorComponent.codeEditor.getSession().insert(CodeEditorComponent.codeEditor.getCursorPosition(),
+      this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),
         '\nbp.sync({request:bp.Event("..."),' +
         ' block:bp.Event("...")});\n');
     }

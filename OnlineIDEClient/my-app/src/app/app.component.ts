@@ -10,7 +10,7 @@ import {Program} from '../BL/Program';
 
 export class AppComponent implements AfterViewInit {
 
-  private staticDebbuger = CodeEditorComponent.debugger;
+  // private staticDebbuger = CodeEditorComponent.debugger;
   private program = new Program();
 
 

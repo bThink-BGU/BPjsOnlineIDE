@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { ClarityModule } from '@clr/angular';
@@ -8,6 +8,7 @@ import { SideComponent } from './side/side.component';
 import { FormsModule} from '@angular/forms';
 import {HeaderComponent} from './header/header.component';
 import {CodeEditorComponent} from './codeEditor/codeEditor.component';
+import {SharedService} from './data.service';
 
 
 @NgModule({

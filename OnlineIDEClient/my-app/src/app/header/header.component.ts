@@ -1,53 +1,61 @@
-import {Component} from '@angular/core';
+import {AfterContentChecked, AfterViewInit, Component} from '@angular/core';
 import {CodeEditorComponent} from '../codeEditor/codeEditor.component';
 import {SideComponent} from '../side/side.component';
 import {Program} from '../../BL/Program';
+import {SharedService} from '../data.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements AfterViewInit  {
 
-  get staticDebbuger() {
-    return CodeEditorComponent.debugger;
-  }
-
-  static debugger = false;
-
+  debugger: boolean;
   private program = new Program();
 
+  constructor(private sharedService: SharedService) { }
+
+  ngAfterViewInit(): void {
+    this.debugger = this.sharedService.sharedDebuggerMode;
+  }
+
+  get staticDebugger() {
+    return this.sharedService.sharedDebuggerMode;
+  }
+
+
+  // buttons
   public runCode() {
-    this.program.init(CodeEditorComponent.code);
+    this.program.init(this.sharedService.sharedCode);
   }
 
   public beautifyContent() {
-    if (CodeEditorComponent.codeEditor && CodeEditorComponent.editorBeautify) {
-      const session = CodeEditorComponent.codeEditor.getSession();
-      CodeEditorComponent.editorBeautify.beautify(session);
+    if (this.sharedService.sharedCodeEditor && this.sharedService.sharedEditorBeautify) {
+      const session = this.sharedService.sharedCodeEditor.getSession();
+      this.sharedService.sharedEditorBeautify.beautify(session);
     }
   }
 
   public undoContent() {
-    if (CodeEditorComponent.codeEditor) {
-      CodeEditorComponent.codeEditor.undo();
+    if (this.sharedService.sharedCodeEditor) {
+      this.sharedService.sharedCodeEditor.undo();
     }
   }
 
   public clearContent() {
-    if (CodeEditorComponent.codeEditor) {
-      CodeEditorComponent.codeEditor.getSession().setValue('');
+    if (this.sharedService.sharedCodeEditor) {
+      this.sharedService.sharedCodeEditor.getSession().setValue('');
     }
   }
 
   public theme(n) {
     if (n === 1) {
-      CodeEditorComponent.codeEditor.setTheme('ace/theme/twilight');
+      this.sharedService.sharedCodeEditor.setTheme('ace/theme/twilight');
     } else if (n === 2) {
-      CodeEditorComponent.codeEditor.setTheme('ace/theme/eclipse');
+      this.sharedService.sharedCodeEditor.setTheme('ace/theme/eclipse');
     } else if (n === 3) {
-      CodeEditorComponent.codeEditor.setTheme('ace/theme/gob');
+      this.sharedService.sharedCodeEditor.setTheme('ace/theme/gob');
     }
   }
 
@@ -56,9 +64,7 @@ export class HeaderComponent {
   }
 
   public debuggerMode() {
-    CodeEditorComponent.debugger = !CodeEditorComponent.debugger;
-    SideComponent.debugger = !SideComponent.debugger;
-    HeaderComponent.debugger = !HeaderComponent.debugger;
+    this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
   }
 
   public loadFile() {
@@ -66,5 +72,6 @@ export class HeaderComponent {
 
   public downloadFile() {
   }
+
 
 }

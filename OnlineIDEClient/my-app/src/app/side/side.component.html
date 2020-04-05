@@ -1,4 +1,4 @@
-<section *ngIf="!staticDebbuger; else debbug" class="sidenav-content">
+<section *ngIf="!staticDebugger; else debug" class="sidenav-content">
   <a class="nav-link" (click)="addSentence(1)">
     bp.registerBThread
   </a>
@@ -16,7 +16,7 @@
   </a>
 </section>
 
-<ng-template #debbug>
+<ng-template #debug>
 
   <section class="sidenav-content">
     <a class="nav-link" (click)="addSentence(1)">

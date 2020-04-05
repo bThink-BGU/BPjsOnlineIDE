@@ -4,18 +4,18 @@
   </div>
 
   <div class="header-nav" >
-    <a *ngIf="!staticDebbuger" (click)="runCode()" class="nav-link nav-text">▶ RUN</a>
-    <a *ngIf="!staticDebbuger" (click)="beautifyContent()" class="nav-link nav-text">⦅ ⦆ BEAUTIFY</a>
-    <a *ngIf="!staticDebbuger" (click)="clearContent()" class="nav-link nav-text">✖ CLEAR</a>
-    <a *ngIf="!staticDebbuger" (click)="undoContent()" class="nav-link nav-text">↩ UNDO</a>
-    <a *ngIf="!staticDebbuger" (click)="loadFile()" class="nav-link nav-text">📥 LOAD FILE</a>
-    <a *ngIf="!staticDebbuger" (click)="downloadFile()" class="nav-link nav-text">📤 DOWNLOAD FILE</a>
-    <a *ngIf="!staticDebbuger" (click)="debuggerMode()" class="nav-link nav-text">🐞 DEBUG</a>
-    <a *ngIf="staticDebbuger" (click)="debuggerMode()" class="nav-link nav-text">🛑 STOP</a>
-    <a *ngIf="staticDebbuger" (click)="debuggerMode()" class="nav-link nav-text">⏬ STEP INTO</a>
-    <a *ngIf="staticDebbuger" (click)="debuggerMode()" class="nav-link nav-text">⏪ PREVIOUS EVENT</a>
-    <a *ngIf="staticDebbuger" (click)="debuggerMode()" class="nav-link nav-text">⏩ NEXT EVENT</a>
-    <a *ngIf="staticDebbuger" (click)="debuggerMode()" class="nav-link nav-text">➰ ADD EXTERNAL EVENT</a>
+    <a *ngIf="!staticDebugger" (click)="runCode()" class="nav-link nav-text">▶ RUN</a>
+    <a *ngIf="!staticDebugger" (click)="beautifyContent()" class="nav-link nav-text">⦅ ⦆ BEAUTIFY</a>
+    <a *ngIf="!staticDebugger" (click)="clearContent()" class="nav-link nav-text">✖ CLEAR</a>
+    <a *ngIf="!staticDebugger" (click)="undoContent()" class="nav-link nav-text">↩ UNDO</a>
+    <a *ngIf="!staticDebugger" (click)="loadFile()" class="nav-link nav-text">📥 LOAD FILE</a>
+    <a *ngIf="!staticDebugger" (click)="downloadFile()" class="nav-link nav-text">📤 DOWNLOAD FILE</a>
+    <a *ngIf="!staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🐞 DEBUG</a>
+    <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🛑 STOP</a>
+    <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">⏬ STEP INTO</a>
+    <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">⏪ PREVIOUS EVENT</a>
+    <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">⏩ NEXT EVENT</a>
+    <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">➰ ADD EXTERNAL EVENT</a>
   </div>
 
   <div class="header-actions">
