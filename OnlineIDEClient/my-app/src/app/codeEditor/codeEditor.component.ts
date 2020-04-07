@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import * as ace from 'ace-builds';
 import {Ace, Range} from 'ace-builds';
 import 'ace-builds/src-noconflict/theme-twilight';
@@ -47,6 +47,7 @@ export class CodeEditorComponent implements AfterViewInit {
     this.sharedService.sharedCodeEditor.setValue(this.code);
     this.sharedService.sharedCodeEditor.focus();
     this.sharedService.sharedCodeEditor.selection.clearSelection();
+
 
     // Custom editor settings
     this.prepareEditor();

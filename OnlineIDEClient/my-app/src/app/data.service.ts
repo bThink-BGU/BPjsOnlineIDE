@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import {Ace} from 'ace-builds';
 import * as ace from "ace-builds";
 
 @Injectable({
@@ -10,7 +11,7 @@ export class SharedService {
   private output = new BehaviorSubject('');
   sharedOutput = this.output.asObservable();
   sharedDebuggerMode = false;
-  sharedCodeEditor;
+  sharedCodeEditor : Ace.Editor;
   sharedEditorBeautify = ace.require('ace/ext/beautify');
   sharedCode = '//*****Hello BPjs World*****\n\n' +
     'bp.registerBThread(function(){\n' +

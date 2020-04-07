@@ -3,7 +3,7 @@
 2. Open the OnlineIDEClient folder in Webstorm or any preferred IDE. Then, navigate to the my-app folder to the terminal
 and run npm install. 
 3. Copy the ace-builds folder in the project and replace it with the node_modules/ace-builds folder.
-This is an important step, because we modified the original ae editor in our project.
+This is an important step, because we modified the original ace editor in our project.
 Documentation of all changes made can be found in the README-ACE file.
 4. Run npm start and access the IDE through localhost:4200.
 5. Open the OnlineIDEServer folder in eclipse or any preferred IDE. Then, run the project on a tomcat server 
