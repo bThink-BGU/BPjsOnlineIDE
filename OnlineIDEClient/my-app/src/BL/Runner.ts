@@ -16,9 +16,9 @@ export class Runner {
     runCL();
   }
 
-  postRun(outputStreamClass, response) {
+  postRun(sharedService, response) {
     this.stdout = response.message;
-    outputStreamClass.output += '\n' + response.message;
+    sharedService.sharedOutput += '\n' + response.message;
   }
 
 }

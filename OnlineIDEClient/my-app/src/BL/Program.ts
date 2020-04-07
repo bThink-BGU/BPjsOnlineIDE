@@ -1,4 +1,4 @@
-import {initCL, addExternalEventCL} from '../CL/BpService'
+import {initCL, addExternalEventCL} from '../CL/BpService';
 import {WebSocketService} from '../CL/Connection';
 import {Runner} from './Runner';
 import {Debugger} from './Debugger';
@@ -16,14 +16,14 @@ export class Program {
     this.code = '';
   }
 
-  subscribeOutputStream(outputStreamClass) {
-    const responseHandlers = {init: this.runner.run, run: this.runner.postRun, nextStep: this.debugger.postStep};
+  subscribeOutputStream(sharedService) {
+    const responseHandlers = {init: this.runner.run, run: this.runner.postRun, step: this.debugger.postStep};
     const observer = {
       next: (response) => {
-        responseHandlers[response.type](outputStreamClass, response);
+        responseHandlers[response.type](sharedService, response);
       },
       error: (error) => {
-        outputStreamClass.output = error;
+        sharedService.sharedOutput = error;
       }
     };
     WebSocketService.getObservable().subscribe(observer);

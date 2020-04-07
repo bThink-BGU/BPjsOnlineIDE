@@ -1,20 +1,29 @@
-import {State1} from './State';
+
 import {WebSocketService} from './Connection';
+import {DebugStep} from './DebugStep';
+
+const BpService = {
+  isTest: false
+};
 
 export function initCL(code) {
-  WebSocketService.sendData('init', code);
+  if (!BpService.isTest) {
+    WebSocketService.sendData('init', code);
+  }
 }
 
 export function runCL() {
-  WebSocketService.sendData('run', '');
+  if (!BpService.isTest) {
+    WebSocketService.sendData('run', '');
+  }
 }
 
-// TODO - Now it stub
-export function nextStepCL(cont) {
-  return new State1('cont', 'e', ['r', 'l'], ['w', 'l'], ['b', 'l'],
-    {a: 5, b: 7});
+export function stepCL(debugStep: DebugStep) {
+  WebSocketService.sendData('step', JSON.stringify(debugStep));
 }
 
 export function addExternalEventCL(bEvent) {
-  WebSocketService.sendData('externalEvent', bEvent);
+  if (!BpService.isTest) {
+    WebSocketService.sendData('externalEvent', bEvent);
+  }
 }
