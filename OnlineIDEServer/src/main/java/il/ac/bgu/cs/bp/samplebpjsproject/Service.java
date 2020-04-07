@@ -1,24 +1,25 @@
 package il.ac.bgu.cs.bp.samplebpjsproject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.concurrent.ExecutorService;
 
 import javax.websocket.Session;
 
+
 import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
-import il.ac.bgu.cs.bp.bpjs.execution.listeners.PrintBProgramRunnerListener;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
-import il.ac.bgu.cs.bp.bpjs.model.BProgramSyncSnapshot;
 import il.ac.bgu.cs.bp.bpjs.model.StringBProgram;
 
 public class Service {
 
 	public String code;
 	private BProgram bprog;
-	private PrintStream aStream;
+//	private PrintStream aStream;
 	private final ExecutorService execSvc;
 	
 	
@@ -56,9 +57,19 @@ public class Service {
 //			e.printStackTrace();
 //		}
 //	}
+	public StepMessage step(StepMessage step) throws InterruptedException, IOException, ClassNotFoundException {
+		Step s = step==null?null:(Step)new ObjectInputStream(new ByteArrayInputStream(step.getContinuation())).readObject();
+		Step next = step(s);
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+		new ObjectOutputStream(outStream).writeObject(next);
+		return next.stepToMessage(outStream.toByteArray());
+	}
 
-	public Step step(BProgramSyncSnapshot snapshot) throws InterruptedException {
-		return Step.step(execSvc, bprog, snapshot);
+	public Step step(Step step) throws InterruptedException {
+		if(step == null) {
+			return new Step().step(execSvc, bprog, true);
+		}
+		return step.step(execSvc, bprog, false);
 	}
 	
 	

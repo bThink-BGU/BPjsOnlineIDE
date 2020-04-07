@@ -1,12 +1,8 @@
 package com.bpjs.onlineide;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import javax.json.Json;
 import javax.websocket.DecodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -16,9 +12,6 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
-import org.json.simple.JSONObject;
-
-import com.google.gson.Gson;
 
 import il.ac.bgu.cs.bp.samplebpjsproject.EncodeDecode;
 import il.ac.bgu.cs.bp.samplebpjsproject.Message;
@@ -46,22 +39,16 @@ public class Server {
     	switch (decodedMessage.getType()) {
 			case "init":
 				init(decodedMessage);
+				System.out.println("init done");
 				break;
 			case "run":
 				run();
+				System.out.println("run done");
 				break;
 			case "step":
-//				this.service.step();
-				HashMap<String, Integer> map = new HashMap<>();
-				map.put("a", 1);
-				List<String> lis = new LinkedList<>();
-				lis.add("a");
-				lis.add("b");
-				StepMessage stepMessage = new StepMessage(map, lis, lis, lis, "A");
-				
-				
-				this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(stepMessage));
-			
+				System.out.println("here");
+//				step(EncodeDecode.decodeStepMessage(message));
+				break;
 			case "externalEvent":
 				addExternalEvent(decodedMessage);
 				break;
@@ -72,6 +59,18 @@ public class Server {
     
     
   
+
+	private void step(StepMessage stepMessage) {
+		StepMessage nextStepMessage;
+		try {
+			nextStepMessage = this.service.step(stepMessage);
+			this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(nextStepMessage));
+		} catch (ClassNotFoundException | InterruptedException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Error in step");
+		}
+	}
 
 	@OnClose
     public void onClose(Session session) throws IOException {
