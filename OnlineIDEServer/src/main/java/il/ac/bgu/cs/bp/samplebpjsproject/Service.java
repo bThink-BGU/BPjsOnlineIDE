@@ -58,20 +58,9 @@ public class Service {
 //		}
 //	}
 	public StepMessage step(StepMessage step) throws InterruptedException, IOException, ClassNotFoundException {
-		Step s = step==null?null:(Step)new ObjectInputStream(new ByteArrayInputStream(step.getContinuation())).readObject();
-		Step next = step(s);
-		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-		new ObjectOutputStream(outStream).writeObject(next);
-		return next.stepToMessage(outStream.toByteArray());
+		Step s = new Step(execSvc,bprog, step.bpss);
+		return s.step().toStepMessage();
 	}
-
-	public Step step(Step step) throws InterruptedException {
-		if(step == null) {
-			return new Step().step(execSvc, bprog, true);
-		}
-		return step.step(execSvc, bprog, false);
-	}
-	
 	
 	// stub only, until we will know how to use step in BPjs
 	public String step() {
