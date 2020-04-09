@@ -27,7 +27,7 @@ export class HeaderComponent implements AfterViewInit  {
 
   // buttons
   public runCode() {
-    this.program.init(this.sharedService.sharedCode);
+    this.program.init('initRun', this.sharedService.sharedCode);
   }
 
   public beautifyContent() {
@@ -65,12 +65,19 @@ export class HeaderComponent implements AfterViewInit  {
 
   public debuggerMode() {
     this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
+
+    this.program.init('initStep', this.sharedService.sharedCode);
+
   }
 
   public loadFile() {
   }
 
   public downloadFile() {
+  }
+
+  public step() {
+    this.program.debugger.step();
   }
 
 

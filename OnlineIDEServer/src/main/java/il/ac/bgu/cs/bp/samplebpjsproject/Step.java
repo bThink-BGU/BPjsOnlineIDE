@@ -25,9 +25,8 @@ public class Step {
 	private final BEvent selectedEvent;
 
 	public Step step() throws InterruptedException {
-		if(bpss == null) { // Init state
+		if(bpss == null) // Init state
 			return new Step(execSvc, bprog, bprog.setup().start(execSvc), null);
-		}
 		ArrayList<BEvent> eventOrdered = new ArrayList<>(selectableEvents);
         Collections.shuffle(eventOrdered);
         BEvent e = eventOrdered.get(0);
@@ -35,26 +34,29 @@ public class Step {
         
 	}
 
-	public Step(ExecutorService execSvc, BProgram bprog, BProgramSyncSnapshot bProgramSyncSnapshot, BEvent selectedEvent) {
+	
+	public Step(ExecutorService execSvc, BProgram bprog, BProgramSyncSnapshot bProgramSyncSnapshot, 
+			BEvent selectedEvent) {
 		this.execSvc = execSvc;
 		this.bprog = bprog;
 		this.bpss = bProgramSyncSnapshot;
 		this.selectedEvent = selectedEvent;
-		if (bProgramSyncSnapshot != null) {
+		if (bProgramSyncSnapshot != null) 
 			this.selectableEvents = bprog.getEventSelectionStrategy().selectableEvents(bpss);
-		} else {
+		else
 			this.selectableEvents = null;
-		}
 	}
 
-	public Step(ExecutorService execSvc, BProgram bprog, byte[] bProgramSyncSnapshot) throws IOException, ClassNotFoundException {
+	public Step(ExecutorService execSvc, BProgram bprog, byte[] bProgramSyncSnapshot) 
+			throws IOException, ClassNotFoundException {
 		this.execSvc = execSvc;
 		this.bprog = bprog;
 		this.selectedEvent = null; // We don't need it when deserializing, only after calling step
 		if (bProgramSyncSnapshot != null) {
 			this.bpss = new BProgramSyncSnapshotIO(bprog).deserialize(bProgramSyncSnapshot);
 			this.selectableEvents = bprog.getEventSelectionStrategy().selectableEvents(bpss);
-		} else {
+		} 
+		else {
 			this.bpss = null;
 			this.selectableEvents = null;
 		}
@@ -72,14 +74,14 @@ public class Step {
 		Value.Right = Map of stack variables, with the following structure: Key = variable name, Value = variable value (as json string)
 		 */
 		Map<String, Pair<Integer, Map<String, String>>> bThreadDebugData = new HashMap<>();
-		bpss.getBThreadSnapshots().forEach(s-> {
-			// to find the stack variables and the current line, you need to dig in the continuation object
-			// to see how to work with this object, take a look at https://github.com/bThink-BGU/BPjs/blob/develop/src/main/java/il/ac/bgu/cs/bp/bpjs/model/internal/ContinuationProgramState.java
-			Object continuation = ((NativeContinuation)s.getContinuation()).getImplementation();
-			int lineNumber = -1;
-			Map<String, String> variables = new HashMap<>();
-			bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
-		});
+//		bpss.getBThreadSnapshots().forEach(s-> {
+//			// to find the stack variables and the current line, you need to dig in the continuation object
+//			// to see how to work with this object, take a look at https://github.com/bThink-BGU/BPjs/blob/develop/src/main/java/il/ac/bgu/cs/bp/bpjs/model/internal/ContinuationProgramState.java
+//			Object continuation = ((NativeContinuation)s.getContinuation()).getImplementation();
+//			int lineNumber = -1;
+//			Map<String, String> variables = new HashMap<>();
+//			bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
+//		});
 
 		return new StepMessage(
 				new BProgramSyncSnapshotIO(bprog).serialize(bpss),
@@ -89,10 +91,18 @@ public class Step {
 				selectableEvents.stream().map(e->e.toString()).collect(Collectors.toList()),
 				wait.stream().map(r->r.toString()).collect(Collectors.toList()),
 				blocked.stream().map(r->r.toString()).collect(Collectors.toList()),
-				selectedEvent.toString());
+				selectedEvent == null ? null : selectedEvent.toString()); 
+		
+		// Comment for Achiya:
+		// The last line (line 94) we changed.
+		// It was: selectedEvent.toString().
+		// But it did error because in the first time the selectedEvent is null, so we changed it.
+		
 	}
 
-	private Object getValue( Object instance, String fieldName ) throws NoSuchFieldException, IllegalAccessException {
+	
+	
+	private Object getValue(Object instance, String fieldName) throws NoSuchFieldException, IllegalAccessException {
 		Field fld = instance.getClass().getDeclaredField(fieldName);
 		fld.setAccessible(true);
 		return fld.get(instance);

@@ -14,7 +14,7 @@ export class AppComponent implements AfterViewInit {
   // private staticDebbuger = CodeEditorComponent.debugger;
   private program = new Program();
 
-  private sharedService = new SharedService();
+  constructor(private sharedService: SharedService) { }
 
   ngAfterViewInit() {
     this.program.subscribeOutputStream(this.sharedService);

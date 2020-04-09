@@ -12,7 +12,7 @@
     <a *ngIf="!staticDebugger" (click)="downloadFile()" class="nav-link nav-text">📤 DOWNLOAD FILE</a>
     <a *ngIf="!staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🐞 DEBUG</a>
     <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🛑 STOP</a>
-    <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">⏬ STEP INTO</a>
+    <a *ngIf="staticDebugger" (click)="step()" class="nav-link nav-text">⏬ NEXT STEP</a>
     <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">⏪ PREVIOUS EVENT</a>
     <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">⏩ NEXT EVENT</a>
     <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">➰ ADD EXTERNAL EVENT</a>

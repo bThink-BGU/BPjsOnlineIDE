@@ -6,24 +6,24 @@ const BpService = {
   isTest: false
 };
 
-export function initCL(code) {
+export function initCL(type, code) {
   if (!BpService.isTest) {
-    WebSocketService.sendData('init', code);
+    WebSocketService.sendDataMess(type, code);
   }
 }
 
 export function runCL() {
   if (!BpService.isTest) {
-    WebSocketService.sendData('run', '');
+    WebSocketService.sendDataMess('run', '');
   }
 }
 
 export function stepCL(debugStep: DebugStep) {
-  WebSocketService.sendData('step', JSON.stringify(debugStep));
+  WebSocketService.sendDataStep('step', debugStep);
 }
 
 export function addExternalEventCL(bEvent) {
   if (!BpService.isTest) {
-    WebSocketService.sendData('externalEvent', bEvent);
+    WebSocketService.sendDataMess('externalEvent', bEvent);
   }
 }

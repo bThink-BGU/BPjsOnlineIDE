@@ -20,7 +20,7 @@ import il.ac.bgu.cs.bp.samplebpjsproject.StepMessage;
 
 @ServerEndpoint("/api")
 public class Server {
-	private final ExecutorService execSvc = ExecutorServiceMaker.makeWithName("executor" );
+	private final ExecutorService execSvc = ExecutorServiceMaker.makeWithName("executor");
 	private Session session;
 	private Service service;
 	
@@ -37,17 +37,15 @@ public class Server {
     	Message decodedMessage = EncodeDecode.decode(message);
     	
     	switch (decodedMessage.getType()) {
-			case "init":
+			case "initRun":
+			case "initStep":
 				init(decodedMessage);
-				System.out.println("init done");
 				break;
 			case "run":
 				run();
-				System.out.println("run done");
 				break;
 			case "step":
-				System.out.println("here");
-//				step(EncodeDecode.decodeStepMessage(message));
+				step(EncodeDecode.decodeStepMessage(message));
 				break;
 			case "externalEvent":
 				addExternalEvent(decodedMessage);
@@ -59,7 +57,6 @@ public class Server {
     
     
   
-
 	private void step(StepMessage stepMessage) {
 		StepMessage nextStepMessage;
 		try {

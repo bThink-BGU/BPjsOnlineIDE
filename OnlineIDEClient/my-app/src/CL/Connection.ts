@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {webSocket} from 'rxjs/webSocket';
+import {DebugStep} from './DebugStep';
+import {debug} from 'util';
 
 @Injectable()
 export class WebSocketService {
@@ -10,8 +12,15 @@ export class WebSocketService {
     deserializer: e => JSON.parse(e.data), // when receiving a message
   });
 
-  public static sendData(type: string, message: string) {
+  public static sendDataMess(type: string, message: string) {
     WebSocketService.connection.next({type: type, message: message});
+  }
+
+  public static sendDataStep(type: string, debugStep: DebugStep) {
+      WebSocketService.connection.next({type: type, bpss: debugStep.bpss,
+        bThreadDebugData: debugStep.bThreadDebugData, globalVariables: debugStep.globalVariables,
+        reqList: debugStep.reqList, selectableEvents: debugStep.selectableEvents, waitList: debugStep.waitList,
+        blockList: debugStep.blockList, selectedEvent: debugStep.selectedEvent});
   }
 
   public static getObservable() {

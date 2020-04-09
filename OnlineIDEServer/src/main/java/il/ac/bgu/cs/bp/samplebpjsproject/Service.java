@@ -44,27 +44,9 @@ public class Service {
 		this.bprog = new StringBProgram(code);
 	}
 
-	
-	// need to delete only for checking
-//	public void init(BProgram bprog) {
-//		this.code = bprog.toString();
-//		this.bprog = bprog;
-//		String pathname = "output.txt";
-//		File file = new File(pathname);
-//		try {
-//			this.aStream = new PrintStream(file);
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//	}
 	public StepMessage step(StepMessage step) throws InterruptedException, IOException, ClassNotFoundException {
-		Step s = new Step(execSvc,bprog, step.bpss);
+		Step s = new Step(execSvc, bprog, step.bpss);
 		return s.step().toStepMessage();
-	}
-	
-	// stub only, until we will know how to use step in BPjs
-	public String step() {
-		return "stub";
 	}
 
 	public RunLogger run() {

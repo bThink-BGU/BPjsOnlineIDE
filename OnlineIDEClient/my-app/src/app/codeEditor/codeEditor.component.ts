@@ -165,7 +165,7 @@ export class CodeEditorComponent implements AfterViewInit {
                 this.removeBreakpoint(breakpointRow);
                 this.addBreakpoint(breakpointRow - (e.end.row - e.start.row));
               }
-              else{
+              else {
                 this.removeBreakpoint(breakpointRow);
               }
             }
