@@ -1,1 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Breakpoints custom CSS */
+.ace_gutter-cell.ace_breakpoint{
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAsUlEQVQokY3SQWoCQRAF0NfDIB5AXASPF0IWLryU58hCRCRkIXHhHbKSQJZVLtIjk4lj8uHDp7r6U9W/qQja5CnYBOfgnOySZTDRRzJP9kmO8JA8dM1tsgsyasOIPgRTyWP0DmL8QiYrycudUYZ8K8FHYZZ1n/I95pj+avSKQ30LTeFYqsOQfutTg3Xn3Lnf0WtJG+z/8UrvybQf3OsfwS1+LBNMkudgW7/GZw10eXXGBemLqCvovlVQAAAAAElFTkSuQmCC");
+  background-repeat: no-repeat;
+  background-position: 4.75px center;
+}
+
+.breakpoint-marker
+{
+  background: rgba(255, 0, 0, 0.1);
+  position: absolute;
+  width: 100% !important;
+  left: 0 !important;
+}
+
+/* BPjs syntax highlighting custom CSS */
+
+.ace_bp_commands
+{
+  color: mediumpurple;
+}
+
+.ace_bp_keywords
+{
+  color: goldenrod;
+}
