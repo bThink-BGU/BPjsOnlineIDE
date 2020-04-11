@@ -45,7 +45,7 @@ public class Service {
 	}
 
 	public StepMessage step(StepMessage step) throws InterruptedException, IOException, ClassNotFoundException {
-		Step s = new Step(execSvc, bprog, step.bpss);
+		Step s = Step.Deserialize(execSvc, bprog, step.bpss);
 		return s.step().toStepMessage();
 	}
 
