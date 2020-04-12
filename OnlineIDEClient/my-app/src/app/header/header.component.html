@@ -13,6 +13,7 @@
     <a *ngIf="!staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🐞 DEBUG</a>
     <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🛑 STOP</a>
     <a *ngIf="staticDebugger" (click)="step()" class="nav-link nav-text">⏬ NEXT STEP</a>
+    <a *ngIf="staticDebugger" (click)="check()" class="nav-link nav-text">UPDATE EVENTS</a>
     <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">⏪ PREVIOUS EVENT</a>
     <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">⏩ NEXT EVENT</a>
     <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">➰ ADD EXTERNAL EVENT</a>
@@ -32,12 +33,6 @@
     </clr-tab>
     <clr-tab>
       <button clrTabLink (click)="theme(2)">White Theme</button>
-    </clr-tab>
-    <clr-tab>
-      <button clrTabLink (click)="theme(3)">Dark Theme</button>
-    </clr-tab>
-    <clr-tab>
-      <button clrTabLink (click)="theme(3)">Dark Theme</button>
     </clr-tab>
     <clr-tab>
       <button clrTabLink (click)="theme(3)">Dark Theme</button>

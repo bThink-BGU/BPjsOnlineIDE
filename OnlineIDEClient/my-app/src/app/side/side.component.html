@@ -1,53 +1,98 @@
 <section *ngIf="!staticDebugger; else debug" class="sidenav-content">
-  <a class="nav-link" (click)="addSentence(1)">
-    bp.registerBThread
-  </a>
-
-  <a class="nav-link" (click)="addSentence(2)">
-    bp.sync - waitFor
-  </a>
-
-  <a class="nav-link" (click)="addSentence(3)">
-    bp.sync - request
-  </a>
-
-  <a class="nav-link" (click)="addSentence(4)">
-    bp.sync - request + block
-  </a>
+  <clr-tabs>
+    <clr-tab class="nav-link">
+      <button clrTabLink>Add Sentence</button>
+      <ng-template [(clrIfActive)]="sentence">
+        <clr-tab-content>
+          <div class="list-container-sentences"  id="sentence">
+            <tr *ngFor="let sen of sentences; index as i">
+              <td (click)="addSentence(i+1)">{{sen}}</td>
+            </tr>
+          </div>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+    </clr-tabs>
 </section>
 
-<ng-template #debug>
+<ng-template #debug class="sidenav-content">
+  <clr-tabs>
+    <clr-tab class="nav-link">
+      <button clrTabLink>Request</button>
+      <ng-template [(clrIfActive)]="Request">
+        <clr-tab-content>
+          <div class="list-container">
+            <tr *ngFor="let rqst of request">
+              <td>{{rqst.name}}</td>
+            </tr>
+          </div>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+
+    <clr-tab >
+      <button clrTabLink>Block</button>
+      <ng-template [(clrIfActive)]="Block">
+        <clr-tab-content>
+          <div class="list-container">
+            <tr *ngFor="let blck of block">
+              <td>{{blck.name}}</td>
+            </tr>
+          </div>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+
+    <clr-tab>
+      <button clrTabLink>Wait</button>
+      <ng-template [(clrIfActive)]="Wait">
+        <clr-tab-content>
+          <div class="list-container">
+            <tr *ngFor="let wt of wait">
+              <td>{{wt.name}}</td>
+            </tr>
+          </div>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+  </clr-tabs>
 
   <section class="sidenav-content">
-    <a class="nav-link" (click)="addSentence(1)">
-      amir dirmi
-    </a>
+    <clr-tabs>
+      <clr-tab class="nav-link">
+        <button clrTabLink>Trace</button>
+        <ng-template [(clrIfActive)]="Trace">
+          <clr-tab-content class="bptab">
+            <div class="list-container">
+              <tr *ngFor="let trc of trace; index as i">
+                <td>{{i+1}}: {{trc.name}}</td>
+              </tr>
+            </div>
+          </clr-tab-content>
+        </ng-template>
+      </clr-tab>
 
-    <a class="nav-link" (click)="addSentence(2)">
-      ofek ashkenazi
-    </a>
-
-    <a class="nav-link" (click)="addSentence(3)">
-      guy shuster
-    </a>
+      <clr-tab >
+        <button clrTabLink>Variables</button>
+        <ng-template [(clrIfActive)]="Variables">
+          <clr-tab-content>
+            <div class="list-container-variables">
+              <table id="variables">
+                <tr>
+                  <th>Variable</th>
+                  <th>Value</th>
+                </tr>
+                <tr *ngFor="let varb of variables">
+                  <td width="50%">{{varb.name}}</td>
+                  <td width="50%">{{varb.id}}</td>
+                </tr>
+              </table>
+            </div>
+          </clr-tab-content>
+        </ng-template>
+      </clr-tab>
+    </clr-tabs>
   </section>
 
-  <hr>
-
-  <section class="sidenav-content">
-    <a class="nav-link" (click)="addSentence(1)">
-      amir dirmi 1
-    </a>
-
-    <a class="nav-link" (click)="addSentence(2)">
-      ofek ashkenazi 2
-    </a>
-
-    <a class="nav-link" (click)="addSentence(3)">
-      guy shuster 3
-    </a>
-  </section>
-
-  <hr>
 </ng-template>
 

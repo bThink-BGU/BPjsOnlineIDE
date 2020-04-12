@@ -80,5 +80,11 @@ export class HeaderComponent implements AfterViewInit  {
     this.program.debugger.step();
   }
 
-
+  public check(){
+    this.sharedService.wait = [];
+    this.sharedService.block = [];
+    this.sharedService.request = [];
+    this.sharedService.variables = [];
+    this.sharedService.trace = [];
+  }
 }

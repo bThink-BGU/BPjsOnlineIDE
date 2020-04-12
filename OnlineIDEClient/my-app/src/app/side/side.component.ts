@@ -23,6 +23,25 @@ export class SideComponent implements AfterViewInit {
     return this.sharedService.sharedDebuggerMode;
   }
 
+  get trace (){
+    return this.sharedService.trace;
+  }
+  get request (){
+    return this.sharedService.request;
+  }
+  get block (){
+    return this.sharedService.block;
+  }
+  get wait (){
+    return this.sharedService.wait;
+  }
+  get variables (){
+    return this.sharedService.variables;
+  }
+  get sentences (){
+    return this.sharedService.sentences;
+  }
+
   // buttons
   public addSentence(n) {
     if (n === 1) {

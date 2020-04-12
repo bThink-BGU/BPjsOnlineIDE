@@ -1,9 +1,10 @@
 .nav-text:active {
   transform: translateY(3px);
-  color: rgba(6, 6, 6, 0.99);
+  color: rgb(0, 0, 0);
   float: left;
 }
 
 .nav-text:hover {
-  background-color: #0ed1c6;
+  background-color: #ddd;
+  color: rgb(0, 0, 0);
 }
