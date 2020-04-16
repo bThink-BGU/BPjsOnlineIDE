@@ -12,7 +12,7 @@ import {SharedService} from '../data.service';
 export class HeaderComponent implements AfterViewInit  {
 
   debugger: boolean;
-  private program = new Program();
+  //private program = new Program();
 
   constructor(private sharedService: SharedService) { }
 
@@ -27,7 +27,7 @@ export class HeaderComponent implements AfterViewInit  {
 
   // buttons
   public runCode() {
-    this.program.init('initRun', this.sharedService.sharedCode);
+    this.sharedService.sharedProgram.init('initRun', this.sharedService.sharedCode);
   }
 
   public beautifyContent() {
@@ -66,7 +66,9 @@ export class HeaderComponent implements AfterViewInit  {
   public debuggerMode() {
     this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
 
-    this.program.init('initStep', this.sharedService.sharedCode);
+    this.sharedService.sharedProgram.init('initStep', this.sharedService.sharedCode);
+
+    // while(not on break point's line){ nextStep() }
 
   }
 
@@ -77,10 +79,15 @@ export class HeaderComponent implements AfterViewInit  {
   }
 
   public step() {
-    this.program.debugger.step();
+    this.sharedService.sharedProgram.debugger.step();
   }
 
-  public check(){
+  public addExternalEvent() {
+    window.alert(this.sharedService.sharedExternalEvent);
+    this.sharedService.sharedProgram.addExternalEvent(this.sharedService.sharedExternalEvent);
+  }
+
+  public check() {
     this.sharedService.wait = [];
     this.sharedService.block = [];
     this.sharedService.request = [];

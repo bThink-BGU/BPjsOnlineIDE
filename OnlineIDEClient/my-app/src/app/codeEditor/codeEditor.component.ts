@@ -29,12 +29,17 @@ export class CodeEditorComponent implements AfterViewInit {
   private breakpoints: {};
 
   get Output() {
-    return this.sharedService.sharedOutput;
+    return this.sharedService.sharedProgram.runner.stdout; //this.sharedService.sharedOutput;
+  }
+
+  get externalEvent() {
+    return this.sharedService.sharedExternalEvent;
   }
 
   @ViewChild('codeEditor', {static: false}) codeEditorElmRef: ElementRef;
 
   ngAfterViewInit(): void {
+    this.input = this.sharedService.sharedExternalEvent;
     this.debugger = this.sharedService.sharedDebuggerMode;
     this.code = this.sharedService.sharedCode;
     this.sharedService.sharedOutput.subscribe(output => this.output = output);

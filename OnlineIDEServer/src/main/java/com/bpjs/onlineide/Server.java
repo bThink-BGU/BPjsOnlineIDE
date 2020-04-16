@@ -44,9 +44,10 @@ public class Server {
 			case "run":
 				try {
 					run();
-				}
+				}	
 				catch(Exception e) {
 					this.service.getRunLogger().sendBpStream("error", e.getMessage());
+					System.out.println(e.getMessage());
 				}
 				break;
 			case "step":

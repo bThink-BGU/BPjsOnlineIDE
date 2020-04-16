@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {Ace} from 'ace-builds';
-import * as ace from "ace-builds";
+import * as ace from 'ace-builds';
+import {Program} from "../BL/Program";
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,11 @@ import * as ace from "ace-builds";
 export class SharedService {
 
   private output = new BehaviorSubject('');
+  sharedProgram;
+  sharedExternalEvent = 'amir';
   sharedOutput = this.output.asObservable();
   sharedDebuggerMode = false;
-  sharedCodeEditor : Ace.Editor;
+  sharedCodeEditor: Ace.Editor;
   sharedEditorBeautify = ace.require('ace/ext/beautify');
   sharedCode = '//*****Hello BPjs World*****\n\n' +
     'bp.registerBThread(function(){\n' +
@@ -95,7 +98,7 @@ export class SharedService {
     'bp.sync - request + block'
   ];
 
-  constructor() { }
+  constructor() {this.sharedProgram  = new Program(); }
 
   nextOutput(output: string) {
     this.output.next(output)

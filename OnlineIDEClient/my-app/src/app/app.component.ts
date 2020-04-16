@@ -12,12 +12,12 @@ import {SharedService} from './data.service';
 export class AppComponent implements AfterViewInit {
 
   // private staticDebbuger = CodeEditorComponent.debugger;
-  private program = new Program();
+  //private program = new Program();
 
   constructor(private sharedService: SharedService) { }
 
   ngAfterViewInit() {
-    this.program.subscribeOutputStream(this.sharedService);
+    this.sharedService.sharedProgram.subscribeOutputStream(this.sharedService);
   }
 
 }

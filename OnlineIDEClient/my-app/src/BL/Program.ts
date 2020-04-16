@@ -6,12 +6,12 @@ import {Debugger} from './Debugger';
 
 export class Program {
 
-  private runner: Runner;
+  private _runner: Runner;
   private _debugger: Debugger;
   private code: string;
 
   constructor() {
-    this.runner = new Runner();
+    this._runner = new Runner();
     this._debugger = new Debugger();
     this.code = '';
   }
@@ -23,15 +23,16 @@ export class Program {
       next: (response) => {
         switch (response.type) {
           case 'initRun': {
-            this.runner.run();
+            this._runner.run();
             break;
           }
           case 'initStep': {
             // nothing
             break;
           }
-          case 'run': {
-            this.runner.postRun(sharedService, response);
+          case 'run':
+          case 'error': {
+            this._runner.postRun(sharedService, response);
             break;
           }
           case 'step': {
@@ -60,6 +61,10 @@ export class Program {
 
   get debugger(): Debugger {
     return this._debugger;
+  }
+
+  get runner(): Runner{
+    return this._runner;
   }
 }
 
