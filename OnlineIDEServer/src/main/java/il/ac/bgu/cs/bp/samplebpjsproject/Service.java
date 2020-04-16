@@ -1,10 +1,6 @@
 package il.ac.bgu.cs.bp.samplebpjsproject;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.concurrent.ExecutorService;
 
 import javax.websocket.Session;
@@ -21,7 +17,6 @@ public class Service {
 	private BProgram bprog;
 //	private PrintStream aStream;
 	private final ExecutorService execSvc;
-	
 	
 	private RunLogger runLogger;
 	

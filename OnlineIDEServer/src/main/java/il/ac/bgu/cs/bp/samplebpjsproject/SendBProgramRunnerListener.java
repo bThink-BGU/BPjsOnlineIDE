@@ -17,55 +17,55 @@ public class SendBProgramRunnerListener  implements BProgramRunnerListener {
 
 	@Override
 	public void starting(BProgram bp) {
-		this.runLogg.sendBpStream("starting", "---:" + bp.getName() + " Starting");
+		this.runLogg.sendBpStream("run", "---:" + bp.getName() + " Starting"); // starting
 	}
 
 	@Override
 	public void started(BProgram bp) {
-		this.runLogg.sendBpStream("started", "---:" + bp.getName() + " Started");
+		this.runLogg.sendBpStream("run", "---:" + bp.getName() + " Started"); // started
 	}
 
 	@Override
 	public void superstepDone(BProgram bp) {
-		this.runLogg.sendBpStream("superstepDone", "---:" + bp.getName() + " No Event Selected");
+		this.runLogg.sendBpStream("run", "---:" + bp.getName() + " No Event Selected"); // superstepDone
 	}
 
 	@Override
 	public void ended(BProgram bp) {
-		this.runLogg.sendBpStream("ended", "---:" + bp.getName() + " Ended");
+		this.runLogg.sendBpStream("run", "---:" + bp.getName() + " Ended"); // ended
 	}
 
 	@Override
 	public void assertionFailed(BProgram bp, FailedAssertion theFailedAssertion) {
-		this.runLogg.sendBpStream("assertionFailed", 
+		this.runLogg.sendBpStream("run", 
 				"---:" + bp.getName() + " B-thread " + theFailedAssertion.getBThreadName() + 
-				" is in invalid state: " + theFailedAssertion.getMessage());
+				" is in invalid state: " + theFailedAssertion.getMessage()); // assertionFailed
 	}
 
 	@Override
 	public void bthreadAdded(BProgram bp, BThreadSyncSnapshot theBThread) {
-		this.runLogg.sendBpStream("bthreadAdded", "  -:" + bp.getName() + " Added " + theBThread.getName());
+		this.runLogg.sendBpStream("run", "  -:" + bp.getName() + " Added " + theBThread.getName()); // bthreadAdded
 		
 	}
 
 	@Override
 	public void bthreadRemoved(BProgram bp, BThreadSyncSnapshot theBThread) {
-		this.runLogg.sendBpStream("bthreadRemoved", "  -:" + bp.getName() + " Removed " + theBThread.getName());
+		this.runLogg.sendBpStream("run", "  -:" + bp.getName() + " Removed " + theBThread.getName()); // bthreadRemoved
 	}
 	    
 	@Override
 	public void bthreadDone(BProgram bp, BThreadSyncSnapshot theBThread) {
-		this.runLogg.sendBpStream("bthreadDone", "  -:" + bp.getName() + " Done " + theBThread.getName());
+		this.runLogg.sendBpStream("run", "  -:" + bp.getName() + " Done " + theBThread.getName()); // bthreadDone
 	}
 
 	@Override
 	public void eventSelected(BProgram bp, BEvent theEvent) {
-		this.runLogg.sendBpStream("eventSelected", " --:" + bp.getName() + " Event " + theEvent.toString());
+		this.runLogg.sendBpStream("run", " --:" + bp.getName() + " Event " + theEvent.toString()); // eventSelected
 	}
 
 	@Override
 	public void halted(BProgram bp) {
-		this.runLogg.sendBpStream("halted", "---:" + bp.getName() + " Halted");	
+		this.runLogg.sendBpStream("run", "---:" + bp.getName() + " Halted");	// halted
 	}
 
 }

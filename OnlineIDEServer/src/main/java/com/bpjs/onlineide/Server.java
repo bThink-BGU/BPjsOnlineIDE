@@ -42,7 +42,12 @@ public class Server {
 				init(decodedMessage);
 				break;
 			case "run":
-				run();
+				try {
+					run();
+				}
+				catch(Exception e) {
+					this.service.getRunLogger().sendBpStream("error", e.getMessage());
+				}
 				break;
 			case "step":
 				step(EncodeDecode.decodeStepMessage(message));

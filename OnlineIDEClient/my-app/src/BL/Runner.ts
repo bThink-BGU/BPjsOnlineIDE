@@ -7,20 +7,32 @@ export class Runner {
   private stderr: string;
 
   constructor() {
+    this.initRun();
+  }
+
+  run() {
+    this.initRun();
+    runCL();
+  }
+
+  private initRun() {
     this.isError = false;
     this.stdout = '';
     this.stderr = '';
   }
 
-  run() {
-    runCL();
-  }
-
   postRun(sharedService, response) {
-    this.stdout = response.message;
+    if (response.type === 'error') {
+      this.isError = true;
+      this.stderr = response.message;
+      this.stdout = ''; // Clean stdout because an exception was thrown
+    } else {
+      this.stdout += response.message;
+    }
+
+    // Need to change
     sharedService.sharedOutput += '\n' + response.message;
   }
-
 }
 
 
