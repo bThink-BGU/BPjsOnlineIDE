@@ -12,7 +12,14 @@ import {SharedService} from '../data.service';
 export class HeaderComponent implements AfterViewInit  {
 
   debugger: boolean;
-  //private program = new Program();
+  themes = [
+    'ace/theme/twilight',
+    'ace/theme/eclipse',
+    'ace/theme/gob',
+    'ace/theme/solarized_light',
+    'ace/theme/terminal',
+    'ace/theme/ambiance'
+  ];
 
   constructor(private sharedService: SharedService) { }
 
@@ -23,7 +30,6 @@ export class HeaderComponent implements AfterViewInit  {
   get staticDebugger() {
     return this.sharedService.sharedDebuggerMode;
   }
-
 
   // buttons
   public runCode() {
@@ -49,49 +55,41 @@ export class HeaderComponent implements AfterViewInit  {
     }
   }
 
-  public theme(n) {
-    if (n === 1) {
-      this.sharedService.sharedCodeEditor.setTheme('ace/theme/twilight');
-    } else if (n === 2) {
-      this.sharedService.sharedCodeEditor.setTheme('ace/theme/eclipse');
-    } else if (n === 3) {
-      this.sharedService.sharedCodeEditor.setTheme('ace/theme/gob');
-    }
+  public loadFile() {
+    window.alert('loadFile');
   }
 
-  public setting() {
-    window.open('https://bpjs.readthedocs.io/en/latest/#');
+  public downloadFile() {
+    window.alert('downloadFile');
   }
 
   public debuggerMode() {
     this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
-
     this.sharedService.sharedProgram.init('initStep', this.sharedService.sharedCode);
-
     // while(not on break point's line){ nextStep() }
-
   }
 
-  public loadFile() {
-  }
-
-  public downloadFile() {
-  }
-
-  public step() {
+  public nextStep() {
     this.sharedService.sharedProgram.debugger.step();
   }
 
-  public addExternalEvent() {
-    window.alert(this.sharedService.sharedExternalEvent);
-    this.sharedService.sharedProgram.addExternalEvent(this.sharedService.sharedExternalEvent);
+  public previousStep(){
+    window.alert('previousStep');
   }
 
-  public check() {
-    this.sharedService.wait = [];
-    this.sharedService.block = [];
-    this.sharedService.request = [];
-    this.sharedService.variables = [];
-    this.sharedService.trace = [];
+  public nextBreakPoint(){
+    window.alert('nextBreakPoint');
+  }
+
+  public previousBreakPoint(){
+    window.alert('previousBreakPoint');
+  }
+
+  public theme(n) {
+    this.sharedService.sharedCodeEditor.setTheme(this.themes[n-1]);
+  }
+
+  public setting() {
+    window.open('https://bpjs.readthedocs.io/en/latest/#');
   }
 }

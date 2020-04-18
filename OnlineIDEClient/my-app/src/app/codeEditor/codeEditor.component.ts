@@ -18,7 +18,7 @@ import 'ace-builds/webpack-resolver'; // for syntax checking to work properly
 export class CodeEditorComponent implements AfterViewInit {
 
 
-  input = 'Add External Event';
+  //input : string;
   output: string;
   debugger: boolean;
   codeEditor: Ace.Editor;
@@ -39,10 +39,9 @@ export class CodeEditorComponent implements AfterViewInit {
   @ViewChild('codeEditor', {static: false}) codeEditorElmRef: ElementRef;
 
   ngAfterViewInit(): void {
-    this.input = this.sharedService.sharedExternalEvent;
+    this.sharedService.sharedOutput.subscribe(output => this.output = output);
     this.debugger = this.sharedService.sharedDebuggerMode;
     this.code = this.sharedService.sharedCode;
-    this.sharedService.sharedOutput.subscribe(output => this.output = output);
     this.editorBeautify = this.sharedService.sharedEditorBeautify;
     this.sharedService.sharedCodeEditor = ace.edit(this.codeEditorElmRef.nativeElement, this.getEditorOptions());
     this.codeEditor = this.sharedService.sharedCodeEditor;

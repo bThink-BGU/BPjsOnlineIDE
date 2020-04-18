@@ -5,18 +5,17 @@
 
   <div class="header-nav" >
     <a *ngIf="!staticDebugger" (click)="runCode()" class="nav-link nav-text">▶ RUN</a>
-    <a *ngIf="!staticDebugger" (click)="beautifyContent()" class="nav-link nav-text">⦅ ⦆ BEAUTIFY</a>
+    <a *ngIf="!staticDebugger" (click)="beautifyContent()" class="nav-link nav-text">⦃ ⦄ BEAUTIFY</a>
     <a *ngIf="!staticDebugger" (click)="clearContent()" class="nav-link nav-text">✖ CLEAR</a>
     <a *ngIf="!staticDebugger" (click)="undoContent()" class="nav-link nav-text">↩ UNDO</a>
     <a *ngIf="!staticDebugger" (click)="loadFile()" class="nav-link nav-text">📥 LOAD FILE</a>
     <a *ngIf="!staticDebugger" (click)="downloadFile()" class="nav-link nav-text">📤 DOWNLOAD FILE</a>
     <a *ngIf="!staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🐞 DEBUG</a>
     <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🛑 STOP</a>
-    <a *ngIf="staticDebugger" (click)="step()" class="nav-link nav-text">⏬ NEXT STEP</a>
-    <a *ngIf="staticDebugger" (click)="check()" class="nav-link nav-text">UPDATE EVENTS</a>
-    <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">⏪ PREVIOUS EVENT</a>
-    <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">⏩ NEXT EVENT</a>
-    <a *ngIf="staticDebugger" (click)="addExternalEvent()" class="nav-link nav-text">➰ ADD EXTERNAL EVENT</a>
+    <a *ngIf="staticDebugger" (click)="nextStep()" class="nav-link nav-text">⏬ NEXT STEP</a>
+    <a *ngIf="staticDebugger" (click)="previousStep()" class="nav-link nav-text">⏫ PREVIOUS STEP </a>
+    <a *ngIf="staticDebugger" (click)="nextBreakPoint()" class="nav-link nav-text">⏩ NEXT BREAKPOINT</a>
+    <a *ngIf="staticDebugger" (click)="previousBreakPoint()" class="nav-link nav-text">⏪ PREVIOUS BREAKPOINT</a>
   </div>
 
   <div class="header-actions">
@@ -36,6 +35,15 @@
     </clr-tab>
     <clr-tab>
       <button clrTabLink (click)="theme(3)">Dark Theme</button>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink (click)="theme(4)">Solarized Light Theme</button>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink (click)="theme(5)">Terminal Theme</button>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink (click)="theme(6)">Ambiance Theme</button>
     </clr-tab>
   </clr-tabs>
 </nav>
