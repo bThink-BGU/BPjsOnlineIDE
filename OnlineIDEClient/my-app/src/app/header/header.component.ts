@@ -1,8 +1,7 @@
-import {AfterContentChecked, AfterViewInit, Component} from '@angular/core';
-import {CodeEditorComponent} from '../codeEditor/codeEditor.component';
-import {SideComponent} from '../side/side.component';
-import {Program} from '../../BL/Program';
+import {AfterViewInit, Component, NgModule, ViewChild} from '@angular/core';
 import {SharedService} from '../data.service';
+import {MatDialog} from '@angular/material/dialog';
+import {SaveFileDialogComponent} from "../save-file-dialog/save-file-dialog.component";
 
 @Component({
   selector: 'app-header',
@@ -14,7 +13,8 @@ export class HeaderComponent implements AfterViewInit  {
   debugger: boolean;
   //private program = new Program();
 
-  constructor(private sharedService: SharedService) { }
+  constructor(private sharedService: SharedService, public dialog: MatDialog) { }
+
 
   ngAfterViewInit(): void {
     this.debugger = this.sharedService.sharedDebuggerMode;
@@ -23,7 +23,6 @@ export class HeaderComponent implements AfterViewInit  {
   get staticDebugger() {
     return this.sharedService.sharedDebuggerMode;
   }
-
 
   // buttons
   public runCode() {
@@ -72,10 +71,54 @@ export class HeaderComponent implements AfterViewInit  {
 
   }
 
-  public loadFile() {
+  public loadFile(event) {
+    let selectedFile = event.target.files[0];
+
+    switch(selectedFile.type){
+      case 'text/plain':
+      case 'application/x-javascript':
+        break;
+      default:
+        window.alert('Please choose an appropriate file type');
+        return;
+    }
+
+
+    let reader = new FileReader();
+
+    reader.onload = () => {
+      this.sharedService.sharedCodeEditor.session.setValue(reader.result as string);
+    };
+    reader.onerror = (error) => {
+      window.alert('Error reading file.\nCheck console...');
+      console.error(error);
+    };
+    reader.onloadend = () => {
+      reader = null;
+    };
+
+    reader.readAsText(selectedFile);
   }
 
   public downloadFile() {
+    const dialogRef = this.dialog.open(SaveFileDialogComponent, {
+      // width: '250px',
+      // height: '300px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(typeof result === typeof undefined)
+        return;
+      let element = document.createElement('a');
+      element.style.display = 'none';
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' +
+        encodeURIComponent(this.sharedService.sharedCodeEditor.session.getValue()));
+      element.setAttribute('download', result+'.txt');
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    });
   }
 
   public step() {

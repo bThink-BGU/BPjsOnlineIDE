@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {webSocket} from 'rxjs/webSocket';
 import {DebugStep} from './DebugStep';
-import {debug} from 'util';
 
 @Injectable()
 export class WebSocketService {

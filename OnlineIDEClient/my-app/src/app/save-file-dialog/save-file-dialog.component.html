@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Name Your File</h2>
+<div mat-dialog-content>
+  <mat-form-field hideRequiredMarker>
+    <mat-label>File name:</mat-label>
+    <input matInput [formControl]="text" [(ngModel)]="fileName" [errorStateMatcher]="matcher" required>
+    <mat-error *ngIf="text.invalid">You must enter a value</mat-error>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-button (click)="onSaveClick()">Save</button>
+</div>

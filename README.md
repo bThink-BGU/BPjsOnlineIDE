@@ -10,9 +10,8 @@ BPjs is an open source project, maintained by a research group in Ben-Gurion Uni
 #### Client:
 * Node.js 12.16.2 (includes npm version 6.14.4) or above.<br/>
 Download from https://nodejs.org/en/.<br/>
-* Preferably a WebStorm IDE from Jetbrains, which comes with an Angular CLI built in it.<br/>
-It is possible to run the project from the command line and edit it with any text editor (if you choose to go down this route, make sure you have Angular installed using the 'npm install -g @angular/cli' command in the terminal).<br/> 
-More on that in the "Running The Project" section.<br/>
+* Preferably a WebStorm IDE from Jetbrains.<br/>
+It is possible to run the project from the command line and edit it with any text editor (more on that in the "Running The Project" section.)<br/>
 Download WebStrom from https://www.jetbrains.com/webstorm/download/#section=windows.<br/>
 #### Server:
 * Java jdk-11.0.5 and above.<br/>

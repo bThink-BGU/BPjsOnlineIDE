@@ -8,7 +8,8 @@
     <a *ngIf="!staticDebugger" (click)="beautifyContent()" class="nav-link nav-text">⦅ ⦆ BEAUTIFY</a>
     <a *ngIf="!staticDebugger" (click)="clearContent()" class="nav-link nav-text">✖ CLEAR</a>
     <a *ngIf="!staticDebugger" (click)="undoContent()" class="nav-link nav-text">↩ UNDO</a>
-    <a *ngIf="!staticDebugger" (click)="loadFile()" class="nav-link nav-text">📥 LOAD FILE</a>
+    <input style="display: none" type="file" accept=".txt, .js, .ts" (change)="loadFile($event)" #fileInput>
+    <a *ngIf="!staticDebugger" (click)="fileInput.click()" class="nav-link nav-text">📥 LOAD FILE</a>
     <a *ngIf="!staticDebugger" (click)="downloadFile()" class="nav-link nav-text">📤 DOWNLOAD FILE</a>
     <a *ngIf="!staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🐞 DEBUG</a>
     <a *ngIf="staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🛑 STOP</a>

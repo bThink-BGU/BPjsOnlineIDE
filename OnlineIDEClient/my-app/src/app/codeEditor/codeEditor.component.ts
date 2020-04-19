@@ -80,6 +80,7 @@ export class CodeEditorComponent implements AfterViewInit {
     this.bindCodeVariableAndValue();
     this.enableBreakpoints();
     this.enableMoveBreakpointsOnChange();
+    this.disableSettingsMenu();
   }
 
   private bindCodeVariableAndValue() {
@@ -250,6 +251,22 @@ export class CodeEditorComponent implements AfterViewInit {
     // finally, set the newly created mode dynamically for the current ace session
     this.sharedService.sharedCodeEditor.getSession().setMode(new bpjsMode());
 
+  }
+
+  /* Ace's settings menu feature has things unnecessary for this project, such as setting a mode and disabling
+  * the margin. Keeping it will expose the user to errors...*/
+  private disableSettingsMenu() {
+    this.sharedService.sharedCodeEditor.commands.addCommand({
+      name: "showSettingsMenu",
+      bindKey: {
+        win: "Ctrl-,",
+        mac: "Command-,"
+      },
+      exec: function(editor) {
+        return false;
+      },
+      readOnly: true
+    });
   }
 }
 
