@@ -11,7 +11,14 @@ import {SaveFileDialogComponent} from "../save-file-dialog/save-file-dialog.comp
 export class HeaderComponent implements AfterViewInit  {
 
   debugger: boolean;
-  //private program = new Program();
+  themes = [
+    'ace/theme/twilight',
+    'ace/theme/eclipse',
+    'ace/theme/gob',
+    'ace/theme/solarized_light',
+    'ace/theme/terminal',
+    'ace/theme/ambiance'
+  ];
 
   constructor(private sharedService: SharedService, public dialog: MatDialog) { }
 
@@ -48,27 +55,14 @@ export class HeaderComponent implements AfterViewInit  {
     }
   }
 
-  public theme(n) {
-    if (n === 1) {
-      this.sharedService.sharedCodeEditor.setTheme('ace/theme/twilight');
-    } else if (n === 2) {
-      this.sharedService.sharedCodeEditor.setTheme('ace/theme/eclipse');
-    } else if (n === 3) {
-      this.sharedService.sharedCodeEditor.setTheme('ace/theme/gob');
-    }
-  }
-
-  public setting() {
-    window.open('https://bpjs.readthedocs.io/en/latest/#');
-  }
-
   public debuggerMode() {
     this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
-
     this.sharedService.sharedProgram.init('initStep', this.sharedService.sharedCode);
-
     // while(not on break point's line){ nextStep() }
+  }
 
+  public nextStep() {
+    this.sharedService.sharedProgram.debugger.step();
   }
 
   public loadFile(event) {
@@ -107,34 +101,36 @@ export class HeaderComponent implements AfterViewInit  {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(typeof result === typeof undefined)
+      if (typeof result === typeof undefined)
         return;
       let element = document.createElement('a');
       element.style.display = 'none';
       element.setAttribute('href', 'data:text/plain;charset=utf-8,' +
         encodeURIComponent(this.sharedService.sharedCodeEditor.session.getValue()));
-      element.setAttribute('download', result+'.txt');
+      element.setAttribute('download', result + '.txt');
       element.style.display = 'none';
       document.body.appendChild(element);
       element.click();
       document.body.removeChild(element);
     });
   }
-
-  public step() {
-    this.sharedService.sharedProgram.debugger.step();
+  public previousStep(){
+    window.alert('previousStep');
   }
 
-  public addExternalEvent() {
-    window.alert(this.sharedService.sharedExternalEvent);
-    this.sharedService.sharedProgram.addExternalEvent(this.sharedService.sharedExternalEvent);
+  public nextBreakPoint(){
+    window.alert('nextBreakPoint');
   }
 
-  public check() {
-    this.sharedService.wait = [];
-    this.sharedService.block = [];
-    this.sharedService.request = [];
-    this.sharedService.variables = [];
-    this.sharedService.trace = [];
+  public previousBreakPoint(){
+    window.alert('previousBreakPoint');
+  }
+
+  public theme(n) {
+    this.sharedService.sharedCodeEditor.setTheme(this.themes[n-1]);
+  }
+
+  public setting() {
+    window.open('https://bpjs.readthedocs.io/en/latest/#');
   }
 }

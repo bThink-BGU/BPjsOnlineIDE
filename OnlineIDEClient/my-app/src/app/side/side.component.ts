@@ -1,5 +1,4 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {CodeEditorComponent} from '../codeEditor/codeEditor.component';
 import {SharedService} from '../data.service';
 
 
@@ -11,18 +10,25 @@ import {SharedService} from '../data.service';
 
 export class SideComponent implements AfterViewInit {
 
+  externalE: string;
   debugger: boolean;
 
-  constructor(private sharedService: SharedService) { }
+  constructor(private sharedService: SharedService) {
+    this.externalE = this.sharedService.sharedExternalEvent;
+  }
 
   ngAfterViewInit(): void {
     this.debugger = this.sharedService.sharedDebuggerMode;
   }
-
+  get externalEvent() {
+    return this.sharedService.sharedExternalEvent;
+  }
+  set externalEvent(externalEvent) {
+    this.sharedService.sharedExternalEvent = externalEvent;
+  }
   get staticDebugger() {
     return this.sharedService.sharedDebuggerMode;
   }
-
   get trace (){
     return this.sharedService.trace;
   }
@@ -44,21 +50,19 @@ export class SideComponent implements AfterViewInit {
 
   // buttons
   public addSentence(n) {
-    if (n === 1) {
-      this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),
-        '\nbp.registerBThread ("...",function(){\n' +
-        '            ...\n' +
-        '            })\n');
-    } else if (n === 2) {
-      this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),
-        '\nbp.sync({waitFor:bp.Event("...")});\n');
-    } else if (n === 3) {
-      this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),
-        '\nbp.sync({request:bp.Event("...")});\n');
-    } else if (n === 4) {
-      this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),
-        '\nbp.sync({request:bp.Event("..."),' +
-        ' block:bp.Event("...")});\n');
-    }
+    this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),
+        this.sharedService.sentence[n]);
+  }
+
+  public addExternalEvent() {
+    window.alert(this.sharedService.sharedExternalEvent);
+    this.sharedService.sharedProgram.addExternalEvent(this.sharedService.sharedExternalEvent);
+    this.sharedService.sharedExternalEvent = '';
+  }
+
+  public clickOnTrace(n){
+    window.alert("You Clicked on Event #" + n);
   }
 }
+
+

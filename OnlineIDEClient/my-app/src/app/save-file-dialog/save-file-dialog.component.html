@@ -2,7 +2,7 @@
 <div mat-dialog-content>
   <mat-form-field hideRequiredMarker>
     <mat-label>File name:</mat-label>
-    <input matInput [formControl]="text" [(ngModel)]="fileName" [errorStateMatcher]="matcher" required>
+    <input matInput [formControl]="text" [errorStateMatcher]="matcher" required>
     <mat-error *ngIf="text.invalid">You must enter a value</mat-error>
   </mat-form-field>
 </div>

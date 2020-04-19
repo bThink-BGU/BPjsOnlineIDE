@@ -10,12 +10,14 @@ import {Program} from "../BL/Program";
 export class SharedService {
 
   private output = new BehaviorSubject('');
-  sharedProgram;
-  sharedExternalEvent = 'amir';
   sharedOutput = this.output.asObservable();
+
+  sharedExternalEvent = '';
+  sharedProgram;
   sharedDebuggerMode = false;
   sharedCodeEditor: Ace.Editor;
   sharedEditorBeautify = ace.require('ace/ext/beautify');
+
   sharedCode = '//*****Hello BPjs World*****\n\n' +
     'bp.registerBThread(function(){\n' +
     '  bp.sync({request:bp.Event("hello")});\n' +
@@ -90,6 +92,16 @@ export class SharedService {
     {id: 200, name:'Batman'},
     {id: 5, name:'ofek'},
     {id: 3, name:'Robin'},
+  ];
+
+  sentence = [
+    '\nbp.registerBThread ("...",function(){\n' +
+    '            ...\n' +
+    '            })\n',
+    '\nbp.sync({waitFor:bp.Event("...")});\n',
+    '\nbp.sync({request:bp.Event("...")});\n',
+    '\nbp.sync({request:bp.Event("..."),' +
+    ' block:bp.Event("...")});\n'
   ];
   sentences = [
     'bp.registerBThread',

@@ -18,9 +18,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 export class SaveFileDialogComponent implements OnInit {
 
-  constructor(
-    public dialogRef: MatDialogRef<SaveFileDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public fileName: string) {}
+  constructor(public dialogRef: MatDialogRef<SaveFileDialogComponent>) {}
 
   private text = new FormControl('', [Validators.required]);
   private matcher = new MyErrorStateMatcher();
@@ -34,6 +32,6 @@ export class SaveFileDialogComponent implements OnInit {
 
   onSaveClick() {
     if(this.text.valid)
-      this.dialogRef.close(this.fileName);
+      this.dialogRef.close(this.text.value);
   }
 }

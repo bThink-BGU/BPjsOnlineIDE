@@ -1,42 +1,61 @@
-div.list-container{
-  padding-left: 15px;
-  height: 210px;
+div.list-container-externalevent{
+  height: 120px;
   overflow: auto;
-  border: solid 0.1px #c2ccbf;
   outline: none;
+  padding: 3px;
 }
 
-div.list-container-variables{
-  height: 210px;
+button.addExEvButton{
+  width: 50%;
+  margin:auto;
+  display:block;
+  background-color: #244C8A;
+}
+
+div.list-container{
+  padding-left: 15px;
+  height: 138px;
   overflow: auto;
   border: solid 0.1px #c2ccbf;
   outline: none;
 }
 
 div.list-container-sentences{
-  height: 210px;
+  height: 140px;
   padding-left: 15px;
   overflow: auto;
   outline: none;
-  line-height: 2;
+  line-height: 2.5;
   border-bottom: solid 0.1px #c2ccbf;
-
 }
+
 #sentence tr:hover{
+  background-color: #ddd;
+}
+
+#events tr:hover {
   background-color: #ddd;
 }
 
 
 /*Variables Section*/
 
+div.list-container-variables{
+  height: 138px;
+  overflow: auto;
+  border: solid 0.1px #c2ccbf;
+  outline: none;
+}
+
 #variables {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
+  outline: none;
 }
 
 #variables td, #variables th {
-  border: 0.5px solid #c2ccbf;
+  border: 0.2px solid #c2ccbf;
   text-align: center;
 }
 
@@ -52,7 +71,7 @@ div.list-container-sentences{
   padding-top: 2px;
   padding-bottom: 5px;
   text-align: center;
-  background-color: rgba(13, 40, 115, 0.84);
+  background-color: #244C8A;
   border-bottom: solid 0.1px #c2ccbf;
   color: white;
 }

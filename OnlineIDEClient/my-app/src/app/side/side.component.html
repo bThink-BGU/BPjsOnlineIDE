@@ -1,12 +1,29 @@
-<section *ngIf="!staticDebugger; else debug" class="sidenav-content">
-  <clr-tabs>
+<section class="sidenav-content">
+  <section>
+    <clr-tabs>
+      <clr-tab class="nav-link">
+        <button clrTabLink>External Event</button>
+        <clr-tab-content class="bptab">
+          <!--<form class="clr-form">-->
+            <div class="list-container-externalevent">
+              <textarea placeholder="Enter External Event" style="width: 100%; overflow: auto; height: 60%" [(ngModel)] = 'externalEvent' name="externalEvent"></textarea>
+              <button class="btn btn-primary btn-sm addExEvButton" (click)="addExternalEvent()">ADD</button>
+            </div>
+          <!--</form>-->
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
+  </section>
+
+<section *ngIf="!staticDebugger; else debug">
+   <clr-tabs>
     <clr-tab class="nav-link">
       <button clrTabLink>Add Sentence</button>
       <ng-template [(clrIfActive)]="sentence">
         <clr-tab-content>
           <div class="list-container-sentences"  id="sentence">
-            <tr *ngFor="let sen of sentences; index as i">
-              <td (click)="addSentence(i+1)">{{sen}}</td>
+            <tr *ngFor="let sen of sentences; index as j">
+              <td (click)="addSentence(j)">{{sen}}</td>
             </tr>
           </div>
         </clr-tab-content>
@@ -15,7 +32,7 @@
     </clr-tabs>
 </section>
 
-<ng-template #debug class="sidenav-content">
+<ng-template #debug>
   <clr-tabs>
     <clr-tab class="nav-link">
       <button clrTabLink>Request</button>
@@ -57,15 +74,15 @@
     </clr-tab>
   </clr-tabs>
 
-  <section class="sidenav-content">
+  <!--<section class="sidenav-content">-->
     <clr-tabs>
       <clr-tab class="nav-link">
         <button clrTabLink>Trace</button>
         <ng-template [(clrIfActive)]="Trace">
           <clr-tab-content class="bptab">
-            <div class="list-container">
+            <div class="list-container" id="events">
               <tr *ngFor="let trc of trace; index as i">
-                <td>{{i+1}}: {{trc.name}}</td>
+                <td (click) ="clickOnTrace(i+1)">{{i+1}}: {{trc.name}}</td>
               </tr>
             </div>
           </clr-tab-content>
@@ -92,7 +109,7 @@
         </ng-template>
       </clr-tab>
     </clr-tabs>
-  </section>
-
+  <!--</section>-->
 </ng-template>
 
+</section>
