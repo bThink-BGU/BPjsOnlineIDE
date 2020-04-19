@@ -67,15 +67,15 @@ export class HeaderComponent implements AfterViewInit  {
 
   public loadFile(event) {
     let selectedFile = event.target.files[0];
-
-    switch(selectedFile.type){
-      case 'text/plain':
-      case 'application/x-javascript':
-        break;
-      default:
-        window.alert('Please choose an appropriate file type');
-        return;
-    }
+    // window.alert(selectedFile.type);
+    // switch(selectedFile.type){
+    //   case 'text/plain':
+    //   case 'application/x-javascript':
+    //     break;
+    //   default:
+    //     window.alert('Please choose an appropriate file type');
+    //     return;
+    // }
 
 
     let reader = new FileReader();

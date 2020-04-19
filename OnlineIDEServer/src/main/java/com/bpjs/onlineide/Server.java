@@ -32,7 +32,7 @@ public class Server {
     	this.service = new Service(this.session, execSvc);
     }
     
-    @OnMessage
+    @OnMessage(maxMessageSize = 1024*1024)
     public void onMessage(Session session, String message) throws IOException, DecodeException {
     	Message decodedMessage = EncodeDecode.decode(message);
     	
@@ -50,7 +50,7 @@ public class Server {
 					System.out.println(e.getMessage());
 				}
 				break;
-			case "step":
+			case "step":				
 				step(EncodeDecode.decodeStepMessage(message));
 				break;
 			case "externalEvent":

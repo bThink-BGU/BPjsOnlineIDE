@@ -51,6 +51,8 @@ class Step {
     }
 
     StepMessage toStepMessage() throws IOException {
+//    	System.out.println("before send back:\n" + this.toString());
+    	
         List<EventSet> wait = bpss.getStatements().stream().map(SyncStatement::getWaitFor).collect(Collectors.toList());
         List<EventSet> blocked = bpss.getStatements().stream().map(SyncStatement::getBlock).collect(Collectors.toList());
         List<BEvent> requested = bpss.getStatements().stream().map(SyncStatement::getRequest).flatMap(Collection::stream).collect(Collectors.toList());
@@ -88,4 +90,12 @@ class Step {
         fld.setAccessible(true);
         return fld.get(instance);
     }
+
+	@Override
+	public String toString() {
+		return "Step [bpss=" + bpss + ", execSvc=" + execSvc + ", bprog=" + bprog + ", selectableEvents="
+				+ selectableEvents + ", selectedEvent=" + selectedEvent + "]";
+	}
+    
+    
 }

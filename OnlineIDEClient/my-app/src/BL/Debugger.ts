@@ -1,6 +1,7 @@
 import {stepCL} from '../CL/BpService';
 import {DebugStep} from '../CL/DebugStep';
 import {BreakPoint} from './BreakPoint';
+import {debug} from "util";
 
 export class Debugger {
   public readonly stepTrace: DebugStep[];
@@ -12,6 +13,7 @@ export class Debugger {
   }
 
   step() {
+    window.alert("enter to step");
     const traceLength = this.stepTrace.length;
     const debugStep = traceLength === 0 ? new DebugStep(null,null,null,
       null,null,null,null,null) : this.stepTrace[traceLength - 1];
@@ -25,10 +27,14 @@ export class Debugger {
   postStep(sharedService, response) {
     this.stepTrace.push(new DebugStep(response.bpss, response.bThreadDebugData, response.globalVariables,
       response.reqList, response.selectableEvents, response.waitList, response.blockList, response.selectedEvent));
-    sharedService.sharedOutput += '\n' +
-      'req: ' + response.reqList + '\n\nselectable: ' + response.selectableEvents +
-    '\n\nwait: ' + response.waitList + '\n\nblock: ' + response.blockList +
-    '\n\nselected: ' + response.selectedEvent;
+
+  window.alert(response.bpss);
+   window.alert(response.selectedEvent);
+
+    // sharedService.sharedOutput += '\n' +
+    //   'req: ' + response.reqList + '\n\nselectable: ' + response.selectableEvents +
+    // '\n\nwait: ' + response.waitList + '\n\nblock: ' + response.blockList +
+    // '\n\nselected: ' + response.selectedEvent;
   }
 
 }

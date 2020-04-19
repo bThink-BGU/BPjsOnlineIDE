@@ -17,8 +17,6 @@ export class Program {
   }
 
   subscribeOutputStream(sharedService) {
-    // const responseHandlers = {init: this.debugger.step /*this.runner.run*/, run: this.runner.postRun,
-    //   step: this.debugger.postStep};
     const observer = {
       next: (response) => {
         switch (response.type) {
@@ -36,6 +34,7 @@ export class Program {
             break;
           }
           case 'step': {
+            window.alert("enter to postStep");
             this._debugger.postStep(sharedService, response);
             break;
           }

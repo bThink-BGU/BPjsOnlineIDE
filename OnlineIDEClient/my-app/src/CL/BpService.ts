@@ -1,6 +1,7 @@
 
 import {WebSocketService} from './Connection';
 import {DebugStep} from './DebugStep';
+import {debug} from "util";
 
 const BpService = {
   isTest: false
