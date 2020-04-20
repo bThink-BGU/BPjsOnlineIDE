@@ -30,16 +30,16 @@ export class SideComponent implements AfterViewInit {
     return this.sharedService.sharedDebuggerMode;
   }
   get trace (){
-    return this.sharedService.trace;
+    return this.sharedService.sharedProgram.debugger.eventTrace;
   }
   get request (){
-    return this.sharedService.request;
+    return this.sharedService.sharedProgram.debugger.getLastStep().reqList;
   }
   get block (){
-    return this.sharedService.block;
+    return this.sharedService.sharedProgram.debugger.getLastStep().blockList;
   }
   get wait (){
-    return this.sharedService.wait;
+    return this.sharedService.sharedProgram.debugger.getLastStep().waitList;
   }
   get variables (){
     return this.sharedService.variables;

@@ -32,6 +32,14 @@ export class CodeEditorComponent implements AfterViewInit {
     return this.sharedService.sharedProgram.runner.stdout; //this.sharedService.sharedOutput;
   }
 
+  get OutputDebug() {
+    return this.sharedService.sharedProgram.debugger.stdout; //this.sharedService.sharedOutput;
+  }
+
+  get staticDebugger() {
+    return this.sharedService.sharedDebuggerMode;
+  }
+
   get externalEvent() {
     return this.sharedService.sharedExternalEvent;
   }

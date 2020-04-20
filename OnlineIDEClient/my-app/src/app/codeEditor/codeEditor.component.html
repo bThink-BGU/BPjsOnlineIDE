@@ -8,6 +8,14 @@
   class="label-box border"><span class="mx-4 font-weight-light">Output</span>
 </div>
 
+<div *ngIf="!staticDebugger">
 <textarea
   class="form-control outputStyle" rows="6" disabled="true" aria-label="output-textarea" [(ngModel)]="Output">
   </textarea>
+</div>
+
+<div *ngIf="staticDebugger">
+<textarea
+  class="form-control outputStyle" rows="5" disabled="true" aria-label="output-textarea" [(ngModel)]="OutputDebug">
+  </textarea>
+</div>

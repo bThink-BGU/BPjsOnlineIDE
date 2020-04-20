@@ -45,9 +45,12 @@ class Step {
             return new Step(execSvc, bprog, bprog.setup().start(execSvc), null);
         ArrayList<BEvent> eventOrdered = new ArrayList<>(selectableEvents);
         Collections.shuffle(eventOrdered);
-        BEvent e = eventOrdered.get(0);
-        return new Step(execSvc, bprog, BProgramSyncSnapshotCloner.clone(bpss).triggerEvent(e, execSvc, Collections.emptyList()), e);
-
+        if(eventOrdered.size() > 0) {
+        	 BEvent e = eventOrdered.get(0);
+             return new Step(execSvc, bprog, BProgramSyncSnapshotCloner.clone(bpss).triggerEvent(e, execSvc, Collections.emptyList()), e);
+        }
+        return null;
+       
     }
 
     StepMessage toStepMessage() throws IOException {

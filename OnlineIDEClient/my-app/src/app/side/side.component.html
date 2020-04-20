@@ -40,7 +40,7 @@
         <clr-tab-content>
           <div class="list-container">
             <tr *ngFor="let rqst of request">
-              <td>{{rqst.name}}</td>
+              <td>{{rqst}}</td>
             </tr>
           </div>
         </clr-tab-content>
@@ -53,7 +53,7 @@
         <clr-tab-content>
           <div class="list-container">
             <tr *ngFor="let blck of block">
-              <td>{{blck.name}}</td>
+              <td>{{blck}}</td>
             </tr>
           </div>
         </clr-tab-content>
@@ -66,7 +66,7 @@
         <clr-tab-content>
           <div class="list-container">
             <tr *ngFor="let wt of wait">
-              <td>{{wt.name}}</td>
+              <td>{{wt}}</td>
             </tr>
           </div>
         </clr-tab-content>
@@ -82,7 +82,7 @@
           <clr-tab-content class="bptab">
             <div class="list-container" id="events">
               <tr *ngFor="let trc of trace; index as i">
-                <td (click) ="clickOnTrace(i+1)">{{i+1}}: {{trc.name}}</td>
+                <td (click) ="clickOnTrace(i+1)">{{i+1}}: {{trc}}</td>
               </tr>
             </div>
           </clr-tab-content>

@@ -58,8 +58,15 @@ export class HeaderComponent implements AfterViewInit  {
   public debuggerMode() {
     this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
     this.sharedService.sharedProgram.init('initStep', this.sharedService.sharedCode);
+    this.sharedService.sharedProgram.runner.initRun();
     // while(not on break point's line){ nextStep() }
   }
+
+  public closeDebuggerMode(){
+    this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
+    this.sharedService.sharedProgram.debugger.initDebugger();
+  }
+
 
   public nextStep() {
     this.sharedService.sharedProgram.debugger.step();

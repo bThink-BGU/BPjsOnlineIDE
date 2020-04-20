@@ -40,18 +40,12 @@ public class Service {
 	}
 
 	public StepMessage step(StepMessage step) throws InterruptedException, IOException, ClassNotFoundException {
-		
-		
-		//System.out.println("step.bpss:\n" + step.bpss);
-		
-		
 		Step s = Step.Deserialize(execSvc, bprog, step.bpss);
-		
-		
-		//System.out.println("after Deserialize:\n" +  s.toString());
-		
-		
-		return s.step().toStepMessage();
+		Step tmpStep = s.step();
+		if(tmpStep == null) {
+			return new StepMessage(null, null, null, null, null, null, null, "finish");
+		}
+		return tmpStep.toStepMessage();
 	}
 
 	public RunLogger run() {

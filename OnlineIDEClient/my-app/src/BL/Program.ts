@@ -34,7 +34,6 @@ export class Program {
             break;
           }
           case 'step': {
-            window.alert("enter to postStep");
             this._debugger.postStep(sharedService, response);
             break;
           }
