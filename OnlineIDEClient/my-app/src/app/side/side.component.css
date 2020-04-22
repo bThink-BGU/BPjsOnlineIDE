@@ -9,7 +9,18 @@ button.addExEvButton{
   width: 50%;
   margin:auto;
   display:block;
-  background-color: #244C8A;
+  background-color: #000000;
+  border-color: #000000;
+  color: #EC8C23;
+  font-weight: bold;
+  border-bottom: black;
+}
+
+button.addExEvButton:hover{
+  background-color: #ec8c23;
+  border-color: #ec8c23;
+  color: #000000;
+
 }
 
 div.list-container{
@@ -29,8 +40,13 @@ div.list-container-sentences{
   border-bottom: solid 0.1px #c2ccbf;
 }
 
+#sentence tr{
+  color: black;
+}
 #sentence tr:hover{
-  background-color: #ddd;
+  background-color: #000000;
+  color: #EC8C23;
+  font-weight: bold;
 }
 
 #events tr:hover {
@@ -47,31 +63,64 @@ div.list-container-variables{
   outline: none;
 }
 
-#variables {
+#Lvariables {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
   outline: none;
 }
 
-#variables td, #variables th {
+#Lvariables td, #Lvariables th {
   border: 0.2px solid #c2ccbf;
   text-align: center;
+  color: #000000;
 }
 
-#variables tr:nth-child(even){
+#Lvariables tr:nth-child(even){
   background-color: #f2f2f2;
 }
 
-#variables tr:hover {
-  background-color: #ddd;
+#Lvariables tr:hover {
+  background-color: #f6af41;
 }
 
-#variables th {
-  padding-top: 2px;
-  padding-bottom: 5px;
+#Lvariables th {
+  padding-top: 1px;
+  padding-bottom: 1px;
   text-align: center;
-  background-color: #244C8A;
+  background-color: #000000;
   border-bottom: solid 0.1px #c2ccbf;
-  color: white;
+  color: #EC8C23;
+}
+
+/*Global Variables Section*/
+
+#Gvariables {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  outline: none;
+}
+
+#Gvariables td, #Gvariables th {
+  border: 0.2px solid #c2ccbf;
+  text-align: center;
+  color: #000000;
+}
+
+#Gvariables tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+#Gvariables tr:hover {
+  background-color: #f6af41;
+}
+
+#Gvariables th {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  text-align: center;
+  background-color: #000000;
+  border-bottom: solid 0.1px #c2ccbf;
+  color: #EC8C23;
 }

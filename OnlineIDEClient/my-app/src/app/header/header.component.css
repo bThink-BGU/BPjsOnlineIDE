@@ -5,6 +5,14 @@
 }
 
 .nav-text:hover {
-  background-color: #ddd;
+  background-color: #f6af41;
   color: rgb(0, 0, 0);
+}
+
+.headerColor{
+  background-color: black;
+}
+
+::ng-deep .nav .nav-link.active, ::ng-deep .nav .nav-link:hover {
+  box-shadow: 0 -3px 0 #000000 inset;
 }
