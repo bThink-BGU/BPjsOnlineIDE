@@ -66,7 +66,17 @@ class Step {
 		Value.Left = Current row
 		Value.Right = Map of stack variables, with the following structure: Key = variable name, Value = variable value (as json string)
 		 */
-        Map<String, Pair<Integer, Map<String, String>>> bThreadDebugData = new HashMap<>();
+        Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData = new HashMap<>();
+        
+        
+        int lineNumber = -1; // TODO get this number
+        
+        bpss.getBThreadSnapshots().forEach(s -> {
+        	Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
+        	bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
+        });
+        
+        
 //		bpss.getBThreadSnapshots().forEach(s-> {
 //			// to find the stack variables and the current line, you need to dig in the continuation object
 //			// to see how to work with this object, take a look at https://github.com/bThink-BGU/BPjs/blob/develop/src/main/java/il/ac/bgu/cs/bp/bpjs/model/internal/ContinuationProgramState.java

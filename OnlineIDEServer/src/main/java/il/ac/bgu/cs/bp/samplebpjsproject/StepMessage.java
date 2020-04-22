@@ -8,7 +8,7 @@ import java.util.Map;
 public class StepMessage {
 	public final String type;
 	public final byte[] bpss;
-	public final Map<String, Pair<Integer, Map<String, String>>> bThreadDebugData;
+	public final Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData;
 	public final Map<String,String> globalVariables;
 	public final List<String> reqList;
 	public final List<String> selectableEvents;
@@ -17,7 +17,7 @@ public class StepMessage {
 	public final String selectedEvent;
 	
 	
-	public StepMessage(byte[] bpss, Map<String, Pair<Integer, Map<String, String>>> bThreadDebugData, Map<String, String> globalVariables,
+	public StepMessage(byte[] bpss, Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData, Map<String, String> globalVariables,
 					   List<String> reqList, List<String> selectableEvents, List<String> wait,
 					   List<String> block, String selectedEvent) {
 		this.type = "step";

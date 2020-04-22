@@ -15,7 +15,6 @@ public class Service {
 
 	public String code;
 	private BProgram bprog;
-//	private PrintStream aStream;
 	private final ExecutorService execSvc;
 	
 	private RunLogger runLogger;
@@ -42,7 +41,7 @@ public class Service {
 	public StepMessage step(StepMessage step) throws InterruptedException, IOException, ClassNotFoundException {
 		Step s = Step.Deserialize(execSvc, bprog, step.bpss);
 		Step tmpStep = s.step();
-		if(tmpStep == null) {
+		if(tmpStep == null) { // The program was ended
 			return new StepMessage(null, null, null, null, null, null, null, "finish");
 		}
 		return tmpStep.toStepMessage();
