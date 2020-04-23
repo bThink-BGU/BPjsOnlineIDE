@@ -1,7 +1,6 @@
 import {stepCL} from '../CL/BpService';
 import {DebugStep} from '../CL/DebugStep';
 import {BreakPoint} from './BreakPoint';
-import {debug} from "util";
 
 export class Debugger {
   private _stepTrace: DebugStep[];
@@ -34,6 +33,17 @@ export class Debugger {
       null,null,null,null,null) : this._stepTrace[traceLength - 1];
     stepCL(debugStep);
   }
+
+  stepBack() {
+   this.stepBackToIndex(this._stepTrace.length - 1);
+  }
+
+  stepBackToIndex(stepNumber: number) {
+    // Check the cases: i) length = 0, ii) stepNumber < 0, iii) this._stepTrace.length - stepNumber < 0
+    this._stepTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
+  }
+
+
 
   addBreakPoint(line) {
     this._breakPoints.push(new BreakPoint(line));
