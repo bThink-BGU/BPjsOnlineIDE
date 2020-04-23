@@ -89,25 +89,59 @@
         </ng-template>
       </clr-tab>
 
-      <clr-tab >
+      <clr-tab class="nav-link">
         <button clrTabLink>Variables</button>
         <ng-template [(clrIfActive)]="Variables">
-          <clr-tab-content>
+          <clr-tab-content class="bptab">
             <div class="list-container-variables">
-              <table id="variables">
-                <tr>
-                  <th>Variable</th>
-                  <th>Value</th>
-                </tr>
-                <tr *ngFor="let varb of variables">
-                  <td width="50%">{{varb.name}}</td>
-                  <td width="50%">{{varb.id}}</td>
-                </tr>
-              </table>
+              <clr-tabs>
+              <!--start sab-tabs-->
+                <clr-tab class="nav-link">
+                  <button clrTabLink>Loacals</button>
+                  <ng-template [(clrIfActive)]="LVariables">
+                    <clr-tab-content>
+                        <table id="Lvariables">
+                          <tr>
+                            <th>Variable</th>
+                            <th>Value</th>
+                          </tr>
+                          <tr *ngFor="let varb of variables">
+                            <td width="50%">{{varb.name}}</td>
+                            <td width="50%">{{varb.id}}</td>
+                          </tr>
+                        </table>
+                    </clr-tab-content>
+                  </ng-template>
+                </clr-tab>
+
+                <clr-tab class="nav-link">
+                  <button clrTabLink>Globals</button>
+                  <ng-template [(clrIfActive)]="GVariables">
+                    <clr-tab-content>
+                        <table id="Gvariables">
+                          <tr>
+                            <th>Variable</th>
+                            <th>Value</th>
+                          </tr>
+                          <tr *ngFor="let varb of variables">
+                            <td width="50%">{{varb.name}}</td>
+                            <td width="50%">{{varb.id}}</td>
+                          </tr>
+                        </table>
+                    </clr-tab-content>
+                  </ng-template>
+                </clr-tab>
+                <!--end sab-tabs-->
+              </clr-tabs>
             </div>
           </clr-tab-content>
         </ng-template>
       </clr-tab>
+
+
+
+
+
     </clr-tabs>
   <!--</section>-->
 </ng-template>
