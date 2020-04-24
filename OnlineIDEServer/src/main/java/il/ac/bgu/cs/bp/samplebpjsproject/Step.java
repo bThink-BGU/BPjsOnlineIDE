@@ -43,19 +43,15 @@ class Step {
     Step step() throws InterruptedException {
         if (bpss == null) // Init state
             return new Step(execSvc, bprog, bprog.setup().start(execSvc), null);
+        if(bpss.noBThreadsLeft()) // The program was finished
+        	return null;
         ArrayList<BEvent> eventOrdered = new ArrayList<>(selectableEvents);
         Collections.shuffle(eventOrdered);
-        if(eventOrdered.size() > 0) {
-        	 BEvent e = eventOrdered.get(0);
-             return new Step(execSvc, bprog, BProgramSyncSnapshotCloner.clone(bpss).triggerEvent(e, execSvc, Collections.emptyList()), e);
-        }
-        return null;
-       
+        BEvent e = eventOrdered.get(0);
+        return new Step(execSvc, bprog, BProgramSyncSnapshotCloner.clone(bpss).triggerEvent(e, execSvc, Collections.emptyList()), e);
     }
 
-    StepMessage toStepMessage() throws IOException {
-//    	System.out.println("before send back:\n" + this.toString());
-    	
+    StepMessage toStepMessage() throws IOException {    	
         List<EventSet> wait = bpss.getStatements().stream().map(SyncStatement::getWaitFor).collect(Collectors.toList());
         List<EventSet> blocked = bpss.getStatements().stream().map(SyncStatement::getBlock).collect(Collectors.toList());
         List<BEvent> requested = bpss.getStatements().stream().map(SyncStatement::getRequest).flatMap(Collection::stream).collect(Collectors.toList());
@@ -75,7 +71,7 @@ class Step {
         	Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
         	bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
         });
-        
+                
         
 //		bpss.getBThreadSnapshots().forEach(s-> {
 //			// to find the stack variables and the current line, you need to dig in the continuation object

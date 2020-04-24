@@ -42,7 +42,7 @@ public class Service {
 		Step s = Step.Deserialize(execSvc, bprog, step.bpss);
 		Step tmpStep = s.step();
 		if(tmpStep == null) { // The program was ended
-			return new StepMessage(null, null, null, null, null, null, null, "finish");
+			return new StepMessage(null, null, null, null, null, null, null, null);
 		}
 		return tmpStep.toStepMessage();
 	}

@@ -7,6 +7,7 @@ export class Debugger {
   private _eventTrace: string[];
   private _breakPoints: BreakPoint[];
   private _stdout: string;
+  private _programEnded: boolean;
 
   constructor() {
     this.initDebugger();
@@ -17,6 +18,7 @@ export class Debugger {
     this._eventTrace = [];
     this._breakPoints = []; // breakPoints' list
     this._stdout = '';
+    this._programEnded = false;
   }
 
   get stdout(): string {
@@ -41,23 +43,25 @@ export class Debugger {
   stepBackToIndex(stepNumber: number) {
     // Check the cases: i) length = 0, ii) stepNumber < 0, iii) this._stepTrace.length - stepNumber < 0
     this._stepTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
+    this._eventTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
   }
-
-
 
   addBreakPoint(line) {
     this._breakPoints.push(new BreakPoint(line));
   }
 
   postStep(sharedService, response) {
-    if(response.selectedEvent === 'finish') { // The program was ended
-      this._stdout += '\n' + 'The Program was Ended';
+    if(this.isFinished(response)) { // The program was ended
+      this._stdout += this._programEnded ? '' : '\n' + 'The Program was Ended';
+      this._programEnded = true;
     } else {
       this._stepTrace.push(new DebugStep(response.bpss, response.bThreadDebugData, response.globalVariables,
         response.reqList, response.selectableEvents, response.waitList, response.blockList, response.selectedEvent));
-      if (!(this._stepTrace.length === 1)) {
-        this._eventTrace.push(response.selectedEvent);
-        this._stdout += '\n' + response.selectedEvent;
+      if(response.selectedEvent !== undefined) {
+      this._eventTrace.push(response.selectedEvent);
+      this._stdout += '\n' + response.selectedEvent;
+      } else {
+        this._eventTrace.push('');
       }
     }
   }
@@ -70,5 +74,11 @@ export class Debugger {
         [],[],'');
   }
 
+  private isFinished(response: any) {
+    return response.bpss === undefined && response.bThreadDebugData === undefined &&
+      response.globalVariables === undefined && response.reqList === undefined &&
+      response.selectableEvents === undefined && response.waitList === undefined &&
+      response.blockList === undefined && response.selectedEvent === undefined;
+  }
 }
 
