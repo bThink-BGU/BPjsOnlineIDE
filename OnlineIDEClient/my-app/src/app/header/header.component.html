@@ -13,8 +13,8 @@
     <a *ngIf="!staticDebugger" (click)="downloadFile()" class="nav-link nav-text">📤 DOWNLOAD FILE</a>
     <a *ngIf="!staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🐞 DEBUG</a>
     <a *ngIf="staticDebugger" (click)="closeDebuggerMode()" class="nav-link nav-text">🛑 STOP</a>
-    <a *ngIf="staticDebugger" (click)="nextStep()" class="nav-link nav-text">⏬ NEXT STEP</a>
-    <a *ngIf="staticDebugger" (click)="previousStep()" class="nav-link nav-text">⏫ PREVIOUS STEP </a>
+    <a *ngIf="staticDebugger" (click)="stepNext()" class="nav-link nav-text">⏬ STEP NEXT</a>
+    <a *ngIf="staticDebugger" (click)="stepBack()" class="nav-link nav-text">⏫ STEP BACK</a>
     <a *ngIf="staticDebugger" (click)="nextBreakPoint()" class="nav-link nav-text">⏩ NEXT BREAKPOINT</a>
     <a *ngIf="staticDebugger" (click)="previousBreakPoint()" class="nav-link nav-text">⏪ PREVIOUS BREAKPOINT</a>
   </div>

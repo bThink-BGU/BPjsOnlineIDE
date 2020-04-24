@@ -41,8 +41,11 @@ export class SideComponent implements AfterViewInit {
   get wait (){
     return this.sharedService.sharedProgram.debugger.getLastStep().waitList;
   }
-  get variables (){
+  get Lvariables (){
     return this.sharedService.variables;
+  }
+  get Gvariables (){
+    return this.sharedService.sharedProgram.debugger.getLastStep().globalVariables;
   }
   get sentences (){
     return this.sharedService.sentences;
@@ -55,13 +58,12 @@ export class SideComponent implements AfterViewInit {
   }
 
   public addExternalEvent() {
-    window.alert(this.sharedService.sharedExternalEvent);
     this.sharedService.sharedProgram.addExternalEvent(this.sharedService.sharedExternalEvent);
     this.sharedService.sharedExternalEvent = '';
   }
 
   public clickOnTrace(n){
-    window.alert("You Clicked on Event #" + n);
+    this.sharedService.sharedProgram.debugger.stepBackToIndex(n);
   }
 }
 

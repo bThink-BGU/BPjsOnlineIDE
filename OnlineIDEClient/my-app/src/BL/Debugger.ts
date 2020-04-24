@@ -37,13 +37,20 @@ export class Debugger {
   }
 
   stepBack() {
-   this.stepBackToIndex(this._stepTrace.length - 1);
+    const traceLength = this._stepTrace.length;
+    if(traceLength > 1)
+      this.stepBackToIndex(traceLength - 1);
   }
 
   stepBackToIndex(stepNumber: number) {
     // Check the cases: i) length = 0, ii) stepNumber < 0, iii) this._stepTrace.length - stepNumber < 0
     this._stepTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
-    this._eventTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
+    this._eventTrace.splice(stepNumber, this._eventTrace.length - stepNumber);
+    this._stdout = '';
+    for(let i = 0; i < this._eventTrace.length; i++){
+      if(this._eventTrace[i] !== '')
+        this._stdout += '\n' + this._eventTrace[i];
+    }
   }
 
   addBreakPoint(line) {

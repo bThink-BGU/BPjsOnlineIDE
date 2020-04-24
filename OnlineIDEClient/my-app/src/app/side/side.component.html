@@ -105,7 +105,7 @@
                             <th>Variable</th>
                             <th>Value</th>
                           </tr>
-                          <tr *ngFor="let varb of variables">
+                          <tr *ngFor="let varb of Lvariables">
                             <td width="50%">{{varb.name}}</td>
                             <td width="50%">{{varb.id}}</td>
                           </tr>
@@ -123,9 +123,9 @@
                             <th>Variable</th>
                             <th>Value</th>
                           </tr>
-                          <tr *ngFor="let varb of variables">
-                            <td width="50%">{{varb.name}}</td>
-                            <td width="50%">{{varb.id}}</td>
+                          <tr *ngFor="let varb of Gvariables">
+                            <td width="50%">{{varb(0)}}</td>
+                            <td width="50%">{{varb(1)}}</td>
                           </tr>
                         </table>
                     </clr-tab-content>

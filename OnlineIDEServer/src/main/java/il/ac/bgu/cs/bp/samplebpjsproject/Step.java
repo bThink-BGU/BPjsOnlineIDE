@@ -71,6 +71,12 @@ class Step {
         	Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
         	bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
         });
+        
+      
+        // delete
+        bpss.getBThreadSnapshots().forEach(s -> {
+        	System.out.println(s.getContinuationProgramState().toString());
+        });
                 
         
 //		bpss.getBThreadSnapshots().forEach(s-> {
@@ -81,6 +87,7 @@ class Step {
 //			Map<String, String> variables = new HashMap<>();
 //			bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
 //		});
+        
 
         return new StepMessage(
                 new BProgramSyncSnapshotIO(bprog).serialize(bpss),

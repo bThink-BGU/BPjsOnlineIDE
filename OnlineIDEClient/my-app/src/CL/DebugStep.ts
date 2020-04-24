@@ -5,14 +5,14 @@ export class DebugStep {
   private readonly _type: string;
   private readonly _bpss: any[];
   private readonly _bThreadDebugData: any[];
-  private readonly _globalVariables: any[];
+  private readonly _globalVariables: Map<string, string>;
   private readonly _reqList: string[];
   private readonly _selectableEvents: string[];
   private readonly _waitList: string[];
   private readonly _blockList: string[];
   private readonly _selectedEvent: string;
 
-  constructor(bpss: any[], bThreadDebugData: any[], globalVariables: any[], reqList: string[],
+  constructor(bpss: any[], bThreadDebugData: any[], globalVariables: Map<string, string>, reqList: string[],
               selectableEvents: string[], waitList: string[], blockList: string[], selectedEvent: string) {
     this._type = 'step';
     this._bpss = bpss;

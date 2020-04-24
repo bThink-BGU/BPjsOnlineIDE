@@ -68,7 +68,7 @@ export class HeaderComponent implements AfterViewInit  {
   }
 
 
-  public nextStep() {
+  public stepNext() {
     this.sharedService.sharedProgram.debugger.step();
   }
 
@@ -121,8 +121,8 @@ export class HeaderComponent implements AfterViewInit  {
       document.body.removeChild(element);
     });
   }
-  public previousStep(){
-    window.alert('previousStep');
+  public stepBack(){
+    this.sharedService.sharedProgram.debugger.stepBack();
   }
 
   public nextBreakPoint(){
