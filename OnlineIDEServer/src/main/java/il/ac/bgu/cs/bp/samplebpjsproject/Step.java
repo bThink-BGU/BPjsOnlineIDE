@@ -62,22 +62,22 @@ class Step {
 		Value.Left = Current row
 		Value.Right = Map of stack variables, with the following structure: Key = variable name, Value = variable value (as json string)
 		 */
-        Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData = new HashMap<>();
+       
         
+        Map<Object, Object> variables = new HashMap<Object, Object>();
         
-        int lineNumber = -1; // TODO get this number
+        bpss.getBThreadSnapshots().forEach(s -> variables.putAll(s.getContinuationProgramState().getVisibleVariables()));
         
-        bpss.getBThreadSnapshots().forEach(s -> {
-        	Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
-        	bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
-        });
+//        Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData = new HashMap<>();
+//        
+//        
+//        int lineNumber = -1; // TODO get this number
         
-      
-        // delete
-        bpss.getBThreadSnapshots().forEach(s -> {
-        	System.out.println(s.getContinuationProgramState().toString());
-        });
-                
+//        bpss.getBThreadSnapshots().forEach(s -> {
+//        	Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
+//        	bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
+//        });
+                        
         
 //		bpss.getBThreadSnapshots().forEach(s-> {
 //			// to find the stack variables and the current line, you need to dig in the continuation object
@@ -91,8 +91,7 @@ class Step {
 
         return new StepMessage(
                 new BProgramSyncSnapshotIO(bprog).serialize(bpss),
-                bThreadDebugData,
-                null,
+                variables,
                 requested.stream().map(BEvent::toString).collect(Collectors.toList()),
                 selectableEvents.stream().map(BEvent::toString).collect(Collectors.toList()),
                 wait.stream().map(Object::toString).collect(Collectors.toList()),

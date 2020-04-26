@@ -16,8 +16,7 @@ export class WebSocketService {
   }
 
   public static sendDataStep(type: string, debugStep: DebugStep) {
-      WebSocketService.connection.next({type: type, bpss: debugStep.bpss,
-        bThreadDebugData: debugStep.bThreadDebugData, globalVariables: debugStep.globalVariables,
+      WebSocketService.connection.next({type: type, bpss: debugStep.bpss, variables: debugStep.variables,
         reqList: debugStep.reqList, selectableEvents: debugStep.selectableEvents, waitList: debugStep.waitList,
         blockList: debugStep.blockList, selectedEvent: debugStep.selectedEvent});
   }

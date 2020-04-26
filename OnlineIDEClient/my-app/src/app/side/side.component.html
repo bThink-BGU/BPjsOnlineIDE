@@ -105,9 +105,9 @@
                             <th>Variable</th>
                             <th>Value</th>
                           </tr>
-                          <tr *ngFor="let varb of Lvariables">
-                            <td width="50%">{{varb.name}}</td>
-                            <td width="50%">{{varb.id}}</td>
+                          <tr *ngFor="let key of Lvariables.keys()">
+                            <td width="50%">{{key}}</td>
+                            <td width="50%">{{Lvariables.get(key)}}</td>
                           </tr>
                         </table>
                     </clr-tab-content>

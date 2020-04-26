@@ -32,7 +32,7 @@ export class Debugger {
   step() {
     const traceLength = this._stepTrace.length;
     const debugStep = traceLength === 0 ? new DebugStep(null,null,null,
-      null,null,null,null,null) : this._stepTrace[traceLength - 1];
+      null,null,null,null) : this._stepTrace[traceLength - 1];
     stepCL(debugStep);
   }
 
@@ -62,8 +62,8 @@ export class Debugger {
       this._stdout += this._programEnded ? '' : '\n' + 'The Program was Ended';
       this._programEnded = true;
     } else {
-      this._stepTrace.push(new DebugStep(response.bpss, response.bThreadDebugData, response.globalVariables,
-        response.reqList, response.selectableEvents, response.waitList, response.blockList, response.selectedEvent));
+      this._stepTrace.push(new DebugStep(response.bpss, response.variables, response.reqList, response.selectableEvents,
+        response.waitList, response.blockList, response.selectedEvent));
       if(response.selectedEvent !== undefined) {
       this._eventTrace.push(response.selectedEvent);
       this._stdout += '\n' + response.selectedEvent;
@@ -77,8 +77,8 @@ export class Debugger {
     if(!(this._stepTrace.length === 0))
       return this._stepTrace[this._stepTrace.length - 1];
     else
-      return new DebugStep(null,null,null, [],[],
-        [],[],'');
+      return new DebugStep(null,null, [],[], [],[],
+        '');
   }
 
   private isFinished(response: any) {
