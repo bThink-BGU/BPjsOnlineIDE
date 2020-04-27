@@ -62,8 +62,8 @@ export class Debugger {
       this._stdout += this._programEnded ? '' : '\n' + 'The Program was Ended';
       this._programEnded = true;
     } else {
-      this._stepTrace.push(new DebugStep(response.bpss, response.variables, response.reqList, response.selectableEvents,
-        response.waitList, response.blockList, response.selectedEvent));
+      this._stepTrace.push(new DebugStep(response.bpss, this.toVarsMap(response), response.reqList,
+        response.selectableEvents, response.waitList, response.blockList, response.selectedEvent));
       if(response.selectedEvent !== undefined) {
       this._eventTrace.push(response.selectedEvent);
       this._stdout += '\n' + response.selectedEvent;
@@ -86,6 +86,13 @@ export class Debugger {
       response.globalVariables === undefined && response.reqList === undefined &&
       response.selectableEvents === undefined && response.waitList === undefined &&
       response.blockList === undefined && response.selectedEvent === undefined;
+  }
+
+  private toVarsMap(response: any) {
+    let variables = new Map();
+    for (let i = 0; i < response.vars.length; i++)
+      variables.set(response.vars[i], response.vals[i]);
+    return variables
   }
 }
 
