@@ -1,7 +1,6 @@
 import {WebSocketService} from './Connection';
 import {DebugStep} from './DebugStep';
 
-
 export class BpService {
 
   private _connection : WebSocketService;
