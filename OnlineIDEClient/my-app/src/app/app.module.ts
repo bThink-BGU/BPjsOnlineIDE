@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SideComponent } from './side/side.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
-import { CodeEditorComponent } from './codeEditor/codeEditor.component';
+import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { SaveFileDialogComponent } from './save-file-dialog/save-file-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from "@angular/material/form-field";

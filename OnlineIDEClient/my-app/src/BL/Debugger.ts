@@ -1,4 +1,4 @@
-import {stepCL} from '../CL/BpService';
+import {BpService} from '../CL/BpService';
 import {DebugStep} from '../CL/DebugStep';
 import {BreakPoint} from './BreakPoint';
 
@@ -8,9 +8,11 @@ export class Debugger {
   private _breakPoints: BreakPoint[];
   private _stdout: string;
   private _programEnded: boolean;
+  private _bpService: BpService;
 
-  constructor() {
+  constructor(bpService: BpService) {
     this.initDebugger();
+    this._bpService = bpService;
   }
 
   initDebugger() {
@@ -33,7 +35,7 @@ export class Debugger {
     const traceLength = this._stepTrace.length;
     const debugStep = traceLength === 0 ? new DebugStep(null,null,null,
       null,null,null,null) : this._stepTrace[traceLength - 1];
-    stepCL(debugStep);
+    this._bpService.stepCL(debugStep);
   }
 
   stepBack() {

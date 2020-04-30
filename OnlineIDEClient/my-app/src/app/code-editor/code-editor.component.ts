@@ -11,8 +11,8 @@ import 'ace-builds/webpack-resolver'; // for syntax checking to work properly
 
 @Component({
   selector: 'app-code-editor',
-  templateUrl: './codeEditor.component.html',
-  styleUrls: ['./codeEditor.component.css']
+  templateUrl: './code-editor.component.html',
+  styleUrls: ['./code-editor.component.css']
 })
 
 export class CodeEditorComponent implements AfterViewInit {

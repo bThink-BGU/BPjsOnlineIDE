@@ -1,5 +1,5 @@
 import {Component, AfterViewInit} from '@angular/core';
-import {CodeEditorComponent} from './codeEditor/codeEditor.component';
+import {CodeEditorComponent} from './code-editor/code-editor.component';
 import {Program} from '../BL/Program';
 import {SharedService} from './data.service';
 

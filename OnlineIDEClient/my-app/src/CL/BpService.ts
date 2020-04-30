@@ -1,30 +1,34 @@
-
 import {WebSocketService} from './Connection';
 import {DebugStep} from './DebugStep';
-import {debug} from "util";
 
-const BpService = {
-  isTest: false
-};
 
-export function initCL(type, code) {
-  if (!BpService.isTest) {
-    WebSocketService.sendDataMess(type, code);
+export class BpService {
+
+  private _connection : WebSocketService;
+
+  constructor(url: string) {
+    this._connection = new WebSocketService(url);
+  }
+
+  initCL(type, code) {
+    this._connection.sendDataMess(type, code);
+  }
+
+  runCL() {
+    this._connection.sendDataMess('run', '');
+  }
+
+  stepCL(debugStep: DebugStep) {
+    this._connection.sendDataStep('step', debugStep);
+  }
+
+  addExternalEventCL(bEvent) {
+    this._connection.sendDataMess('externalEvent', bEvent);
+  }
+
+  subscribeObserver(observer){
+    this._connection.getObservable().subscribe(observer);
   }
 }
 
-export function runCL() {
-  if (!BpService.isTest) {
-    WebSocketService.sendDataMess('run', '');
-  }
-}
 
-export function stepCL(debugStep: DebugStep) {
-  WebSocketService.sendDataStep('step', debugStep);
-}
-
-export function addExternalEventCL(bEvent) {
-  if (!BpService.isTest) {
-    WebSocketService.sendDataMess('externalEvent', bEvent);
-  }
-}

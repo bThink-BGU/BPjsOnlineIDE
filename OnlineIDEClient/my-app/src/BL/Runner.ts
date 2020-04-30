@@ -1,13 +1,15 @@
-import {runCL} from '../CL/BpService';
+import {BpService} from '../CL/BpService';
 
 export class Runner {
 
   private _isError: boolean;
   private _stdout: string;
   private _stderr: string;
+  private _bpService: BpService;
 
-  constructor() {
+  constructor(bpService: BpService) {
     this.initRun();
+    this._bpService = bpService;
   }
 
   get isError(): boolean {
@@ -24,7 +26,7 @@ export class Runner {
 
   run() {
     this.initRun();
-    runCL();
+    this._bpService.runCL();
   }
 
   private initRun() {

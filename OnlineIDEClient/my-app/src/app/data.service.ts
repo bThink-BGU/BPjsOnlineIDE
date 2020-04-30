@@ -23,6 +23,7 @@ export class SharedService {
     '  bp.sync({request:bp.Event("hello")});\n' +
     '  bp.sync({request:bp.Event("world")});\n' +
     '})';
+
   trace = [
     {name:'Superman'},
     {name:'Batman'},
@@ -110,7 +111,9 @@ export class SharedService {
     'bp.sync - request + block'
   ];
 
-  constructor() {this.sharedProgram  = new Program(); }
+  constructor() {
+    this.sharedProgram  = new Program('ws://localhost:8080/OnlineIDEServer/api');
+  }
 
   nextOutput(output: string) {
     this.output.next(output)

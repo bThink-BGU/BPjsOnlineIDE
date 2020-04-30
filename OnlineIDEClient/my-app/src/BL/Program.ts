@@ -1,18 +1,18 @@
-import {initCL, addExternalEventCL, stepCL} from '../CL/BpService';
-import {WebSocketService} from '../CL/Connection';
 import {Runner} from './Runner';
 import {Debugger} from './Debugger';
-
+import {BpService} from "../CL/BpService";
 
 export class Program {
 
-  private _runner: Runner;
-  private _debugger: Debugger;
+  private readonly _bpService: BpService;
+  private readonly _runner: Runner;
+  private readonly _debugger: Debugger;
   private code: string;
 
-  constructor() {
-    this._runner = new Runner();
-    this._debugger = new Debugger();
+  constructor(url: string) {
+    this._bpService = new BpService(url);
+    this._runner = new Runner(this._bpService);
+    this._debugger = new Debugger(this._bpService);
     this.code = '';
   }
 
@@ -44,18 +44,18 @@ export class Program {
         sharedService.sharedOutput = error;
       }
     };
-    WebSocketService.getObservable().subscribe(observer);
+
+    this._bpService.subscribeObserver(observer);
   }
 
   init(type, code) {
     this.code = code;
-    initCL(type, code);
+    this._bpService.initCL(type, code);
   }
 
   addExternalEvent(bEvent) {
-    addExternalEventCL(bEvent);
+    this._bpService.addExternalEventCL(bEvent);
   }
-
 
   get debugger(): Debugger {
     return this._debugger;
