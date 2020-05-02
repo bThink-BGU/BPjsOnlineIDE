@@ -20,6 +20,7 @@ export class SideComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.debugger = this.sharedService.sharedDebuggerMode;
   }
+
   get externalEvent() {
     return this.sharedService.sharedExternalEvent;
   }

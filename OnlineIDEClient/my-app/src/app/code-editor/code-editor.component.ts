@@ -1,12 +1,12 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import * as ace from 'ace-builds';
 import {Ace, Range} from 'ace-builds';
-import {SharedService} from '../data.service';
 import 'ace-builds/src-noconflict/theme-twilight'; // default theme
 import 'ace-builds/src-noconflict/mode-javascript'; // for the custom bpjs mode what extends the javascript mode
 import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/src-noconflict/ext-language_tools'; // for auto-completion on ctrl-space
 import 'ace-builds/webpack-resolver'; // for syntax checking to work properly
+import {SharedService} from "../data.service";
 
 
 @Component({
@@ -17,23 +17,44 @@ import 'ace-builds/webpack-resolver'; // for syntax checking to work properly
 
 export class CodeEditorComponent implements AfterViewInit {
 
-
   //input : string;
-  output: string;
-  debugger: boolean;
-  codeEditor: Ace.Editor;
-  editorBeautify;
-  code: string;
+  // output: string;
+  // debugger: boolean;
+  // editorBeautify;
+  // code: string;
 
-  constructor(private sharedService: SharedService) { }
+  private codeEditor: Ace.Editor;
   private breakpoints: {};
 
+  constructor(private sharedService: SharedService) { }
+
+  @ViewChild('codeEditor', {static: false}) codeEditorElmRef: ElementRef;
+
+  ngAfterViewInit(): void {
+    // this.sharedService.sharedOutput.subscribe(output => this.output = output); - not needed because not used
+    // this.debugger = this.sharedService.sharedDebuggerMode; - not needed because not used
+    // this.code = this.sharedService.sharedCode; - not needed because not used
+    // this.editorBeautify = this.sharedService.sharedEditorBeautify; - not needed because not used
+    this.codeEditor = ace.edit(this.codeEditorElmRef.nativeElement, this.getEditorOptions());
+    this.sharedService.sharedCodeEditor = this.codeEditor; // make the code editor usable by other components
+    this.breakpoints = {};
+
+    // Basic editor settings, custom mode will be set in the setBpjs() function
+    this.codeEditor.setTheme('ace/theme/twilight');
+    this.codeEditor.setValue(this.sharedService.sharedCode);
+    this.codeEditor.focus();
+    this.codeEditor.selection.clearSelection();
+
+    // Custom editor settings
+    this.prepareEditor();
+  }
+
   get Output() {
-    return this.sharedService.sharedProgram.runner.stdout; //this.sharedService.sharedOutput;
+    return this.sharedService.sharedProgram.runner.stdout;
   }
 
   get OutputDebug() {
-    return this.sharedService.sharedProgram.debugger.stdout; //this.sharedService.sharedOutput;
+    return this.sharedService.sharedProgram.debugger.stdout;
   }
 
   get staticDebugger() {
@@ -44,26 +65,6 @@ export class CodeEditorComponent implements AfterViewInit {
     return this.sharedService.sharedExternalEvent;
   }
 
-  @ViewChild('codeEditor', {static: false}) codeEditorElmRef: ElementRef;
-
-  ngAfterViewInit(): void {
-    this.sharedService.sharedOutput.subscribe(output => this.output = output);
-    this.debugger = this.sharedService.sharedDebuggerMode;
-    this.code = this.sharedService.sharedCode;
-    this.editorBeautify = this.sharedService.sharedEditorBeautify;
-    this.sharedService.sharedCodeEditor = ace.edit(this.codeEditorElmRef.nativeElement, this.getEditorOptions());
-    this.codeEditor = this.sharedService.sharedCodeEditor;
-    this.breakpoints = {};
-
-    // Basic editor settings, custom mode will be set in the setBpjs() function
-    this.sharedService.sharedCodeEditor.setTheme('ace/theme/twilight');
-    this.sharedService.sharedCodeEditor.setValue(this.code);
-    this.sharedService.sharedCodeEditor.focus();
-    this.sharedService.sharedCodeEditor.selection.clearSelection();
-
-    // Custom editor settings
-    this.prepareEditor();
-  }
 
   private getEditorOptions(): Partial<ace.Ace.EditorOptions> & { enableBasicAutocompletion?: boolean; } {
 
@@ -74,7 +75,6 @@ export class CodeEditorComponent implements AfterViewInit {
       minLines: 14,
       maxLines: 14,
       fontSize: 16,
-
     };
     const extraEditorOptions = {
       enableBasicAutocompletion: true
@@ -91,8 +91,8 @@ export class CodeEditorComponent implements AfterViewInit {
   }
 
   private bindCodeVariableAndValue() {
-    this.sharedService.sharedCodeEditor.on('change', () => {
-      this.sharedService.sharedCode = this.sharedService.sharedCodeEditor.getValue();
+    this.codeEditor.on('change', () => {
+      this.sharedService.sharedCode = this.codeEditor.getValue();
     });
   }
 
@@ -256,14 +256,14 @@ export class CodeEditorComponent implements AfterViewInit {
     }).call(bpjsMode.prototype);
 
     // finally, set the newly created mode dynamically for the current ace session
-    this.sharedService.sharedCodeEditor.getSession().setMode(new bpjsMode());
+    this.codeEditor.getSession().setMode(new bpjsMode());
 
   }
 
   /* Ace's settings menu feature has things unnecessary for this project, such as setting a mode and disabling
   * the margin. Keeping it will expose the user to errors...*/
   private disableSettingsMenu() {
-    this.sharedService.sharedCodeEditor.commands.addCommand({
+    this.codeEditor.commands.addCommand({
       name: "showSettingsMenu",
       bindKey: {
         win: "Ctrl-,",
@@ -275,5 +275,7 @@ export class CodeEditorComponent implements AfterViewInit {
       readOnly: true
     });
   }
+
+
 }
 

@@ -8,6 +8,7 @@ import {SaveFileDialogComponent} from "../save-file-dialog/save-file-dialog.comp
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+
 export class HeaderComponent implements AfterViewInit  {
 
   debugger: boolean;
@@ -21,7 +22,6 @@ export class HeaderComponent implements AfterViewInit  {
   ];
 
   constructor(private sharedService: SharedService, public dialog: MatDialog) { }
-
 
   ngAfterViewInit(): void {
     this.debugger = this.sharedService.sharedDebuggerMode;

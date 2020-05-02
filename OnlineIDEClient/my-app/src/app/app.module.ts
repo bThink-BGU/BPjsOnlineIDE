@@ -13,6 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
+import { SharedService } from "./data.service";
 
 
 @NgModule({
@@ -37,7 +38,7 @@ import { MatInputModule } from "@angular/material/input";
   entryComponents: [
     SaveFileDialogComponent
   ],
-  providers: [],
+  providers: [SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
