@@ -3,7 +3,7 @@ import {DebugStep} from './DebugStep';
 
 export class BpService {
 
-  private _connection : WebSocketService;
+  private _connection: WebSocketService;
 
   constructor(url: string) {
     this._connection = new WebSocketService(url);
@@ -25,7 +25,7 @@ export class BpService {
     this._connection.sendDataMess('externalEvent', bEvent);
   }
 
-  subscribeObserver(observer){
+  subscribeObserver(observer) {
     this._connection.getObservable().subscribe(observer);
   }
 }

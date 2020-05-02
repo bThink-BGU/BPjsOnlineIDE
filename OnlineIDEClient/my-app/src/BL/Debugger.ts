@@ -8,7 +8,7 @@ export class Debugger {
   private _breakPoints: BreakPoint[];
   private _stdout: string;
   private _programEnded: boolean;
-  private _bpService: BpService;
+  private readonly _bpService: BpService;
 
   constructor(bpService: BpService) {
     this.initDebugger();
@@ -33,25 +33,29 @@ export class Debugger {
 
   step() {
     const traceLength = this._stepTrace.length;
-    const debugStep = traceLength === 0 ? new DebugStep(null,null,null,
-      null,null,null,null) : this._stepTrace[traceLength - 1];
+    const debugStep = traceLength === 0 ? new DebugStep(null, null, null,
+      null, null, null, null) : this._stepTrace[traceLength - 1];
     this._bpService.stepCL(debugStep);
   }
 
   stepBack() {
     const traceLength = this._stepTrace.length;
-    if(traceLength > 1)
+    if (traceLength > 1) {
       this.stepBackToIndex(traceLength - 1);
+    }
   }
 
   stepBackToIndex(stepNumber: number) {
     // Check the cases: i) length = 0, ii) stepNumber < 0, iii) this._stepTrace.length - stepNumber < 0
+    if (stepNumber <= 0)
+      return;
     this._stepTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
     this._eventTrace.splice(stepNumber, this._eventTrace.length - stepNumber);
     this._stdout = '';
-    for(let i = 0; i < this._eventTrace.length; i++){
-      if(this._eventTrace[i] !== '')
+    for (let i = 0; i < this._eventTrace.length; i++) {
+      if (this._eventTrace[i] !== '') {
         this._stdout += '\n' + this._eventTrace[i];
+      }
     }
   }
 
@@ -60,13 +64,13 @@ export class Debugger {
   }
 
   postStep(sharedService, response) {
-    if(this.isFinished(response)) { // The program was ended
+    if (this.isFinished(response)) { // The program was ended
       this._stdout += this._programEnded ? '' : '\n' + 'The Program was Ended';
       this._programEnded = true;
     } else {
       this._stepTrace.push(new DebugStep(response.bpss, this.toVarsMap(response), response.reqList,
         response.selectableEvents, response.waitList, response.blockList, response.selectedEvent));
-      if(response.selectedEvent !== undefined) {
+      if (response.selectedEvent !== undefined) {
       this._eventTrace.push(response.selectedEvent);
       this._stdout += '\n' + response.selectedEvent;
       } else {
@@ -76,11 +80,13 @@ export class Debugger {
   }
 
   getLastStep() {
-    if(!(this._stepTrace.length === 0))
+    if (!(this._stepTrace.length === 0)) {
       return this._stepTrace[this._stepTrace.length - 1];
-    else
-      return new DebugStep(null,null, [],[], [],[],
+    }
+    else {
+      return new DebugStep(null, null, [], [], [], [],
         '');
+    }
   }
 
   private isFinished(response: any) {
@@ -91,10 +97,36 @@ export class Debugger {
   }
 
   private toVarsMap(response: any) {
-    let variables = new Map();
-    for (let i = 0; i < response.vars.length; i++)
+    const variables = new Map();
+    for (let i = 0; i < response.vars.length; i++) {
       variables.set(response.vars[i], response.vals[i]);
-    return variables
+    }
+    return variables;
   }
+
+  get stepTrace(): DebugStep[] {
+    return this._stepTrace;
+  }
+
+  get breakPoints(): BreakPoint[] {
+    return this._breakPoints;
+  }
+
+  get programEnded(): boolean {
+    return this._programEnded;
+  }
+
+  get bpService(): BpService {
+    return this._bpService;
+  }
+
+  setStepTrace(l: DebugStep[]) {
+    this._stepTrace = l;
+  }
+
+  setEventTrace(l: string[]) {
+    this._eventTrace = l;
+  }
+
 }
 

@@ -4,8 +4,7 @@ export class Runner {
 
   private _isError: boolean;
   private _stdout: string;
-  private _stderr: string;
-  private _bpService: BpService;
+  private readonly _bpService: BpService;
 
   constructor(bpService: BpService) {
     this.initRun();
@@ -20,10 +19,6 @@ export class Runner {
     return this._stdout;
   }
 
-  get stderr(): string {
-    return this._stderr;
-  }
-
   run() {
     this.initRun();
     this._bpService.runCL();
@@ -34,13 +29,25 @@ export class Runner {
     this._stdout = '';
   }
 
-  postRun(sharedService, response) {
+  postRun(response) {
     if (response.type === 'error') {
       this._isError = true;
       this._stdout = response.message; // Clean stdout because an exception was thrown
     } else {
       this._stdout +=  response.message + '\n';
     }
+  }
+
+  get bpService(): BpService {
+    return this._bpService;
+  }
+
+  setIsError(value: boolean) {
+    this._isError = value;
+  }
+
+  setStdout(value: string) {
+    this._stdout = value;
   }
 }
 

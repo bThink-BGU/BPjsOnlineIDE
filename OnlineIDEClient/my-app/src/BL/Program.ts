@@ -1,19 +1,19 @@
 import {Runner} from './Runner';
 import {Debugger} from './Debugger';
-import {BpService} from "../CL/BpService";
+import {BpService} from '../CL/BpService';
 
 export class Program {
 
   private readonly _bpService: BpService;
   private readonly _runner: Runner;
   private readonly _debugger: Debugger;
-  private code: string;
+  private _code: string;
 
   constructor(url: string) {
     this._bpService = new BpService(url);
     this._runner = new Runner(this._bpService);
     this._debugger = new Debugger(this._bpService);
-    this.code = '';
+    this._code = '';
   }
 
   subscribeOutputStream(sharedService) {
@@ -30,7 +30,7 @@ export class Program {
           }
           case 'run':
           case 'error': {
-            this._runner.postRun(sharedService, response);
+            this._runner.postRun(response);
             break;
           }
           case 'step': {
@@ -49,7 +49,7 @@ export class Program {
   }
 
   init(type, code) {
-    this.code = code;
+    this._code = code;
     this._bpService.initCL(type, code);
   }
 
@@ -61,8 +61,16 @@ export class Program {
     return this._debugger;
   }
 
-  get runner(): Runner{
+  get runner(): Runner {
     return this._runner;
+  }
+
+  get code(): string {
+    return this._code;
+  }
+
+  get bpService(): BpService {
+    return this._bpService;
   }
 }
 
