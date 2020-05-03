@@ -34,7 +34,7 @@ export class Program {
             break;
           }
           case 'step': {
-            this._debugger.postStep(sharedService, response);
+            this._debugger.postStep(response);
             break;
           }
         }
@@ -73,5 +73,3 @@ export class Program {
     return this._bpService;
   }
 }
-
-

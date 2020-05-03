@@ -33,8 +33,9 @@ export class Debugger {
 
   step() {
     const traceLength = this._stepTrace.length;
-    const debugStep = traceLength === 0 ? new DebugStep(null, null, null,
-      null, null, null, null) : this._stepTrace[traceLength - 1];
+    const debugStep = traceLength === 0 ? new DebugStep(undefined, undefined, undefined,
+      undefined, undefined, undefined, undefined) :
+      this._stepTrace[traceLength - 1];
     this._bpService.stepCL(debugStep);
   }
 
@@ -63,16 +64,18 @@ export class Debugger {
     this._breakPoints.push(new BreakPoint(line));
   }
 
-  postStep(sharedService, response) {
-    if (this.isFinished(response)) { // The program was ended
-      this._stdout += this._programEnded ? '' : '\n' + 'The Program was Ended';
+  postStep(response) {
+    if (this._programEnded) // The program was ended
+      return;
+    else if (this.isFinished(response)) { // The program now finished
+      this._stdout += '\n' + 'The Program was Ended';
       this._programEnded = true;
     } else {
       this._stepTrace.push(new DebugStep(response.bpss, this.toVarsMap(response), response.reqList,
         response.selectableEvents, response.waitList, response.blockList, response.selectedEvent));
       if (response.selectedEvent !== undefined) {
-      this._eventTrace.push(response.selectedEvent);
-      this._stdout += '\n' + response.selectedEvent;
+        this._eventTrace.push(response.selectedEvent);
+        this._stdout += '\n' + response.selectedEvent;
       } else {
         this._eventTrace.push('');
       }
@@ -97,6 +100,8 @@ export class Debugger {
   }
 
   private toVarsMap(response: any) {
+    if (response.vars === undefined || response.vals === undefined)
+      return undefined;
     const variables = new Map();
     for (let i = 0; i < response.vars.length; i++) {
       variables.set(response.vars[i], response.vals[i]);
@@ -129,4 +134,3 @@ export class Debugger {
   }
 
 }
-

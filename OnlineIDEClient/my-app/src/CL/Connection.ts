@@ -18,9 +18,12 @@ export class WebSocketService {
   }
 
   public sendDataStep(type: string, debugStep: DebugStep) {
-      this._webSocket.next({type: type, bpss: debugStep.bpss, variables: debugStep.variables,
-        reqList: debugStep.reqList, selectableEvents: debugStep.selectableEvents, waitList: debugStep.waitList,
-        blockList: debugStep.blockList, selectedEvent: debugStep.selectedEvent});
+    const vars = debugStep.variables === undefined ? undefined : debugStep.variables.keys();
+    const vals = debugStep.variables === undefined ? undefined : debugStep.variables.values();
+
+    this._webSocket.next({type: type, bpss: debugStep.bpss, vars: vars, vals: vals, reqList: debugStep.reqList,
+      selectableEvents: debugStep.selectableEvents, waitList: debugStep.waitList, blockList: debugStep.blockList,
+      selectedEvent: debugStep.selectedEvent});
   }
 
   public getObservable() {
@@ -30,6 +33,4 @@ export class WebSocketService {
   get webSocket() {
     return this._webSocket;
   }
-
 }
-

@@ -76,8 +76,8 @@ describe('stepCL', () => {
     const observer = {
       next: (response) => {
         expect(response.type).toEqual('step');
-        expect(response.bpss).toBe(null);
-        expect(response.variables).toEqual(null);
+        expect(response.bpss).toBe(undefined);
+        expect(response.variables).toEqual(undefined);
         expect(response.reqList).toEqual(['a', 'b']);
         expect(response.selectableEvents).toEqual(['c', 'd']);
         expect(response.waitList).toEqual(['e', 'f']);
@@ -91,7 +91,7 @@ describe('stepCL', () => {
       }
     };
     bpService.subscribeObserver(observer);
-    bpService.stepCL(new DebugStep(null, null, ['a', 'b'], ['c', 'd'],
+    bpService.stepCL(new DebugStep(undefined, undefined, ['a', 'b'], ['c', 'd'],
       ['e', 'f'], ['g', 'h'], 'e'));
   });
 });
