@@ -87,8 +87,8 @@ export class Debugger {
       return this._stepTrace[this._stepTrace.length - 1];
     }
     else {
-      return new DebugStep(null, null, [], [], [], [],
-        '');
+      return new DebugStep(undefined, new Map<object, object>(), [], [], [],
+        [], '');
     }
   }
 
