@@ -18,8 +18,17 @@ export class WebSocketService {
   }
 
   public sendDataStep(type: string, debugStep: DebugStep) {
-    const vars = debugStep.variables === undefined ? undefined : debugStep.variables.keys();
-    const vals = debugStep.variables === undefined ? undefined : debugStep.variables.values();
+    let vars = [];
+    let vals = [];
+    if (debugStep.variables === undefined) {
+      vars = undefined;
+      vals = undefined;
+    } else {
+      for (const key of debugStep.variables.keys()) {
+        vars.push(key);
+        vals.push(debugStep.variables.get(key));
+      }
+    }
 
     this._webSocket.next({type: type, bpss: debugStep.bpss, vars: vars, vals: vals, reqList: debugStep.reqList,
       selectableEvents: debugStep.selectableEvents, waitList: debugStep.waitList, blockList: debugStep.blockList,
