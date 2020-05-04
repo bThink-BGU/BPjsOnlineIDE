@@ -101,9 +101,9 @@ export class CodeEditorComponent implements AfterViewInit {
   private enableBreakpoints() {
     // not "on(...)" to prevent ace from calling the original default handler
     this.codeEditor.setDefaultHandler('guttermousedown', (e) => {
+      // if (!this.codeEditor.isFocused()) // a preference thing ...
+      //   return;
       if (e.domEvent.target.className.indexOf("ace_gutter-cell") == -1)
-        return;
-      if (!this.codeEditor.isFocused())
         return;
       // @ts-ignore
       if(this.codeEditor.renderer.$gutterLayer.getRegion(e) === 'foldWidgets')

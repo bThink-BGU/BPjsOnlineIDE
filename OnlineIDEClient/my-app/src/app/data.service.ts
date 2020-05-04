@@ -3,26 +3,32 @@ import { BehaviorSubject } from 'rxjs';
 import {Ace} from 'ace-builds';
 import * as ace from 'ace-builds';
 import {Program} from "../BL/Program";
+import {CodeEditorComponent} from "./code-editor/code-editor.component";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SharedService {
 
+  // FOR THE CODE EDITOR COMPONENT
   private output = new BehaviorSubject('');
-  sharedOutput = this.output.asObservable();
+  //sharedOutput = this.output.asObservable();
 
   sharedExternalEvent = '';
   sharedProgram;
   sharedDebuggerMode = false;
   sharedCodeEditor: Ace.Editor;
-  sharedEditorBeautify = ace.require('ace/ext/beautify');
+  sharedEditorBeautify;
 
   sharedCode = '//*****Hello BPjs World*****\n\n' +
     'bp.registerBThread(function(){\n' +
     '  bp.sync({request:bp.Event("hello")});\n' +
     '  bp.sync({request:bp.Event("world")});\n' +
     '})';
+
+  constructor() {
+
+    this.sharedEditorBeautify = ace.require('ace/ext/beautify');
+    this.sharedProgram  = new Program('ws://localhost:8080/OnlineIDEServer/api');
+  }
 
   trace = [
     {name:'Superman'},
@@ -111,9 +117,7 @@ export class SharedService {
     'bp.sync - request + block'
   ];
 
-  constructor() {
-    this.sharedProgram  = new Program('ws://localhost:8080/OnlineIDEServer/api');
-  }
+
 
   nextOutput(output: string) {
     this.output.next(output)

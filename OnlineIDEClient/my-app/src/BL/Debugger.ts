@@ -58,6 +58,7 @@ export class Debugger {
         this._stdout += '\n' + this._eventTrace[i];
       }
     }
+    this._programEnded = false;
   }
 
   addBreakPoint(line) {
