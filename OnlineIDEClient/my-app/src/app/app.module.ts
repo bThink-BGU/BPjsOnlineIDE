@@ -38,7 +38,7 @@ import { SharedService } from "./data.service";
   entryComponents: [
     SaveFileDialogComponent
   ],
-  providers: [SharedService],
+  providers: [SharedService], // Instead of provided in root...
   bootstrap: [AppComponent]
 })
 export class AppModule { }
