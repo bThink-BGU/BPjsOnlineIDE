@@ -67,7 +67,7 @@ export class Debugger {
   postStep(response) {
     if (this._programEnded) // The program was ended
       return;
-    else if (this.isFinished(response)) { // The program now finished
+    if (this.isFinished(response)) { // The program now finished
       this._stdout += '\n' + 'The Program was Ended';
       this._programEnded = true;
     } else {
