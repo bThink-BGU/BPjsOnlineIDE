@@ -11,8 +11,8 @@ public class StepMessage {
 	public final byte[] bpss;
 //	public final Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData;
 //	public final Map<String,String> globalVariables;
-	public final List<Object> vars;
-	public final List<Object> vals;
+	public List<Object> vars;
+	public List<Object> vals;
 	public final List<String> reqList;
 	public final List<String> selectableEvents;
 	public final List<String> waitList;
@@ -31,16 +31,22 @@ public class StepMessage {
 		this.waitList = wait;
 		this.blockList = block;
 		this.selectedEvent = selectedEvent;
-		
-		this.vars = new LinkedList<>();
-		this.vals = new LinkedList<>();
 		handleVarMap(variables);
 	}
 
 	private void handleVarMap(Map<Object, Object> variables) {
-		 for (Map.Entry<Object, Object> entry : variables.entrySet()) { 
-	        this.vars.add(entry.getKey());
-		 	this.vals.add(entry.getValue());
-	    } 		
+		if (variables == null) {
+			this.vars = null;
+			this.vals = null;
+		}
+		else {
+			this.vars = new LinkedList<>();
+			this.vals = new LinkedList<>();
+			for (Map.Entry<Object, Object> entry : variables.entrySet()) { 
+		        this.vars.add(entry.getKey());
+			 	this.vals.add(entry.getValue());
+		    } 
+		}
+				
 	}
 }

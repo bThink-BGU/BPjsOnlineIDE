@@ -58,6 +58,7 @@ export class Debugger {
         this._stdout += '\n' + this._eventTrace[i];
       }
     }
+    this._programEnded = false;
   }
 
   addBreakPoint(line) {
@@ -67,7 +68,7 @@ export class Debugger {
   postStep(response) {
     if (this._programEnded) // The program was ended
       return;
-    else if (this.isFinished(response)) { // The program now finished
+    if (this.isFinished(response)) { // The program now finished
       this._stdout += '\n' + 'The Program was Ended';
       this._programEnded = true;
     } else {
@@ -87,8 +88,8 @@ export class Debugger {
       return this._stepTrace[this._stepTrace.length - 1];
     }
     else {
-      return new DebugStep(null, null, [], [], [], [],
-        '');
+      return new DebugStep(undefined, new Map<object, object>(), [], [], [],
+        [], '');
     }
   }
 
