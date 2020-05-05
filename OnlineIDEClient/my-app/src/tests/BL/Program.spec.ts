@@ -7,6 +7,7 @@ describe('init', () => {
     program = new Program('wss://echo.websocket.org/');
   });
 
+  // 2.1
   it('init', done => {
     const observer = {
       next: () => {

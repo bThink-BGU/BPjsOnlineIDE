@@ -8,6 +8,7 @@ describe('initCL', () => {
     bpService = new BpService('wss://echo.websocket.org/');
   });
 
+  // 1.1
   it('initRun', done => {
     const observer = {
       next: (response) => {
@@ -24,6 +25,7 @@ describe('initCL', () => {
     bpService.initCL('initRun', 'test');
   });
 
+  // 1.2
   it('initStep', done => {
     const observer = {
       next: (response) => {
@@ -48,6 +50,7 @@ describe('runCL', () => {
     bpService = new BpService('wss://echo.websocket.org/');
   });
 
+  // 1.3
   it('run', done => {
     const observer = {
       next: (response) => {
@@ -72,6 +75,7 @@ describe('stepCL', () => {
     bpService = new BpService('wss://echo.websocket.org/');
   });
 
+  // 1.4
   it('step', done => {
     const observer = {
       next: (response) => {
@@ -103,6 +107,7 @@ describe('addExternalEventCL', () => {
     bpService = new BpService('wss://echo.websocket.org/');
   });
 
+  // 1.5
   it('addExternalEvent', done => {
     const observer = {
       next: (response) => {
