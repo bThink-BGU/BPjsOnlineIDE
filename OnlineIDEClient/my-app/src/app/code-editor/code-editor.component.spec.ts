@@ -18,12 +18,18 @@ describe('code editor tests', () => {
 
     fixture = TestBed.createComponent(CodeEditorComponent);
     codeEditorComponent = fixture.componentInstance;
-    fixture.detectChanges();
     sharedService = TestBed.get(SharedService);
+    fixture.detectChanges(); // call the ngAfterInit
   });
 
-  it('should instantiate with the wanted code', () => {
+  afterEach(()=>{
+    fixture.debugElement.nativeElement.remove();
+    fixture.destroy();
+  });
+
+  it('should instantiate the component and code editor with the wanted code', () => {
     expect(fixture.debugElement.query(By.css('div.code-editor')).nativeElement).toBeTruthy(); // shows up on view
+    expect(fixture.debugElement.query(By.css('textarea.outputStyle')).nativeElement).toBeTruthy(); // shows up on view
     expect(codeEditorComponent).toBeDefined(); // defined in code
     expect(sharedService.sharedCodeEditor.getValue()).toBe('//*****Hello BPjs World*****\n\n' +
       'bp.registerBThread(function(){\n' +
@@ -36,15 +42,4 @@ describe('code editor tests', () => {
     sharedService.sharedCodeEditor.setValue('test');
     expect(sharedService.sharedCode).toBe('test');
   });
-
-  // it('should enable breakpoint functionality', () => {
-  //   fixture.detectChanges();
-  //   let gutterCell = fixture.debugElement.query(
-  //     By.css('div.code-editor .ace_gutter')).nativeElement;
-  //   window.alert(gutterCell)
-  // });
-
-
-
-
 });

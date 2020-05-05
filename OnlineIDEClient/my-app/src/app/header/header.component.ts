@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, NgModule, ViewChild} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {SharedService} from '../data.service';
 import {MatDialog} from '@angular/material/dialog';
 import {SaveFileDialogComponent} from "../save-file-dialog/save-file-dialog.component";
