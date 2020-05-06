@@ -17,7 +17,7 @@ import {SharedService} from "../data.service";
 
 export class CodeEditorComponent implements AfterViewInit {
 
-  //input : string;
+  // input : string;
   // output: string;
   // debugger: boolean;
   // editorBeautify;
@@ -28,14 +28,13 @@ export class CodeEditorComponent implements AfterViewInit {
 
   constructor(private sharedService: SharedService) { }
 
-  @ViewChild('codeEditor', {static: false}) codeEditorElmRef: ElementRef;
-
   ngAfterViewInit(): void {
     // this.sharedService.sharedOutput.subscribe(output => this.output = output); - not needed because not used
     // this.debugger = this.sharedService.sharedDebuggerMode; - not needed because not used
     // this.code = this.sharedService.sharedCode; - not needed because not used
     // this.editorBeautify = this.sharedService.sharedEditorBeautify; - not needed because not used
-    this.codeEditor = ace.edit(this.codeEditorElmRef.nativeElement, this.getEditorOptions());
+
+    this.codeEditor = ace.edit('editor', this.getEditorOptions());
     this.sharedService.sharedCodeEditor = this.codeEditor; // make the code editor usable by other components
     this.breakpoints = {};
 
@@ -64,7 +63,6 @@ export class CodeEditorComponent implements AfterViewInit {
   get externalEvent() {
     return this.sharedService.sharedExternalEvent;
   }
-
 
   private getEditorOptions(): Partial<ace.Ace.EditorOptions> & { enableBasicAutocompletion?: boolean; } {
 
