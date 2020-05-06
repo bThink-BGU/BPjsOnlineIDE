@@ -7,10 +7,11 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {By} from "@angular/platform-browser";
 import {CodeEditorComponent} from "../code-editor/code-editor.component";
 
-describe('header component tests', () => {
+fdescribe('header component tests', () => {
 
   let headerComponent: HeaderComponent;
   let headerFixture: ComponentFixture<HeaderComponent>;
+  let codeEditorFixture: ComponentFixture<CodeEditorComponent>;
   let sharedService: SharedService;
 
 
@@ -33,8 +34,8 @@ describe('header component tests', () => {
     /* Load the code editor (the header is tightly dependant on the code editor,
      * which is why we decided to test them as a single unit).
      * We load the component locally just in order to fully initialize the shared service for the tests */
-    let tempCodeEditorFixture = TestBed.createComponent(CodeEditorComponent);
-    tempCodeEditorFixture.detectChanges(); // call the ngAfterInit so the editor and the shared service are fully initialized
+    codeEditorFixture = TestBed.createComponent(CodeEditorComponent);
+    codeEditorFixture.detectChanges(); // call the ngAfterInit so the editor and the shared service are fully initialized
 
     sharedService = TestBed.get(SharedService);
   });
@@ -68,5 +69,38 @@ describe('header component tests', () => {
     expect(initialCode).not.toBe(codeAfterFirstPress);
     expect(codeAfterFirstPress).toBe(codeAfterSecondPress);
   });
+
+  it('should clear content', ()=>{
+    let buttons = headerFixture.debugElement.queryAll(By.css('a.nav-link'));
+    let clearButton;
+    for(let button of buttons){
+      if(button.nativeElement.innerText === '✖ CLEAR')
+        clearButton = button;
+    }
+    if(!clearButton)
+      fail();
+
+    clearButton.nativeElement.click();
+    let codeAfterFirstPress = sharedService.sharedCodeEditor.session.getValue();
+    expect(codeAfterFirstPress).toBe('');
+  });
+
+  it('should undo content', ()=>{
+    let buttons = headerFixture.debugElement.queryAll(By.css('a.nav-link'));
+    let undoButton;
+    for(let button of buttons){
+      if(button.nativeElement.innerText === '↩ UNDO')
+        undoButton = button;
+    }
+    if(!undoButton)
+      fail();
+
+    sharedService.sharedCodeEditor.setValue('');
+    sharedService.sharedCodeEditor.insert('This should not be here after click...');
+    undoButton.nativeElement.click();
+    expect(sharedService.sharedCodeEditor.session.getValue()).toBe('');
+  });
+
+
 
 });
