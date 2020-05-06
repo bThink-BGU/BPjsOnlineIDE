@@ -42,4 +42,5 @@ describe('code editor tests', () => {
     sharedService.sharedCodeEditor.setValue('test');
     expect(sharedService.sharedCode).toBe('test');
   });
+
 });
