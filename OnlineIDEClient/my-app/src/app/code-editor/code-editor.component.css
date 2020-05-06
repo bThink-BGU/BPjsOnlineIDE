@@ -1,4 +1,5 @@
-div.code-editor {
+
+#editor {
   margin-left: auto;
   width: 100%;
   padding: 5px;
@@ -12,10 +13,6 @@ div.code-editor {
   background-color: rgba(10, 11, 10, 0.97) !important;
   width: 100%;
   margin-left: auto;
-}
-
-.output {
-  border-bottom-left-radius: .5rem!important;
 }
 
 .outputStyle{
