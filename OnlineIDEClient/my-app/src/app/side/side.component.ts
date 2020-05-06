@@ -45,9 +45,9 @@ export class SideComponent implements AfterViewInit {
   get Lvariables (){
     return this.sharedService.sharedProgram.debugger.getLastStep().variables;
   }
-  get Gvariables (){
-    return this.sharedService.sharedProgram.debugger.getLastStep().globalVariables;
-  }
+  // get Gvariables (){
+  //   return this.sharedService.sharedProgram.debugger.getLastStep().globalVariables;
+  // }
   get sentences (){
     return this.sharedService.sentences;
   }

@@ -7,7 +7,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {By} from "@angular/platform-browser";
 import {CodeEditorComponent} from "../code-editor/code-editor.component";
 
-fdescribe('header component tests', () => {
+describe('header component tests', () => {
 
   let headerComponent: HeaderComponent;
   let headerFixture: ComponentFixture<HeaderComponent>;
