@@ -21,6 +21,7 @@
             "aot": false,
             "assets": [
               "src/favicon.ico",
+              "src/assets/bpjs_logo.ico",
               "src/assets"
             ],
             "styles": [

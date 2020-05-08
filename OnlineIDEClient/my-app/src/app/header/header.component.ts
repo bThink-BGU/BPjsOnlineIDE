@@ -58,18 +58,15 @@ export class HeaderComponent implements AfterViewInit  {
   public debuggerMode() {
     this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
     this.sharedService.sharedProgram.init('initStep', this.sharedService.sharedCode);
-    this.sharedService.sharedProgram.runner.initRun();
-    // while(not on break point's line){ nextStep() }
+    // this.sharedService.sharedProgram.runner.initRun();
+    this.sharedService.sharedProgram.runner.setIsError(false);
+    this.sharedService.sharedProgram.runner.setStdout('');
+
   }
 
   public closeDebuggerMode(){
     this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
     this.sharedService.sharedProgram.debugger.initDebugger();
-  }
-
-
-  public stepNext() {
-    this.sharedService.sharedProgram.debugger.step();
   }
 
   public loadFile(event) {
@@ -110,6 +107,11 @@ export class HeaderComponent implements AfterViewInit  {
       document.body.removeChild(element);
     });
   }
+
+  public stepNext() {
+    this.sharedService.sharedProgram.debugger.step();
+  }
+
   public stepBack(){
     this.sharedService.sharedProgram.debugger.stepBack();
   }

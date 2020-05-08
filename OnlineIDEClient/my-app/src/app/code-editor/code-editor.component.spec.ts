@@ -1,5 +1,5 @@
 import {SharedService} from "../data.service";
-import {TestBed, ComponentFixture} from "@angular/core/testing";
+import {TestBed, ComponentFixture, async, fakeAsync, tick} from "@angular/core/testing";
 import {CodeEditorComponent} from "./code-editor.component";
 import {FormsModule} from "@angular/forms";
 import {By} from "@angular/platform-browser";
@@ -19,7 +19,8 @@ describe('code editor tests', () => {
     fixture = TestBed.createComponent(CodeEditorComponent);
     codeEditorComponent = fixture.componentInstance;
     sharedService = TestBed.get(SharedService);
-    fixture.detectChanges(); // call the ngAfterInit
+    codeEditorComponent.ngAfterViewInit();
+    fixture.detectChanges();
   });
 
   afterEach(()=>{
@@ -28,7 +29,7 @@ describe('code editor tests', () => {
   });
 
   it('should instantiate the component and code editor with the wanted code', () => {
-    expect(fixture.debugElement.query(By.css('div.code-editor')).nativeElement).toBeTruthy(); // shows up on view
+    expect(fixture.debugElement.query(By.css('#editor')).nativeElement).toBeTruthy(); // shows up on view
     expect(fixture.debugElement.query(By.css('textarea.outputStyle')).nativeElement).toBeTruthy(); // shows up on view
     expect(codeEditorComponent).toBeDefined(); // defined in code
     expect(sharedService.sharedCodeEditor.getValue()).toBe('//*****Hello BPjs World*****\n\n' +
