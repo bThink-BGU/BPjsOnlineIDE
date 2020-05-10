@@ -174,7 +174,7 @@ describe('header component - unit tests', () => {
 // THESE TESTS TEST THE INTEGRATION BETWEEN THE HEADER AND THE CODE EDITOR AND SIDE COMPONENTS
 /**********************************************************************************************************************/
 
-fdescribe('header component - integration tests', () => {
+describe('header component - integration tests', () => {
 
   let headerFixture: ComponentFixture<HeaderComponent>;
   let headerComponent: HeaderComponent;

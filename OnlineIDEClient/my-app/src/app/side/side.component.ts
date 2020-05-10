@@ -53,6 +53,13 @@ export class SideComponent implements AfterViewInit {
   }
 
   // buttons
+  sentence: any
+  Request: any;
+  Block: any;
+  Wait: any;
+  Trace: any;
+  Variables: any;
+
   public addSentence(n) {
     this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),
         this.sharedService.sentence[n]);

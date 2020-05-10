@@ -25,7 +25,7 @@ button.addExEvButton:hover{
 
 div.list-container{
   padding-left: 15px;
-  height: 138px;
+  height: 105px;
   overflow: auto;
   border: solid 0.1px #c2ccbf;
   outline: none;
@@ -57,7 +57,7 @@ div.list-container-sentences{
 /*Variables Section*/
 
 div.list-container-variables{
-  height: 138px;
+  height: 115px;
   overflow: auto;
   border: solid 0.1px #c2ccbf;
   outline: none;
@@ -93,34 +93,34 @@ div.list-container-variables{
   color: #EC8C23;
 }
 
-/*Global Variables Section*/
+/*!*Global Variables Section*!*/
 
-#Gvariables {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-  outline: none;
-}
+/*#Gvariables {*/
+/*  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+/*  border-collapse: collapse;*/
+/*  width: 100%;*/
+/*  outline: none;*/
+/*}*/
 
-#Gvariables td, #Gvariables th {
-  border: 0.2px solid #c2ccbf;
-  text-align: center;
-  color: #000000;
-}
+/*#Gvariables td, #Gvariables th {*/
+/*  border: 0.2px solid #c2ccbf;*/
+/*  text-align: center;*/
+/*  color: #000000;*/
+/*}*/
 
-#Gvariables tr:nth-child(even){
-  background-color: #f2f2f2;
-}
+/*#Gvariables tr:nth-child(even){*/
+/*  background-color: #f2f2f2;*/
+/*}*/
 
-#Gvariables tr:hover {
-  background-color: #f6af41;
-}
+/*#Gvariables tr:hover {*/
+/*  background-color: #f6af41;*/
+/*}*/
 
-#Gvariables th {
-  padding-top: 1px;
-  padding-bottom: 1px;
-  text-align: center;
-  background-color: #000000;
-  border-bottom: solid 0.1px #c2ccbf;
-  color: #EC8C23;
-}
+/*#Gvariables th {*/
+/*  padding-top: 1px;*/
+/*  padding-bottom: 1px;*/
+/*  text-align: center;*/
+/*  background-color: #000000;*/
+/*  border-bottom: solid 0.1px #c2ccbf;*/
+/*  color: #EC8C23;*/
+/*}*/
