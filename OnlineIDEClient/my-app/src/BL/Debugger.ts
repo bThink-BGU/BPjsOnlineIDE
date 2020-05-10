@@ -55,7 +55,7 @@ export class Debugger {
     this._stdout = '';
     for (let i = 0; i < this._eventTrace.length; i++) {
       if (this._eventTrace[i] !== '') {
-        this._stdout += '\n' + +'>\t'+this._eventTrace[i];
+        this._stdout += '\n' + this._eventTrace[i];
       }
     }
     this._programEnded = false;
@@ -69,14 +69,14 @@ export class Debugger {
     if (this._programEnded) // The program ended
       return;
     if (this.isFinished(response)) { // The program finished
-      this._stdout += '\n' + '>\tThe Program ended';
+      this._stdout += '\n' + 'The Program ended';
       this._programEnded = true;
     } else {
       this._stepTrace.push(new DebugStep(response.bpss, this.toVarsMap(response), response.reqList,
         response.selectableEvents, response.waitList, response.blockList, response.selectedEvent));
       if (response.selectedEvent !== undefined) {
         this._eventTrace.push(response.selectedEvent);
-        this._stdout += '\n' + '>\t'+response.selectedEvent;
+        this._stdout += '\n' + response.selectedEvent;
       } else {
         this._eventTrace.push('');
       }
