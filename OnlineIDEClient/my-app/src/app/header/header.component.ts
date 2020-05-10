@@ -11,8 +11,8 @@ import {SaveFileDialogComponent} from "../save-file-dialog/save-file-dialog.comp
 
 export class HeaderComponent implements AfterViewInit  {
 
-  debugger: boolean;
-  themes = [
+  private _debugger: boolean;
+  private _themes = [
     'ace/theme/twilight',
     'ace/theme/eclipse',
     'ace/theme/gob',
@@ -21,63 +21,87 @@ export class HeaderComponent implements AfterViewInit  {
     'ace/theme/ambiance'
   ];
 
-  constructor(private sharedService: SharedService, public dialog: MatDialog) { }
+  get debugger(): boolean {
+    return this._debugger;
+  }
 
-  ngAfterViewInit(): void {
-    this.debugger = this.sharedService.sharedDebuggerMode;
+  get themes(): string[] {
+    return this._themes;
+  }
+
+  get sharedService(): SharedService {
+    return this._sharedService;
+  }
+
+  get dialog(): MatDialog {
+    return this._dialog;
   }
 
   get staticDebugger() {
-    return this.sharedService.sharedDebuggerMode;
+    return this._sharedService.sharedDebuggerMode;
+  }
+
+  constructor(private _sharedService: SharedService, public _dialog: MatDialog) { }
+
+  ngAfterViewInit(): void {
+    this._debugger = this._sharedService.sharedDebuggerMode;
   }
 
   // buttons
   public runCode() {
-    this.sharedService.sharedProgram.init('initRun', this.sharedService.sharedCode);
+    this._sharedService.sharedProgram.init('initRun', this._sharedService.sharedCode);
   }
 
   public beautifyContent() {
-    if (this.sharedService.sharedCodeEditor && this.sharedService.sharedEditorBeautify) {
-      const session = this.sharedService.sharedCodeEditor.getSession();
-      this.sharedService.sharedEditorBeautify.beautify(session);
+    if (this._sharedService.sharedCodeEditor && this._sharedService.sharedEditorBeautify) {
+      const session = this._sharedService.sharedCodeEditor.getSession();
+      this._sharedService.sharedEditorBeautify.beautify(session);
     }
   }
 
   public undoContent() {
-    if (this.sharedService.sharedCodeEditor) {
-      this.sharedService.sharedCodeEditor.undo();
+    if (this._sharedService.sharedCodeEditor) {
+      this._sharedService.sharedCodeEditor.undo();
     }
   }
 
   public clearContent() {
-    if (this.sharedService.sharedCodeEditor) {
-      this.sharedService.sharedCodeEditor.getSession().setValue('');
+    if (this._sharedService.sharedCodeEditor) {
+      this._sharedService.sharedCodeEditor.getSession().setValue('');
     }
   }
 
   public debuggerMode() {
-    this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
-    this.sharedService.sharedProgram.init('initStep', this.sharedService.sharedCode);
-    this.sharedService.sharedProgram.runner.initRun();
-    // while(not on break point's line){ nextStep() }
+    this._sharedService.nextDebugger(!this._sharedService.sharedDebuggerMode);
+    this._sharedService.sharedProgram.init('initStep', this._sharedService.sharedCode);
+    this._sharedService.sharedProgram.runner.setIsError(false);
+    this._sharedService.sharedProgram.runner.setStdout('');
   }
 
   public closeDebuggerMode(){
-    this.sharedService.nextDebugger(!this.sharedService.sharedDebuggerMode);
-    this.sharedService.sharedProgram.debugger.initDebugger();
-  }
-
-
-  public stepNext() {
-    this.sharedService.sharedProgram.debugger.step();
+    this._sharedService.nextDebugger(!this._sharedService.sharedDebuggerMode);
+    this._sharedService.sharedProgram.debugger.initDebugger();
   }
 
   public loadFile(event) {
+    if (!event || !event.target || !event.target.files || event.target.files.length === 0) {
+      window.alert('Something went wrong.\nPlease try again...');
+      return;
+    }
+
     let selectedFile = event.target.files[0];
+    let lastDot = selectedFile.name.lastIndexOf('.');
+    let extension = selectedFile.name.substring(lastDot + 1);
+
+    if(!['txt', 'js', 'ts'].includes(extension)){
+      window.alert('Please choose an appropriate file type')
+      return;
+    }
+
     let reader = new FileReader();
 
     reader.onload = () => {
-      this.sharedService.sharedCodeEditor.session.setValue(reader.result as string);
+      this._sharedService.sharedCodeEditor.session.setValue(reader.result as string);
     };
     reader.onerror = (error) => {
       window.alert('Error reading file.\nCheck console...');
@@ -91,7 +115,7 @@ export class HeaderComponent implements AfterViewInit  {
   }
 
   public downloadFile() {
-    const dialogRef = this.dialog.open(SaveFileDialogComponent, {
+    const dialogRef = this._dialog.open(SaveFileDialogComponent, {
       // width: '250px',
       // height: '300px',
     });
@@ -102,7 +126,7 @@ export class HeaderComponent implements AfterViewInit  {
       let element = document.createElement('a');
       element.style.display = 'none';
       element.setAttribute('href', 'data:text/plain;charset=utf-8,' +
-        encodeURIComponent(this.sharedService.sharedCodeEditor.session.getValue()));
+        encodeURIComponent(this._sharedService.sharedCodeEditor.session.getValue()));
       element.setAttribute('download', result + '.txt');
       element.style.display = 'none';
       document.body.appendChild(element);
@@ -110,8 +134,13 @@ export class HeaderComponent implements AfterViewInit  {
       document.body.removeChild(element);
     });
   }
+
+  public stepNext() {
+    this._sharedService.sharedProgram.debugger.step();
+  }
+
   public stepBack(){
-    this.sharedService.sharedProgram.debugger.stepBack();
+    this._sharedService.sharedProgram.debugger.stepBack();
   }
 
   public nextBreakPoint(){
@@ -123,7 +152,7 @@ export class HeaderComponent implements AfterViewInit  {
   }
 
   public theme(n) {
-    this.sharedService.sharedCodeEditor.setTheme(this.themes[n-1]);
+    this._sharedService.sharedCodeEditor.setTheme(this._themes[n-1]);
   }
 
   public setting() {

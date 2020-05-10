@@ -1,21 +1,27 @@
-<div class="row mb-4">
-  <div class="col">
-    <div class="code-editor" #codeEditor></div>
-  </div>
-</div>
+<div id="editor"></div>
 
-<div
-  class="label-box border"><span class="mx-4 font-weight-light">Output</span>
+<div class="label-box border">
+  <span class="mx-4 font-weight-light">Output</span>
 </div>
 
 <div *ngIf="!staticDebugger">
 <textarea
-  class="form-control outputStyle" rows="6" disabled="true" aria-label="output-textarea" [(ngModel)]="Output">
+  class="form-control outputStyle"
+  [scrollTop]="output_box_run.scrollHeight"
+  rows="6"
+  disabled
+  aria-label="output-textarea" #output_box_run>
+  {{output}}
   </textarea>
 </div>
 
 <div *ngIf="staticDebugger">
 <textarea
-  class="form-control outputStyle" rows="6" disabled="true" aria-label="output-textarea" [(ngModel)]="OutputDebug">
+  class="form-control outputStyle"
+  [scrollTop]="output_box_debug.scrollHeight"
+  rows="6"
+  disabled
+  aria-label="output-textarea" #output_box_debug>
+  {{outputDebug}}
   </textarea>
 </div>

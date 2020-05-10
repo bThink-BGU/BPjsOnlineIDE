@@ -1,6 +1,6 @@
 <header class="header headerColor">
   <div class="branding">
-    <img src="../../favicon.ico" class="nav-link nav-text" alt="logo">
+    <img src="assets/bpjs_logo.ico" class="nav-link nav-text" alt="logo">
   </div>
 
   <div class="header-nav" >
@@ -9,8 +9,8 @@
     <a *ngIf="!staticDebugger" (click)="clearContent()" class="nav-link nav-text">✖ CLEAR</a>
     <a *ngIf="!staticDebugger" (click)="undoContent()" class="nav-link nav-text">↩ UNDO</a>
     <input style="display: none" type="file" accept=".txt, .js, .ts" (change)="loadFile($event)" #fileInput>
-    <a *ngIf="!staticDebugger" (click)="fileInput.click()" class="nav-link nav-text">📥 LOAD FILE</a>
-    <a *ngIf="!staticDebugger" (click)="downloadFile()" class="nav-link nav-text">📤 DOWNLOAD FILE</a>
+    <a *ngIf="!staticDebugger" (click)="fileInput.click()" class="nav-link nav-text">📤 LOAD FILE</a>
+    <a *ngIf="!staticDebugger" (click)="downloadFile()" class="nav-link nav-text">📥 DOWNLOAD FILE</a>
     <a *ngIf="!staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🐞 DEBUG</a>
     <a *ngIf="staticDebugger" (click)="closeDebuggerMode()" class="nav-link nav-text">🛑 STOP</a>
     <a *ngIf="staticDebugger" (click)="stepNext()" class="nav-link nav-text">⏬ STEP NEXT</a>

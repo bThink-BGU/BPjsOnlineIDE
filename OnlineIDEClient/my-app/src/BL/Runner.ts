@@ -32,9 +32,9 @@ export class Runner {
   postRun(response) {
     if (response.type === 'error') {
       this._isError = true;
-      this._stdout = response.message; // Clean stdout because an exception was thrown
+      this._stdout = '>\t' + response.message; // Clean stdout because an exception was thrown
     } else {
-      this._stdout +=  response.message + '\n';
+      this._stdout += '>\t' + response.message + '\n';
     }
   }
 
