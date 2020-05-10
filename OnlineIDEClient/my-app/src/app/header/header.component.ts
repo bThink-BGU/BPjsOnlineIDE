@@ -94,7 +94,7 @@ export class HeaderComponent implements AfterViewInit  {
     let extension = selectedFile.name.substring(lastDot + 1);
 
     if(!['txt', 'js', 'ts'].includes(extension)){
-      window.alert('Please choose an appropriate file type')
+      window.alert('Please choose an appropriate file type');
       return;
     }
 

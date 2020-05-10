@@ -8,6 +8,7 @@ describe('run', () => {
     runner = new Runner(new BpService('wss://echo.websocket.org/'));
   });
 
+  // 3.1
   it('run', done => {
     const observer = {
       next: () => {
@@ -34,6 +35,7 @@ describe('postRun', () => {
     runner = new Runner(new BpService('wss://echo.websocket.org/'));
   });
 
+  // 3.2
   it('stderrCase', () => {
     runner.postRun({type: 'error', message: 'test'});
 
@@ -41,6 +43,7 @@ describe('postRun', () => {
     expect(runner.stdout).toBe('test');
   });
 
+  // 3.3
   it('stderrCaseAfterSomeEvents', () => {
     runner.setStdout('testOK');
     runner.setIsError(false);
@@ -50,6 +53,7 @@ describe('postRun', () => {
     expect(runner.stdout).toBe('testERROR');
   });
 
+  // 3.4
   it('stdoutCase', () => {
     runner.setStdout('');
     runner.setIsError(false);
@@ -59,6 +63,7 @@ describe('postRun', () => {
     expect(runner.stdout).toBe('testOK\n');
   });
 
+  // 3.5
   it('stdoutCaseAfterSomeEvents', () => {
     runner.setStdout('testOK');
     runner.setIsError(false);
@@ -68,6 +73,7 @@ describe('postRun', () => {
     expect(runner.stdout).toBe('testOKtestOK\n');
   });
 
+  // 3.6
   it('errorAfterSomeEventsWorks', () => {
     let counter = 0;
     do { runner.postRun({type: 'run', message: 'testOK'}); }
@@ -78,6 +84,7 @@ describe('postRun', () => {
     expect(runner.stdout).toBe('testERROR');
   });
 
+  // 3.7
   it('allEventsWorks', () => {
     let counter = 0;
     do { runner.postRun({type: 'run', message: 'testOK'}); }

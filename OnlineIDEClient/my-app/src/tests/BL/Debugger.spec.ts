@@ -10,6 +10,7 @@ describe('step', () => {
     debug = new Debugger(new BpService('wss://echo.websocket.org/'));
   });
 
+  // 4.1
   it('stepTraceIsEmpty', done => {
     const observer = {
       next: (response) => {
@@ -32,6 +33,7 @@ describe('step', () => {
     debug.step();
   });
 
+  // 4.2
   it('stepTraceNotEmpty', done => {
     const observer = {
       next: (response) => {
@@ -42,7 +44,7 @@ describe('step', () => {
         expect(response.selectableEvents).toEqual(['c', 'd']);
         expect(response.waitList).toEqual(['e', 'f']);
         expect(response.blockList).toEqual(['g', 'h']);
-        expect(response.selectedEvent).toBe('e');
+        expect(response.selectedEvent).toBe(  'e');
         done();
       },
       error: () => {
@@ -65,12 +67,14 @@ describe('stepBack', () => {
     debug = new Debugger(new BpService('wss://echo.websocket.org/'));
   });
 
+  // 4.3
   it('cantDoStepBack1', () => {
     debug.stepBack();
     expect(debug.stepTrace.length).toBe(0);
     expect(debug.eventTrace.length).toBe(0);
   });
 
+  // 4.4
   it('cantDoStepBack2', () => {
     debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
       ['c', 'd'], ['e', 'f'], ['g', 'h'], 'e'));
@@ -82,6 +86,7 @@ describe('stepBack', () => {
     expect(debug.eventTrace.length).toBe(1);
   });
 
+  // 4.5
   it('stepBack', () => {
     debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
       ['c', 'd'], ['e', 'f'], ['g', 'h'], 'e'));
@@ -115,10 +120,12 @@ describe('stepBackToIndex', () => {
     debug = new Debugger(new BpService('wss://echo.websocket.org/'));
   });
 
+  // 4.6
   it('negativeStepNumber', () => {
     let counter = 0;
 
-    do { debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
+    do {
+      debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
       ['c', 'd'], ['e', 'f'], ['g', 'h'], 'e'));
       debug.eventTrace.push('e');
     } while (counter++ < 3);
@@ -129,10 +136,12 @@ describe('stepBackToIndex', () => {
     expect(debug.eventTrace.length).toBe(4);
   });
 
+  // 4.7
   it('StepNumberEqualTo0', () => {
     let counter = 0;
 
-    do { debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
+    do {
+      debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
       ['c', 'd'], ['e', 'f'], ['g', 'h'], 'e'));
       debug.eventTrace.push('e');
     } while (counter++ < 3);
@@ -143,13 +152,15 @@ describe('stepBackToIndex', () => {
     expect(debug.eventTrace.length).toBe(4);
   });
 
+  // 4.8
   it('StepNumberBiggerThenLength', () => {
     let counter = 0;
 
     debug.setStepTrace([]);
     debug.setEventTrace([]);
 
-    do { debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
+    do {
+      debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
       ['c', 'd'], ['e', 'f'], ['g', 'h'], 'e'));
       debug.eventTrace.push('e');
     } while (counter++ < 3);
@@ -160,10 +171,12 @@ describe('stepBackToIndex', () => {
     expect(debug.eventTrace.length).toBe(4);
   });
 
+  // 4.9
   it('StepNumberEqualToLength', () => {
     let counter = 0;
 
-    do { debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
+    do {
+      debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
       ['c', 'd'], ['e', 'f'], ['g', 'h'], 'e'));
       debug.eventTrace.push('e');
     } while (counter++ < 3);
@@ -174,23 +187,7 @@ describe('stepBackToIndex', () => {
     expect(debug.eventTrace.length).toBe(4);
   });
 
-  it('cantDoStepBack1', () => {
-    debug.stepBackToIndex(1);
-    expect(debug.stepTrace.length).toBe(0);
-    expect(debug.eventTrace.length).toBe(0);
-  });
-
-  it('cantDoStepBack2', () => {
-    debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
-      ['c', 'd'], ['e', 'f'], ['g', 'h'], 'e'));
-    debug.eventTrace.push('e');
-
-    debug.stepBackToIndex(1);
-
-    expect(debug.stepTrace.length).toBe(1);
-    expect(debug.eventTrace.length).toBe(1);
-  });
-
+  // 4.10
   it('stepBack', () => {
     debug.stepTrace.push(new DebugStep(undefined, undefined, ['a', 'b'],
       ['c', 'd'], ['e', 'f'], ['g', 'h'], 'e'));
@@ -252,6 +249,7 @@ describe('postStep', () => {
     debug = new Debugger(new BpService('wss://echo.websocket.org/'));
   });
 
+  // 4.11
   it('cannotCallAgainToStep', () => {
     const beforeStepTraceLength = debug.stepTrace.length;
     const beforeEventTraceLength = debug.eventTrace.length;
@@ -269,6 +267,7 @@ describe('postStep', () => {
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength);
   });
 
+  // 4.12
   it('callSomeTimesToPostStepWhileCannotDoAnyMore', () => {
     const beforeStepTraceLength = debug.stepTrace.length;
     const beforeEventTraceLength = debug.eventTrace.length;
@@ -288,6 +287,7 @@ describe('postStep', () => {
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength);
   });
 
+  // 4.13
   it('regPostStep', () => {
     const beforeStepTraceLength = debug.stepTrace.length;
     const beforeEventTraceLength = debug.eventTrace.length;
@@ -306,6 +306,7 @@ describe('postStep', () => {
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength + 1);
   });
 
+  // 4.14
   it('someRegPostStep', () => {
     const beforeStepTraceLength = debug.stepTrace.length;
     const beforeEventTraceLength = debug.eventTrace.length;
@@ -326,6 +327,7 @@ describe('postStep', () => {
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength + 4);
   });
 
+  // 4.15
   it('someRegPostStepAndThenFinish', () => {
     const beforeStepTraceLength = debug.stepTrace.length;
     const beforeEventTraceLength = debug.eventTrace.length;
@@ -355,6 +357,7 @@ describe('postStep', () => {
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength + 4);
   });
 
+  // 4.16
   it('tryingSomeEventsAfterProgramWasEnded', () => {
     const beforeStepTraceLength = debug.stepTrace.length;
     const beforeEventTraceLength = debug.eventTrace.length;
@@ -382,6 +385,7 @@ describe('postStep', () => {
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength);
   });
 
+  // 4.17
   it('someRegPostStepAndThenSomeFinish', () => {
     const beforeStepTraceLength = debug.stepTrace.length;
     const beforeEventTraceLength = debug.eventTrace.length;
@@ -412,6 +416,7 @@ describe('postStep', () => {
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength + 4);
   });
 
+  // 4.18
   it('postStepWithoutAnyEvent', () => {
     const beforeStepTraceLength = debug.stepTrace.length;
     const beforeEventTraceLength = debug.eventTrace.length;
@@ -430,6 +435,7 @@ describe('postStep', () => {
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength + 1);
   });
 
+  // 4.19
   it('somePostStepWithoutAnyEvent', () => {
     const beforeStepTraceLength = debug.stepTrace.length;
     const beforeEventTraceLength = debug.eventTrace.length;
@@ -449,6 +455,7 @@ describe('postStep', () => {
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength + 4);
   });
 
+  // 4.20
   it('somePostStepWithoutAnyEventCombineWithSomeRegEvents', () => {
     const beforeStepTraceLength = debug.stepTrace.length;
     const beforeEventTraceLength = debug.eventTrace.length;
