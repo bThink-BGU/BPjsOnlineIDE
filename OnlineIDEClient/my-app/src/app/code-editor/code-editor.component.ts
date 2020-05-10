@@ -21,10 +21,14 @@ export class CodeEditorComponent implements AfterViewInit {
   private _breakpoints: {};
 
   get output() {
+    let textarea = document.getElementById('run_textarea');
+    textarea.scrollTop = textarea.scrollHeight;
     return this.sharedService.sharedProgram.runner.stdout;
   }
 
   get outputDebug() {
+    let textarea = document.getElementById('debug_textarea');
+    textarea.scrollTop = textarea.scrollHeight;
     return this.sharedService.sharedProgram.debugger.stdout;
   }
 

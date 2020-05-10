@@ -6,22 +6,22 @@
 
 <div *ngIf="!staticDebugger">
 <textarea
+  id="run_textarea"
   class="form-control outputStyle"
-  [scrollTop]="output_box_run.scrollHeight"
   rows="6"
   disabled
-  aria-label="output-textarea" #output_box_run>
+  aria-label="output-textarea">
   {{output}}
   </textarea>
 </div>
 
 <div *ngIf="staticDebugger">
 <textarea
+  id="debug_textarea"
   class="form-control outputStyle"
-  [scrollTop]="output_box_debug.scrollHeight"
   rows="6"
   disabled
-  aria-label="output-textarea" #output_box_debug>
+  aria-label="output-textarea">
   {{outputDebug}}
   </textarea>
 </div>
