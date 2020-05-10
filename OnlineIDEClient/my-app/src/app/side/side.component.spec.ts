@@ -7,6 +7,10 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {By} from "@angular/platform-browser";
 import {CodeEditorComponent} from "../code-editor/code-editor.component";
 
+/**********************************************************************************************************************/
+// THESE TESTS TEST THAT THE COMPONENT WAS LOADED AND THAT THE BUTTONS CALL THE RIGHT FUNCTIONS WHEN PRESSED
+/**********************************************************************************************************************/
+
 describe('side component - unit tests', () => {
 
   let sideComponent: SideComponent;
@@ -27,7 +31,8 @@ describe('side component - unit tests', () => {
     // load side
     sideFixture = TestBed.createComponent(SideComponent);
     sideComponent = sideFixture.componentInstance;
-    sideFixture.detectChanges(); // call the ngAfterInit
+    sideComponent.ngAfterViewInit();
+    sideFixture.detectChanges();
 
     sharedService = TestBed.get(SharedService);
   });
@@ -157,6 +162,9 @@ describe('side component - unit tests', () => {
 
 });
 
+/**********************************************************************************************************************/
+// THESE TESTS TEST THE INTEGRATION BETWEEN THE SIDE AND THE CODE EDITOR AND HEADER COMPONENTS
+/**********************************************************************************************************************/
 
 describe('side component - integration tests', () => {
 
@@ -179,13 +187,12 @@ describe('side component - integration tests', () => {
     // load side
     sideFixture = TestBed.createComponent(SideComponent);
     sideComponent = sideFixture.componentInstance;
-    sideFixture.detectChanges(); // call the ngAfterInit
+    sideComponent.ngAfterViewInit();
+    sideFixture.detectChanges();
 
-    /* Load the code editor (the side is tightly dependant on the code editor,
-     * which is why we decided to test them as a single unit).
-     * We load the component locally just in order to fully initialize the shared service for the tests */
     codeEditorFixture = TestBed.createComponent(CodeEditorComponent);
-    codeEditorFixture.detectChanges(); // call the ngAfterInit so the editor and the shared service are fully initialized
+    codeEditorFixture.componentInstance.ngAfterViewInit();
+    codeEditorFixture.detectChanges();
 
     sharedService = TestBed.get(SharedService);
   });

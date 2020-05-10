@@ -48,7 +48,7 @@ export class Program {
     this._bpService.subscribeObserver(observer);
   }
 
-  init(type, code) {
+   init(type, code) {
     this._code = code;
     this._bpService.initCL(type, code);
   }

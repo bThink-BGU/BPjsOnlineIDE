@@ -1,13 +1,17 @@
 import {SharedService} from "../data.service";
-import {TestBed, ComponentFixture} from "@angular/core/testing";
+import {TestBed, ComponentFixture, async} from "@angular/core/testing";
 import {HeaderComponent} from "./header.component";
-import {FormGroup, FormsModule} from "@angular/forms";
+import {FormsModule} from "@angular/forms";
 import {ClarityModule} from "@clr/angular";
 import {MatDialogModule} from "@angular/material/dialog";
 import {By} from "@angular/platform-browser";
 import {CodeEditorComponent} from "../code-editor/code-editor.component";
 
-describe('header unit tests', () => {
+/**********************************************************************************************************************/
+// THESE TESTS TEST THAT THE COMPONENT WAS LOADED AND THAT THE BUTTONS CALL THE RIGHT FUNCTIONS WHEN PRESSED
+/**********************************************************************************************************************/
+
+describe('header component - unit tests', () => {
   let headerComponent: HeaderComponent;
   let headerFixture: ComponentFixture<HeaderComponent>;
   let sharedService: SharedService;
@@ -26,6 +30,7 @@ describe('header unit tests', () => {
     // load header
     headerFixture = TestBed.createComponent(HeaderComponent);
     headerComponent = headerFixture.componentInstance;
+    headerComponent.ngAfterViewInit();
     headerFixture.detectChanges(); // call the ngAfterInit
     sharedService = TestBed.get(SharedService);
   });
@@ -35,12 +40,20 @@ describe('header unit tests', () => {
     headerFixture.destroy();
   });
 
-  // THESE TESTS TEST THAT THE COMPONENT WAS LOADED AND THAT THE BUTTONS CALL THE RIGHT FUNCTIONS WHEN PRESSED
-
   it('should load the component successfully',  () => {
     expect(headerFixture.debugElement.query(By.css('header.header')).nativeElement).toBeTruthy(); // shows up on view
     expect(headerFixture.debugElement.query(By.css('nav.subnav')).nativeElement).toBeTruthy(); // shows up on view
     expect(headerComponent).toBeDefined();
+  });
+
+  it('should call the theme method',  () => {
+    let themeButton = headerFixture.debugElement.query(By.css('button'));
+    if(!themeButton)
+      fail();
+
+    spyOn(headerComponent, 'theme').and.callFake((n)=>{});
+    themeButton.nativeElement.click();
+    expect(headerComponent.theme).toHaveBeenCalled();
   });
 
   it('should call the run method',  () => {
@@ -157,12 +170,16 @@ describe('header unit tests', () => {
   });
 });
 
+/**********************************************************************************************************************/
+// THESE TESTS TEST THE INTEGRATION BETWEEN THE HEADER AND THE CODE EDITOR AND SIDE COMPONENTS
+/**********************************************************************************************************************/
 
-describe('header and code editor integration tests', () => {
+fdescribe('header component - integration tests', () => {
 
-  let headerComponent: HeaderComponent;
   let headerFixture: ComponentFixture<HeaderComponent>;
+  let headerComponent: HeaderComponent;
   let codeEditorFixture: ComponentFixture<CodeEditorComponent>;
+  let codeEditorComponent: CodeEditorComponent;
   let sharedService: SharedService;
 
   beforeEach(() => {
@@ -182,11 +199,9 @@ describe('header and code editor integration tests', () => {
     headerComponent.ngAfterViewInit();
     headerFixture.detectChanges();
 
-    /* Load the code editor (the header is tightly dependant on the code editor,
-     * which is why we decided to test them as a single unit).
-     * We load the component locally just in order to fully initialize the shared service for the tests */
     codeEditorFixture = TestBed.createComponent(CodeEditorComponent);
-    codeEditorFixture.componentInstance.ngAfterViewInit();
+    codeEditorComponent = codeEditorFixture.componentInstance;
+    codeEditorComponent.ngAfterViewInit();
     codeEditorFixture.detectChanges();
 
     sharedService = TestBed.get(SharedService);
@@ -197,6 +212,36 @@ describe('header and code editor integration tests', () => {
     headerFixture.destroy();
     codeEditorFixture.debugElement.nativeElement.remove();
     codeEditorFixture.destroy();
+  });
+
+  it('should change the theme',  () => {
+    let themeButton = headerFixture.debugElement.queryAll(By.css('button'));
+    if(!themeButton)
+      fail();
+
+    themeButton.forEach((button, index) => {
+      button.nativeElement.click();
+      expect(codeEditorComponent.codeEditor.getTheme()).toBe(headerComponent.themes[index]);
+    });
+  });
+
+  it('should call the run method',  () => {
+    let runButton = headerFixture.debugElement.queryAll(By.css('a.nav-link')).filter(
+      button => button.nativeElement.innerText === '▶ RUN');
+    if(runButton.length != 1)
+      fail();
+
+    // Check that the call reaches the shared program object
+    spyOn(sharedService.sharedProgram, 'init').and.callFake((type, code)=>{});
+    runButton[0].nativeElement.click();
+    expect(sharedService.sharedProgram.init).toHaveBeenCalledWith('initRun',
+      codeEditorComponent.codeEditor.session.getValue());
+
+    // Check that the code that "returns" from the server and is placed in stdout shows up on view
+    sharedService.sharedProgram.runner.setStdout('This is a test');
+    codeEditorFixture.detectChanges();
+    let output = codeEditorFixture.debugElement.query(By.css('textarea'));
+    expect(output.nativeElement.value.trim()).toBe('This is a test');
   });
 
   it('should beautify content',  () => {
@@ -236,5 +281,22 @@ describe('header and code editor integration tests', () => {
     undoButton[0].nativeElement.click();
     expect(sharedService.sharedCodeEditor.session.getValue()).toBe('');
   });
+
+  it('should call the load file method',  async (() => {
+    let input = <HTMLInputElement> headerFixture.debugElement.query(By.css('input[type=file]')).nativeElement;
+    let loadFileButton = headerFixture.debugElement.queryAll(By.css('a.nav-link')).filter(
+      button => button.nativeElement.innerText === '📤 LOAD FILE');
+    if(loadFileButton.length != 1)
+      fail();
+
+    spyOn(sharedService.sharedCodeEditor.session, 'setValue');
+    let mockFile = new File(['This is a test'], 'test.txt', { type: 'text/plain' });
+    let mockEvt = { target: { files: [mockFile] } };
+    headerComponent.loadFile(mockEvt);
+
+    headerFixture.whenStable().then(()=>{
+      expect(sharedService.sharedCodeEditor.session.setValue).toHaveBeenCalledWith('This is a test');
+    });
+  }));
 
 });

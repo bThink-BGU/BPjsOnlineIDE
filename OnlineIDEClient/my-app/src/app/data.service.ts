@@ -3,7 +3,6 @@ import { BehaviorSubject } from 'rxjs';
 import {Ace} from 'ace-builds';
 import * as ace from 'ace-builds';
 import {Program} from "../BL/Program";
-import {CodeEditorComponent} from "./code-editor/code-editor.component";
 
 @Injectable()
 export class SharedService {
@@ -13,7 +12,7 @@ export class SharedService {
   //sharedOutput = this.output.asObservable();
 
   sharedExternalEvent = '';
-  sharedProgram;
+  sharedProgram: Program;
   sharedDebuggerMode = false;
   sharedCodeEditor: Ace.Editor;
   sharedEditorBeautify;
@@ -25,7 +24,6 @@ export class SharedService {
     '})';
 
   constructor() {
-
     this.sharedEditorBeautify = ace.require('ace/ext/beautify');
     this.sharedProgram  = new Program('ws://localhost:8080/OnlineIDEServer/api');
   }

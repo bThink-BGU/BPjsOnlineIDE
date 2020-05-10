@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as ace from 'ace-builds';
 import {Ace, Range} from 'ace-builds';
 import 'ace-builds/src-noconflict/theme-twilight'; // default theme
@@ -17,42 +17,14 @@ import {SharedService} from "../data.service";
 
 export class CodeEditorComponent implements AfterViewInit {
 
-  // input : string;
-  // output: string;
-  // debugger: boolean;
-  // editorBeautify;
-  // code: string;
+  private _codeEditor: Ace.Editor;
+  private _breakpoints: {};
 
-  private codeEditor: Ace.Editor;
-  private breakpoints: {};
-
-  constructor(private sharedService: SharedService) { }
-
-  ngAfterViewInit(): void {
-    // this.sharedService.sharedOutput.subscribe(output => this.output = output); - not needed because not used
-    // this.debugger = this.sharedService.sharedDebuggerMode; - not needed because not used
-    // this.code = this.sharedService.sharedCode; - not needed because not used
-    // this.editorBeautify = this.sharedService.sharedEditorBeautify; - not needed because not used
-
-    this.codeEditor = ace.edit('editor', this.getEditorOptions());
-    this.sharedService.sharedCodeEditor = this.codeEditor; // make the code editor usable by other components
-    this.breakpoints = {};
-
-    // Basic editor settings, custom mode will be set in the setBpjs() function
-    this.codeEditor.setTheme('ace/theme/twilight');
-    this.codeEditor.setValue(this.sharedService.sharedCode);
-    this.codeEditor.focus();
-    this.codeEditor.selection.clearSelection();
-
-    // Custom editor settings
-    this.prepareEditor();
-  }
-
-  get Output() {
+  get output() {
     return this.sharedService.sharedProgram.runner.stdout;
   }
 
-  get OutputDebug() {
+  get outputDebug() {
     return this.sharedService.sharedProgram.debugger.stdout;
   }
 
@@ -62,6 +34,32 @@ export class CodeEditorComponent implements AfterViewInit {
 
   get externalEvent() {
     return this.sharedService.sharedExternalEvent;
+  }
+
+  get codeEditor(): Ace.Editor {
+    return this._codeEditor;
+  }
+
+  get breakpoints(): {} {
+    return this._breakpoints;
+  }
+
+  constructor(private sharedService: SharedService) { }
+
+  ngAfterViewInit(): void {
+
+    this._codeEditor = ace.edit('editor', this.getEditorOptions());
+    this.sharedService.sharedCodeEditor = this._codeEditor; // make the code editor usable by other components
+    this._breakpoints = {};
+
+    // Basic editor settings, custom mode will be set in the setBpjs() function
+    this._codeEditor.setTheme('ace/theme/twilight');
+    this._codeEditor.setValue(this.sharedService.sharedCode);
+    this._codeEditor.focus();
+    this._codeEditor.selection.clearSelection();
+
+    // Custom editor settings
+    this.prepareEditor();
   }
 
   private getEditorOptions(): Partial<ace.Ace.EditorOptions> & { enableBasicAutocompletion?: boolean; } {
@@ -89,8 +87,8 @@ export class CodeEditorComponent implements AfterViewInit {
   }
 
   private bindCodeVariableAndValue() {
-    this.codeEditor.on('change', () => {
-      this.sharedService.sharedCode = this.codeEditor.getValue();
+    this._codeEditor.on('change', () => {
+      this.sharedService.sharedCode = this._codeEditor.getValue();
     });
   }
 
@@ -98,19 +96,19 @@ export class CodeEditorComponent implements AfterViewInit {
      Typescript throws type errors because some methods exist in ace.js but are not declared in ace.d.ts. */
   private enableBreakpoints() {
     // not "on(...)" to prevent ace from calling the original default handler
-    this.codeEditor.setDefaultHandler('guttermousedown', (e) => {
+    this._codeEditor.setDefaultHandler('guttermousedown', (e) => {
       // if (!this.codeEditor.isFocused()) // a preference thing ...
       //   return;
       if (e.domEvent.target.className.indexOf("ace_gutter-cell") == -1)
         return;
       // @ts-ignore
-      if(this.codeEditor.renderer.$gutterLayer.getRegion(e) === 'foldWidgets')
+      if(this._codeEditor.renderer.$gutterLayer.getRegion(e) === 'foldWidgets')
         return;
       // @ts-ignore
       let row = e.getDocumentPosition().row;
 
-      if(!(row in this.breakpoints)) {
-        if(this.codeEditor.session.getLine(row) != '') //add support for only bp breakpoints here
+      if(!(row in this._breakpoints)) {
+        if(this._codeEditor.session.getLine(row) != '') //add support for only bp breakpoints here
           //add support for not being able to set a breakpoint on an existing annotation maybe
           this.addBreakpoint(row);
       }
@@ -121,28 +119,28 @@ export class CodeEditorComponent implements AfterViewInit {
   }
 
   private addBreakpoint(row: number) {
-    if(typeof this.codeEditor.session.getBreakpoints()[row] != typeof undefined) // if a breakpoint exists
+    if(typeof this._codeEditor.session.getBreakpoints()[row] != typeof undefined) // if a breakpoint exists
       return;
-    this.codeEditor.session.setBreakpoint(row, 'ace_breakpoint');
-    let markerID = this.codeEditor.session.addMarker(
+    this._codeEditor.session.setBreakpoint(row, 'ace_breakpoint');
+    let markerID = this._codeEditor.session.addMarker(
       new Range(row, 0, row, Infinity),
       'breakpoint-marker',
       'fullLine',
       false);
-    this.breakpoints[row] = {'markerID': markerID};
+    this._breakpoints[row] = {'markerID': markerID};
   }
 
   private removeBreakpoint(row: number) {
-    if(typeof this.codeEditor.session.getBreakpoints()[row] == typeof undefined) // if a breakpoint doesn't exist
+    if(typeof this._codeEditor.session.getBreakpoints()[row] == typeof undefined) // if a breakpoint doesn't exist
       return;
-    this.codeEditor.session.clearBreakpoint(row);
-    this.codeEditor.session.removeMarker(this.breakpoints[row]['markerID']);
-    delete this.breakpoints[row];
+    this._codeEditor.session.clearBreakpoint(row);
+    this._codeEditor.session.removeMarker(this._breakpoints[row]['markerID']);
+    delete this._breakpoints[row];
   }
 
   private sortKeys() {
     let sorted = [];
-    for (let key in this.breakpoints) {
+    for (let key in this._breakpoints) {
       sorted[sorted.length] = parseInt(key);
     }
     sorted.sort();
@@ -150,13 +148,13 @@ export class CodeEditorComponent implements AfterViewInit {
   }
 
   private enableMoveBreakpointsOnChange() {
-    this.codeEditor.on('change', (e) => {
-      if (Object.keys(this.breakpoints).length > 0 && e.lines.length > 1) {
+    this._codeEditor.on('change', (e) => {
+      if (Object.keys(this._breakpoints).length > 0 && e.lines.length > 1) {
         let sortedRows = e.action === 'insert' ? this.sortKeys().reverse() : this.sortKeys();
         for (let breakpointRow of sortedRows) { // go over reverse sorted rows to avoid breakpoint overlap
           if (e.action === 'insert') {
             if (breakpointRow == e.start.row) {
-              if (this.codeEditor.session.getLine(breakpointRow) === '') {
+              if (this._codeEditor.session.getLine(breakpointRow) === '') {
                 this.removeBreakpoint(breakpointRow);
                 this.addBreakpoint(breakpointRow + e.lines.length - 1);
               }
@@ -254,14 +252,14 @@ export class CodeEditorComponent implements AfterViewInit {
     }).call(bpjsMode.prototype);
 
     // finally, set the newly created mode dynamically for the current ace session
-    this.codeEditor.getSession().setMode(new bpjsMode());
+    this._codeEditor.getSession().setMode(new bpjsMode());
 
   }
 
   /* Ace's settings menu feature has things unnecessary for this project, such as setting a mode and disabling
   * the margin. Keeping it will expose the user to errors...*/
   private disableSettingsMenu() {
-    this.codeEditor.commands.addCommand({
+    this._codeEditor.commands.addCommand({
       name: "showSettingsMenu",
       bindKey: {
         win: "Ctrl-,",
@@ -273,7 +271,6 @@ export class CodeEditorComponent implements AfterViewInit {
       readOnly: true
     });
   }
-
 
 }
 
