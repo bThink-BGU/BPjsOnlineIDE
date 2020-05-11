@@ -44,12 +44,12 @@ describe('side component - unit tests', () => {
     sideFixture.debugElement.nativeElement.remove();
     sideFixture.destroy();
   });
-
+  //5.1
   it('should load the component successfully',  () => {
     expect(sideFixture.debugElement.query(By.css('section.sidenav-content')).nativeElement).toBeTruthy(); // shows up on view
     expect(sideComponent).toBeDefined();
   });
-
+  //5.2
   it('ADD button should call to addExternalEvent() function', async(() => {
     spyOn(sideComponent, 'addExternalEvent');
     let buttons = sideFixture.debugElement.queryAll(By.css('.addExEvButton'));
@@ -66,7 +66,7 @@ describe('side component - unit tests', () => {
       expect(sideComponent.addExternalEvent).toHaveBeenCalled();
     });
   }));
-
+  //5.3
   it('bp.registerBThread button should call to addSentence(n) function', async(() => {
     spyOn(sideComponent, 'addSentence');
     let buttons = sideFixture.nativeElement.querySelectorAll('td');
@@ -85,7 +85,7 @@ describe('side component - unit tests', () => {
       expect(sideComponent.addSentence).toHaveBeenCalled();
     });
   }));
-
+  //5.4
   it('bp.sync - waitFor button should call to addSentence(n) function', async(() => {
     spyOn(sideComponent, 'addSentence');
     let buttons = sideFixture.nativeElement.querySelectorAll('td');
@@ -104,7 +104,7 @@ describe('side component - unit tests', () => {
       expect(sideComponent.addSentence).toHaveBeenCalled();
     });
   }));
-
+  //5.5
   it('bp.sync - request button should call to addSentence(n) function', async(() => {
     spyOn(sideComponent, 'addSentence');
     let buttons = sideFixture.nativeElement.querySelectorAll('td');
@@ -123,7 +123,7 @@ describe('side component - unit tests', () => {
       expect(sideComponent.addSentence).toHaveBeenCalled();
     });
   }));
-
+  //5.6
   it('bp.sync - request + block button should call to addSentence(n) function', async(() => {
     spyOn(sideComponent, 'addSentence');
     let buttons = sideFixture.nativeElement.querySelectorAll('td');
@@ -142,27 +142,6 @@ describe('side component - unit tests', () => {
       expect(sideComponent.addSentence).toHaveBeenCalled();
     });
   }));
-
-  //**** To test this button we must run a program that will create a trace ***
-  // it('click on line from Trace should call to clickOnTrace(n) function', async(() => {
-  // spyOn(sideComponent, 'clickOnTrace');
-  // let buttons = sideFixture.nativeElement.querySelectorAll('td');
-  // let TraceButton;
-  //
-  // for(let button of buttons){
-  //   if(button.innerText.indexOf(':') != -1)
-  //     TraceButton = button;
-  // }
-  //
-  // if(!TraceButton)
-  //   fail();
-  //
-  // TraceButton.click();
-  // sideFixture.whenStable().then(() => {
-  //   expect(sideComponent.clickOnTrace).toHaveBeenCalled();
-  // });
-  // }));
-
 });
 
 /**********************************************************************************************************************/
@@ -218,7 +197,7 @@ describe('side component - integration tests', () => {
     codeEditorFixture.destroy();
   });
 
-
+  //5.7
   it('should add a sentence to the codeEditor', () => {
     let buttons = sideFixture.nativeElement.querySelectorAll('td');
     let Sentence1Button;
@@ -260,7 +239,7 @@ describe('side component - integration tests', () => {
     expect(sharedService.sharedCodeEditor.session.getValue()).toBe('\nbp.sync({request:bp.Event("..."),' +
       ' block:bp.Event("...")});\n');
   });
-
+  //5.8
   it('should add an event to the Request list', () => {
     let debugButton = headerFixture.debugElement.queryAll(By.css('a.nav-link')).filter(
       button => button.nativeElement.innerText === '🐞 DEBUG');
@@ -275,8 +254,12 @@ describe('side component - integration tests', () => {
     debugButton[0].nativeElement.click();
     headerFixture.detectChanges();
 
-    let debugButtons = headerFixture.debugElement.queryAll(By.css('a.nav-text')).map(
-      button => button.nativeElement);
+    let stepNextButton = headerFixture.debugElement.queryAll(By.css('a.nav-text')).filter(
+      button => button.nativeElement.innerText === '⏬ STEP NEXT');
+    spyOn(headerComponent, 'stepNext');
+
+    stepNextButton[0].nativeElement.click();
+    expect(headerComponent.stepNext).toHaveBeenCalled();
 
     let resp = {
       type: undefined, bpss: undefined, vars: undefined, vals: undefined, reqList: ['[BEvent name:test]'],
@@ -289,7 +272,7 @@ describe('side component - integration tests', () => {
     let eventsList = sideFixture.nativeElement.querySelectorAll('td');
     expect(eventsList[0].innerText).toBe('[BEvent name:test]');
   });
-
+  //5.9
   it('should add an event to the Wait list', () => {
     let debugButton = headerFixture.debugElement.queryAll(By.css('a.nav-link')).filter(
       button => button.nativeElement.innerText === '🐞 DEBUG');
@@ -297,13 +280,20 @@ describe('side component - integration tests', () => {
     if (debugButton.length != 1)
       fail();
 
+    debugButton[0].nativeElement.click();
+    headerFixture.detectChanges();
+    sideFixture.detectChanges();
+
     sharedService.sharedCodeEditor.setValue('bp.registerBThread(function(){\n' +
       '  bp.sync({waitFor:bp.Event("test")});\n' +
       '})');
 
-    debugButton[0].nativeElement.click();
-    headerFixture.detectChanges();
-    sideFixture.detectChanges();
+    let stepNextButton = headerFixture.debugElement.queryAll(By.css('a.nav-text')).filter(
+      button => button.nativeElement.innerText === '⏬ STEP NEXT');
+    spyOn(headerComponent, 'stepNext');
+
+    stepNextButton[0].nativeElement.click();
+    expect(headerComponent.stepNext).toHaveBeenCalled();
 
     let resp = {
       type: undefined, bpss: undefined, vars: undefined, vals: undefined, reqList: undefined,
@@ -326,7 +316,7 @@ describe('side component - integration tests', () => {
     let eventsList = sideFixture.nativeElement.querySelectorAll('td');
     expect(eventsList[0].innerText).toBe('[BEvent name:test]');
   });
-
+  //5.10
   it('should add an event to the Block list', () => {
     let debugButton = headerFixture.debugElement.queryAll(By.css('a.nav-link')).filter(
       button => button.nativeElement.innerText === '🐞 DEBUG');
@@ -334,13 +324,21 @@ describe('side component - integration tests', () => {
     if (debugButton.length != 1)
       fail();
 
+    debugButton[0].nativeElement.click();
+    headerFixture.detectChanges();
+    sideFixture.detectChanges();
+
     sharedService.sharedCodeEditor.setValue('bp.registerBThread(function(){\n' +
       'bp.sync({request:bp.Event("test1"), block:bp.Event("test")});\n' +
       '})');
 
-    debugButton[0].nativeElement.click();
-    headerFixture.detectChanges();
-    sideFixture.detectChanges();
+
+    let stepNextButton = headerFixture.debugElement.queryAll(By.css('a.nav-text')).filter(
+      button => button.nativeElement.innerText === '⏬ STEP NEXT');
+    spyOn(headerComponent, 'stepNext');
+
+    stepNextButton[0].nativeElement.click();
+    expect(headerComponent.stepNext).toHaveBeenCalled();
 
     let resp = {
       type: undefined, bpss: undefined, vars: undefined, vals: undefined, reqList: undefined,
@@ -363,33 +361,42 @@ describe('side component - integration tests', () => {
     let eventsList = sideFixture.nativeElement.querySelectorAll('td');
     expect(eventsList[0].innerText).toBe('[BEvent name:test]');
   });
-
+  //5.11
   it('should add an events to the Trace list', () => {
-    //   let debugButton = headerFixture.debugElement.queryAll(By.css('a.nav-link')).filter(
-    //     button => button.nativeElement.innerText === '🐞 DEBUG');
-    //
-    //   if(debugButton.length != 1)
-    //     fail();
-    //
-    //   debugButton[0].nativeElement.click();
-    //   headerFixture.detectChanges();
-    //   sideFixture.detectChanges();
-    //
-    //   sharedService.sharedCodeEditor.setValue('bp.registerBThread(function(){\n' +
-    //     '  bp.sync({request:bp.Event("hello")});\n' +
-    //     '  bp.sync({request:bp.Event("world")});\n' +
-    //     '})');
-    //
-    //   let resp = {type: undefined, bpss: undefined, vars: undefined, vals: undefined, reqList: undefined,
-    //     selectableEvents: undefined, waitList:undefined, blockList:  ['[BEvent name:test]'], selectedEvent: undefined}
-    //   sharedService.sharedProgram.debugger.postStep(resp);
-    //
-    //
-    //
-    //   sideFixture.detectChanges();
-    //
-    //   let eventsList = sideFixture.nativeElement.querySelectorAll('td');
-    //   expect(eventsList[0].innerText).toBe('[BEvent name:test]');
-    // });
+    let debugButton = headerFixture.debugElement.queryAll(By.css('a.nav-link')).filter(
+      button => button.nativeElement.innerText === '🐞 DEBUG');
+
+    if(debugButton.length != 1)
+      fail();
+
+    debugButton[0].nativeElement.click();
+    headerFixture.detectChanges();
+    sideFixture.detectChanges();
+
+    let stepNextButton = headerFixture.debugElement.queryAll(By.css('a.nav-text')).filter(
+      button => button.nativeElement.innerText === '⏬ STEP NEXT');
+    spyOn(headerComponent, 'stepNext');
+
+    stepNextButton[0].nativeElement.click();
+    expect(headerComponent.stepNext).toHaveBeenCalled();
+
+    sharedService.sharedCodeEditor.setValue('bp.registerBThread(function(){\n' +
+      '  bp.sync({request:bp.Event("hello")});\n' +
+      '  bp.sync({request:bp.Event("world")});\n' +
+      '})');
+
+    let resp1 = {type: undefined, bpss: undefined, vars: undefined, vals: undefined, reqList: undefined,
+      selectableEvents: undefined, waitList:undefined, blockList: undefined, selectedEvent: '[BEvent name:hello]'};
+    let resp2 = {type: undefined, bpss: undefined, vars: undefined, vals: undefined, reqList: undefined,
+      selectableEvents: undefined, waitList:undefined, blockList: undefined, selectedEvent: '[BEvent name:world]'};
+    sharedService.sharedProgram.debugger.postStep(resp1);
+    sharedService.sharedProgram.debugger.postStep(resp2);
+
+    sideFixture.detectChanges();
+
+    let eventsList = sideFixture.nativeElement.querySelectorAll('td');
+    expect(eventsList[0].innerText).toBe('1: [BEvent name:hello]');
+    expect(eventsList[1].innerText).toBe('2: [BEvent name:world]');
   });
 });
+
