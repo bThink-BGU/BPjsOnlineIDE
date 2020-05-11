@@ -118,7 +118,7 @@ export class SharedService {
 
 
   nextOutput(output: string) {
-    this.output.next(output)
+    this.output.next(output);
   }
 
   nextDebugger(debuggerMode: boolean) {

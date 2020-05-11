@@ -40,7 +40,7 @@ describe('postRun', () => {
     runner.postRun({type: 'error', message: 'test'});
 
     expect(runner.isError).toBeTruthy();
-    expect(runner.stdout).toBe('test');
+    expect(runner.stdout).toBe('>\ttest');
   });
 
   // 3.3
@@ -50,7 +50,7 @@ describe('postRun', () => {
     runner.postRun({type: 'error', message: 'testERROR'});
 
     expect(runner.isError).toBeTruthy();
-    expect(runner.stdout).toBe('testERROR');
+    expect(runner.stdout).toBe('>\ttestERROR');
   });
 
   // 3.4
@@ -60,17 +60,17 @@ describe('postRun', () => {
     runner.postRun({type: 'run', message: 'testOK'});
 
     expect(runner.isError).toBeFalsy();
-    expect(runner.stdout).toBe('testOK\n');
+    expect(runner.stdout).toBe('>\ttestOK\n');
   });
 
   // 3.5
   it('stdoutCaseAfterSomeEvents', () => {
-    runner.setStdout('testOK');
+    runner.setStdout('>\ttestOK');
     runner.setIsError(false);
     runner.postRun({type: 'run', message: 'testOK'});
 
     expect(runner.isError).toBeFalsy();
-    expect(runner.stdout).toBe('testOKtestOK\n');
+    expect(runner.stdout).toBe('>\ttestOK>\ttestOK\n');
   });
 
   // 3.6
@@ -81,7 +81,7 @@ describe('postRun', () => {
     runner.postRun({type: 'error', message: 'testERROR'});
 
     expect(runner.isError).toBeTruthy();
-    expect(runner.stdout).toBe('testERROR');
+    expect(runner.stdout).toBe('>\ttestERROR');
   });
 
   // 3.7
@@ -91,6 +91,6 @@ describe('postRun', () => {
     while (counter++ < 3);
 
     expect(runner.isError).toBeFalsy();
-    expect(runner.stdout).toBe('testOK\ntestOK\ntestOK\ntestOK\n');
+    expect(runner.stdout).toBe('>\ttestOK\n>\ttestOK\n>\ttestOK\n>\ttestOK\n');
   });
 });
