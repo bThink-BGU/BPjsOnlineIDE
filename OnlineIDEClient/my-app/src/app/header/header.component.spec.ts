@@ -282,17 +282,27 @@ describe('header component - integration tests', () => {
     expect(sharedService.sharedCodeEditor.session.getValue()).toBe('');
   });
 
-  it('should call the load file method',  async (() => {
-    let input = <HTMLInputElement> headerFixture.debugElement.query(By.css('input[type=file]')).nativeElement;
+  it('should load a file',  async (() => {
     let loadFileButton = headerFixture.debugElement.queryAll(By.css('a.nav-link')).filter(
       button => button.nativeElement.innerText === '📤 LOAD FILE');
     if(loadFileButton.length != 1)
       fail();
 
+    spyOn(window, 'alert');
+    let badMockFile_1 = new File(['This is a test'], 'test.xml', { type: 'text/xml' });
+    let badMockEvt_1 = { target: { files: [badMockFile_1] } };
+    headerComponent.loadFile(badMockEvt_1);
+    expect(window.alert).toHaveBeenCalledWith('Please choose an appropriate file type');
+
+    let badMockEvt_2 = { target: { files: [] } };
+    headerComponent.loadFile(badMockEvt_2);
+    expect(window.alert).toHaveBeenCalledWith('Something went wrong.\nPlease try again...');
+
+
     spyOn(sharedService.sharedCodeEditor.session, 'setValue');
-    let mockFile = new File(['This is a test'], 'test.txt', { type: 'text/plain' });
-    let mockEvt = { target: { files: [mockFile] } };
-    headerComponent.loadFile(mockEvt);
+    let goodMockFile = new File(['This is a test'], 'test.txt', { type: 'text/plain' });
+    let goodMockEvt = { target: { files: [goodMockFile] } };
+    headerComponent.loadFile(goodMockEvt);
 
     headerFixture.whenStable().then(()=>{
       expect(sharedService.sharedCodeEditor.session.setValue).toHaveBeenCalledWith('This is a test');
