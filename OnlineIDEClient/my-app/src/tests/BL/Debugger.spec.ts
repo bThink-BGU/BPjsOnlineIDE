@@ -261,7 +261,7 @@ describe('postStep', () => {
       selectedEvent: debugStep.selectedEvent};
     debug.postStep(response);
 
-    expect(debug.stdout).toBe('\nThe Program was Ended');
+    expect(debug.stdout).toBe('\nThe Program Ended');
     expect(debug.programEnded).toBeTruthy();
     expect(debug.stepTrace.length).toBe(beforeStepTraceLength);
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength);
@@ -281,7 +281,7 @@ describe('postStep', () => {
     let counter = 0;
     do { debug.postStep(response); } while (counter++ < 3);
 
-    expect(debug.stdout).toBe('\nThe Program was Ended');
+    expect(debug.stdout).toBe('\nThe Program Ended');
     expect(debug.programEnded).toBeTruthy();
     expect(debug.stepTrace.length).toBe(beforeStepTraceLength);
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength);
@@ -351,7 +351,7 @@ describe('postStep', () => {
     debug.postStep(response2);
 
     expect(debug.stdout).toBe('\n' + response1.selectedEvent + '\n' + response1.selectedEvent +
-      '\n' + response1.selectedEvent + '\n' + response1.selectedEvent + '\n' + 'The Program was Ended');
+      '\n' + response1.selectedEvent + '\n' + response1.selectedEvent + '\n' + 'The Program Ended');
     expect(debug.programEnded).toBeTruthy();
     expect(debug.stepTrace.length).toBe(beforeStepTraceLength + 4);
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength + 4);
@@ -379,7 +379,7 @@ describe('postStep', () => {
 
     debug.postStep(response2);
 
-    expect(debug.stdout).toBe('\n' + 'The Program was Ended');
+    expect(debug.stdout).toBe('\n' + 'The Program Ended');
     expect(debug.programEnded).toBeTruthy();
     expect(debug.stepTrace.length).toBe(beforeStepTraceLength);
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength);
@@ -410,7 +410,7 @@ describe('postStep', () => {
     do { debug.postStep(response2); } while (counter++ < 3);
 
     expect(debug.stdout).toBe('\n' + response1.selectedEvent + '\n' + response1.selectedEvent +
-      '\n' + response1.selectedEvent + '\n' + response1.selectedEvent + '\n' + 'The Program was Ended');
+      '\n' + response1.selectedEvent + '\n' + response1.selectedEvent + '\n' + 'The Program Ended');
     expect(debug.programEnded).toBeTruthy();
     expect(debug.stepTrace.length).toBe(beforeStepTraceLength + 4);
     expect(debug.eventTrace.length).toBe(beforeEventTraceLength + 4);

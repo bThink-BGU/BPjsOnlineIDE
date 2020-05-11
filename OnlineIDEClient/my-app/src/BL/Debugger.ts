@@ -69,7 +69,7 @@ export class Debugger {
     if (this._programEnded) // The program ended
       return;
     if (this.isFinished(response)) { // The program finished
-      this._stdout += '\n' + 'The Program ended';
+      this._stdout += '\n' + 'The Program Ended';
       this._programEnded = true;
     } else {
       this._stepTrace.push(new DebugStep(response.bpss, this.toVarsMap(response), response.reqList,

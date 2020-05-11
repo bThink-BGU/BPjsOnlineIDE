@@ -78,7 +78,7 @@ export class HeaderComponent implements AfterViewInit  {
     this._sharedService.sharedProgram.runner.setStdout('');
   }
 
-  public closeDebuggerMode(){
+  public closeDebuggerMode() {
     this._sharedService.nextDebugger(!this._sharedService.sharedDebuggerMode);
     this._sharedService.sharedProgram.debugger.initDebugger();
   }
@@ -143,11 +143,11 @@ export class HeaderComponent implements AfterViewInit  {
     this._sharedService.sharedProgram.debugger.stepBack();
   }
 
-  public nextBreakPoint(){
+  public nextBreakPoint() {
     window.alert('nextBreakPoint');
   }
 
-  public previousBreakPoint(){
+  public previousBreakPoint() {
     window.alert('previousBreakPoint');
   }
 
