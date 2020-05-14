@@ -15,7 +15,9 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
-class Step {
+import org.mozilla.javascript.NativeContinuation;
+
+public class Step {
     private final BProgramSyncSnapshot bpss;
     private final ExecutorService execSvc;
     private final BProgram bprog;
@@ -31,7 +33,7 @@ class Step {
         this.selectableEvents = bProgramSyncSnapshot == null ? null : bprog.getEventSelectionStrategy().selectableEvents(bProgramSyncSnapshot);
     }
 
-    static Step Deserialize(ExecutorService execSvc, BProgram bprog, byte[] bProgramSyncSnapshot)
+    public static Step Deserialize(ExecutorService execSvc, BProgram bprog, byte[] bProgramSyncSnapshot)
             throws IOException, ClassNotFoundException {
         if (bProgramSyncSnapshot != null) {
             return new Step(execSvc, bprog, new BProgramSyncSnapshotIO(bprog).deserialize(bProgramSyncSnapshot), null);
@@ -40,7 +42,7 @@ class Step {
         }
     }
 
-    Step step() throws InterruptedException {
+    public Step step() throws InterruptedException {
         if (bpss == null) // Init state
             return new Step(execSvc, bprog, bprog.setup().start(execSvc), null);
         if(bpss.noBThreadsLeft()) // The program was finished
@@ -51,7 +53,7 @@ class Step {
         return new Step(execSvc, bprog, BProgramSyncSnapshotCloner.clone(bpss).triggerEvent(e, execSvc, Collections.emptyList()), e);
     }
 
-    StepMessage toStepMessage() throws IOException {    	
+    public StepMessage toStepMessage() throws IOException {    	
         List<EventSet> wait = bpss.getStatements().stream().map(SyncStatement::getWaitFor).collect(Collectors.toList());
         List<EventSet> blocked = bpss.getStatements().stream().map(SyncStatement::getBlock).collect(Collectors.toList());
         List<BEvent> requested = bpss.getStatements().stream().map(SyncStatement::getRequest).flatMap(Collection::stream).collect(Collectors.toList());
@@ -68,11 +70,12 @@ class Step {
         
         bpss.getBThreadSnapshots().forEach(s -> variables.putAll(s.getContinuationProgramState().getVisibleVariables()));
         
-//        Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData = new HashMap<>();
-//        
-//        
-//        int lineNumber = -1; // TODO get this number
         
+        Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData = new HashMap<>();
+        
+        
+//        int lineNumber = -1; // TODO get this number
+//        
 //        bpss.getBThreadSnapshots().forEach(s -> {
 //        	Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
 //        	bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
@@ -84,10 +87,9 @@ class Step {
 //			// to see how to work with this object, take a look at https://github.com/bThink-BGU/BPjs/blob/develop/src/main/java/il/ac/bgu/cs/bp/bpjs/model/internal/ContinuationProgramState.java
 //			Object continuation = ((NativeContinuation)s.getContinuation()).getImplementation();
 //			int lineNumber = -1;
-//			Map<String, String> variables = new HashMap<>();
-//			bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
-//		});
-        
+//			Map<Object, Object> bthreadVariables = new HashMap<>();
+//			bThreadDebugData.put(s.getName(), new Pair<Integer, Map<Object, Object>>(lineNumber, bthreadVariables));
+//		});        
 
         return new StepMessage(
                 new BProgramSyncSnapshotIO(bprog).serialize(bpss),
@@ -111,6 +113,20 @@ class Step {
 		return "Step [bpss=" + bpss + ", execSvc=" + execSvc + ", bprog=" + bprog + ", selectableEvents="
 				+ selectableEvents + ", selectedEvent=" + selectedEvent + "]";
 	}
-    
-    
+
+	public ExecutorService getExecSvc() {
+		return execSvc;
+	}
+
+	public BProgram getBprog() {
+		return bprog;
+	}
+
+	public Set<BEvent> getSelectableEvents() {
+		return selectableEvents;
+	}
+
+	public BEvent getSelectedEvent() {
+		return selectedEvent;
+	}
 }

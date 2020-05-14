@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 public class StepMessage {
-	public final String type;
-	public final byte[] bpss;
+	private final String type;
+	private final byte[] bpss;
 //	public final Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData;
 //	public final Map<String,String> globalVariables;
-	public List<Object> vars;
-	public List<Object> vals;
-	public final List<String> reqList;
-	public final List<String> selectableEvents;
-	public final List<String> waitList;
-	public final List<String> blockList;
-	public final String selectedEvent;
+	private List<Object> vars;
+	private List<Object> vals;
+	private final List<String> reqList;
+	private final List<String> selectableEvents;
+	private final List<String> waitList;
+	private final List<String> blockList;
+	private final String selectedEvent;
 	
 	
 	public StepMessage(byte[] bpss, /*Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData, Map<String, String> globalVariables,*/ 
@@ -49,4 +49,55 @@ public class StepMessage {
 		}
 				
 	}
+	
+	public String toString() {
+		return "|" + bpss + "|\n|" + "|" + vars + "|\n|" + "|" + vals + "|\n|" + "|" + reqList + "|\n|" + "|" + 
+	selectableEvents + "|\n|" + "|" + waitList + "|\n|" + "|" + blockList + "|\n|" + selectedEvent + "|";
+	}
+
+	public List<Object> getVars() {
+		return vars;
+	}
+
+	public void setVars(List<Object> vars) {
+		this.vars = vars;
+	}
+
+	public List<Object> getVals() {
+		return vals;
+	}
+
+	public void setVals(List<Object> vals) {
+		this.vals = vals;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public byte[] getBpss() {
+		return bpss;
+	}
+
+	public List<String> getReqList() {
+		return reqList;
+	}
+
+	public List<String> getSelectableEvents() {
+		return selectableEvents;
+	}
+
+	public List<String> getWaitList() {
+		return waitList;
+	}
+
+	public List<String> getBlockList() {
+		return blockList;
+	}
+
+	public String getSelectedEvent() {
+		return selectedEvent;
+	}
+	
+	
 }

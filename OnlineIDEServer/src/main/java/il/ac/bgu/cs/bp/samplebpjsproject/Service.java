@@ -13,7 +13,7 @@ import il.ac.bgu.cs.bp.bpjs.model.StringBProgram;
 
 public class Service {
 
-	public String code;
+	private String code;
 	private BProgram bprog;
 	private final ExecutorService execSvc;
 	
@@ -39,7 +39,7 @@ public class Service {
 	}
 
 	public StepMessage step(StepMessage step) throws InterruptedException, IOException, ClassNotFoundException {
-		Step s = Step.Deserialize(execSvc, bprog, step.bpss);
+		Step s = Step.Deserialize(execSvc, bprog, step.getBpss());
 		Step tmpStep = s.step();
 		if(tmpStep == null) { // The program was ended
 			return new StepMessage(null, null, null, null, null, null, null);
@@ -60,5 +60,25 @@ public class Service {
 	
 	public void addExternalEvent(String e) {
 		this.bprog.enqueueExternalEvent(new BEvent(e));
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public BProgram getBprog() {
+		return bprog;
+	}
+
+	public void setBprog(BProgram bprog) {
+		this.bprog = bprog;
+	}
+
+	public ExecutorService getExecSvc() {
+		return execSvc;
 	}
 }
