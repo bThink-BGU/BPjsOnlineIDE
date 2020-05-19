@@ -18,19 +18,41 @@ export class WebSocketService {
   }
 
   public sendDataStep(type: string, debugStep: DebugStep) {
-    let vars = [];
-    let vals = [];
-    if (debugStep.variables === undefined) {
-      vars = undefined;
-      vals = undefined;
+    let gVars = [];
+    let gVals = [];
+    if (debugStep.globalVariables === undefined) {
+      gVars = undefined;
+      gVals = undefined;
     } else {
-      for (const key of debugStep.variables.keys()) {
-        vars.push(key);
-        vals.push(debugStep.variables.get(key));
+      for (const key of debugStep.globalVariables.keys()) {
+        gVars.push(key);
+        gVals.push(debugStep.globalVariables.get(key));
       }
     }
 
-    this._webSocket.next({type: type, bpss: debugStep.bpss, vars: vars, vals: vals, reqList: debugStep.reqList,
+    let bThreadNames = [];
+    let lVars = [];
+    let lVals = [];
+    if (debugStep.localVariables === undefined) {
+      bThreadNames = undefined;
+      lVars = undefined;
+      lVals = undefined;
+    } else {
+      for (const key of debugStep.localVariables.keys()) {
+        bThreadNames.push(key);
+        const tmpVars = [];
+        const tmpVals = [];
+        for (const key2 of debugStep.localVariables.get(key)) {
+          tmpVars.push(key2);
+          tmpVals.push(debugStep.localVariables.get(key).get(key2));
+        }
+        lVars.push(tmpVars);
+        lVals.push(tmpVals);
+      }
+    }
+
+    this._webSocket.next({type: type, bpss: debugStep.bpss, globalVars: gVars, globalVals: gVals,
+      bThreadNames: bThreadNames, localVars: lVars, localVals: lVals, reqList: debugStep.reqList,
       selectableEvents: debugStep.selectableEvents, waitList: debugStep.waitList, blockList: debugStep.blockList,
       selectedEvent: debugStep.selectedEvent});
   }

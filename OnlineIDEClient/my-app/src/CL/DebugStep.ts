@@ -4,7 +4,8 @@ export class DebugStep {
 
   private readonly _type: string;
   private readonly _bpss: any[];
-  private readonly _variables: Map<object, object>;
+  private readonly _globalVariables: Map<object, object>;
+  private readonly _localVariables: Map<string, Map<object, object>>;
   // private readonly _bThreadDebugData: any[];
   // private readonly _globalVariables: Map<string, string>;
   private readonly _reqList: string[];
@@ -13,12 +14,13 @@ export class DebugStep {
   private readonly _blockList: string[];
   private readonly _selectedEvent: string;
 
-  constructor(bpss: any[], variables: Map<object, object>, reqList: string[],
-              selectableEvents: string[], waitList: string[], blockList: string[], selectedEvent: string) {
+  constructor(bpss: any[], gVariables: Map<object, object>, lVariables: Map<string, Map<object, object>>,
+              reqList: string[], selectableEvents: string[], waitList: string[], blockList: string[],
+              selectedEvent: string) {
     this._type = 'step';
     this._bpss = bpss;
-    // this._bThreadDebugData = bThreadDebugData;
-    this._variables = variables; // map of string (var) with value
+    this._globalVariables = gVariables;
+    this._localVariables = lVariables;
     this._reqList = reqList; // BpEvents' list
     this._selectableEvents = selectableEvents;
     this._waitList = waitList; // BpEvents' list
@@ -43,10 +45,6 @@ export class DebugStep {
   //   return this._globalVariables;
   // }
 
-  get variables(): Map<object, object> {
-    return this._variables;
-  }
-
   get reqList(): string[] {
     return this._reqList;
   }
@@ -65,6 +63,14 @@ export class DebugStep {
 
   get selectedEvent(): string {
     return this._selectedEvent;
+  }
+
+  get globalVariables(): Map<object, object> {
+    return this._globalVariables;
+  }
+
+  get localVariables(): Map<string, Map<object, object>> {
+    return this._localVariables;
   }
 }
 

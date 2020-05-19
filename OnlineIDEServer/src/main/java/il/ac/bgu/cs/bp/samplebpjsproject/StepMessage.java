@@ -10,8 +10,6 @@ import java.util.Map.Entry;
 public class StepMessage {
 	private final String type;
 	private final byte[] bpss;
-//	public final Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData;
-//	public final Map<String,String> globalVariables;
 	private List<Object> globalVars;
 	private List<Object> globalVals;
 	private List<String> bThreadNames;
@@ -24,23 +22,16 @@ public class StepMessage {
 	private final String selectedEvent;
 	
 	
-	public StepMessage(byte[] bpss, /*Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData,*/ Map<Object, Object> globalVariables, 
+	public StepMessage(byte[] bpss, Map<Object, Object> globalVariables, 
 			Map<String, Map<Object, Object>> localVariables, List<String> reqList, List<String> selectableEvents, List<String> wait, List<String> block, String selectedEvent) {
 		this.type = "step";
 		this.bpss = bpss;
-//		this.bThreadDebugData = bThreadDebugData;
-//		this.globalVariables = globalVariables;
 		this.reqList = reqList;
 		this.selectableEvents = selectableEvents;
 		this.waitList = wait;
 		this.blockList = block;
 		this.selectedEvent = selectedEvent;
 		
-		this.globalVars = new LinkedList<>();
-		this.globalVals = new LinkedList<>();
-		this.bThreadNames = new LinkedList<>();
-		this.localVars = new LinkedList<>();
-		this.localVals = new LinkedList<>();
 		handleGloablVarMap(globalVariables);
 		handleLocalVarMap(localVariables);
 	}
@@ -66,6 +57,7 @@ public class StepMessage {
 			this.localVals = null;
 		}
 		else {
+			this.bThreadNames = new LinkedList<>();
 			this.localVars = new LinkedList<>();
 			this.localVals = new LinkedList<>();
 			for (Entry<String, Map<Object, Object>> entry: variables.entrySet()) {
