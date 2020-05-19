@@ -6,16 +6,21 @@ import il.ac.bgu.cs.bp.bpjs.internal.Pair;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
 import il.ac.bgu.cs.bp.bpjs.model.BProgramSyncSnapshot;
+import il.ac.bgu.cs.bp.bpjs.model.BThreadSyncSnapshot;
 import il.ac.bgu.cs.bp.bpjs.model.SyncStatement;
 import il.ac.bgu.cs.bp.bpjs.model.eventsets.EventSet;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
+import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeContinuation;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.Undefined;
 
 public class Step {
     private final BProgramSyncSnapshot bpss;
@@ -66,12 +71,28 @@ public class Step {
 		 */
        
         
-        Map<Object, Object> variables = new HashMap<Object, Object>();
+        Map<Object, Object> globalVariables = new HashMap<>();
+        Map<String, Map<Object, Object>> localVariables = new HashMap<>();
+       
+       
+        bpss.getBThreadSnapshots().forEach(s -> {
+        	NativeContinuation nc = ((NativeContinuation)s.getContinuation());
+	       	 Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
+	       	 getGlobalValues(nc, variables, globalVariables);
+	       	 Map<Object, Object> tmpLocal = new HashMap<>();
+	       	 for(Object var: variables.keySet()) {
+	       		 if(!globalVariables.containsKey(var))
+	       			 tmpLocal.put(var, variables.get(var));
+	       	 }
+	       	 localVariables.put(s.getName(), tmpLocal);
+        });
+               
+//        bpss.getBThreadSnapshots().forEach(s -> {
+//        	localVariables.putAll(s.getContinuationProgramState().getVisibleVariables());
+//        });
         
-        bpss.getBThreadSnapshots().forEach(s -> variables.putAll(s.getContinuationProgramState().getVisibleVariables()));
         
-        
-        Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData = new HashMap<>();
+//        Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData = new HashMap<>();
         
         
 //        int lineNumber = -1; // TODO get this number
@@ -93,7 +114,8 @@ public class Step {
 
         return new StepMessage(
                 new BProgramSyncSnapshotIO(bprog).serialize(bpss),
-                variables,
+                globalVariables,
+                localVariables,
                 requested.stream().map(BEvent::toString).collect(Collectors.toList()),
                 selectableEvents.stream().map(BEvent::toString).collect(Collectors.toList()),
                 wait.stream().map(Object::toString).collect(Collectors.toList()),
@@ -128,5 +150,33 @@ public class Step {
 
 	public BEvent getSelectedEvent() {
 		return selectedEvent;
+	}
+	
+	private void getGlobalValues(NativeContinuation nc,  Map<Object, Object> variables, Map<Object, Object> globalVariables) {
+        ScriptableObject current = nc;
+        ScriptableObject currentScope = nc;
+        try {
+            Context.enter();
+            while (current != null) {
+            	for(Object o: current.getIds())
+            		addVar(current, globalVariables, o, variables.get(o));
+                if (current.getPrototype() != null)
+                    current = (ScriptableObject) current.getPrototype();
+                else { // go to the next 
+                    current = (ScriptableObject) currentScope.getParentScope();
+                    currentScope = current;
+                }
+            }
+        } finally {
+            Context.exit();
+        }
+    }
+	
+	private void addVar(ScriptableObject current, Map<Object, Object> variables, Object var, Object val) {
+		if (!variables.containsKey(var) && !var.equals("bp")) {
+            Object variableContent = current.get(var);
+            if (variableContent instanceof Undefined) return;
+            variables.put(var, val);
+        }
 	}
 }
