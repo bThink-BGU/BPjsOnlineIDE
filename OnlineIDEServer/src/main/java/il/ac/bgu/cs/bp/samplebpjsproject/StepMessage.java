@@ -12,9 +12,7 @@ public class StepMessage {
 	private final byte[] bpss;
 	private List<Object> globalVars;
 	private List<Object> globalVals;
-	private List<String> bThreadNames;
-	private List<List<Object>> localVars;
-	private List<Object> localVals;
+	private List<BthreadInfo> bThreads;
 	private final List<String> reqList;
 	private final List<String> selectableEvents;
 	private final List<String> waitList;
@@ -22,8 +20,8 @@ public class StepMessage {
 	private final String selectedEvent;
 	
 	
-	public StepMessage(byte[] bpss, Map<Object, Object> globalVariables, 
-			Map<String, Map<Object, Object>> localVariables, List<String> reqList, List<String> selectableEvents, List<String> wait, List<String> block, String selectedEvent) {
+	public StepMessage(byte[] bpss, Map<Object, Object> globalVariables, List<BthreadInfo> bThreads, List<String> reqList, 
+			List<String> selectableEvents, List<String> wait, List<String> block, String selectedEvent) {
 		this.type = "step";
 		this.bpss = bpss;
 		this.reqList = reqList;
@@ -33,7 +31,6 @@ public class StepMessage {
 		this.selectedEvent = selectedEvent;
 		
 		handleGloablVarMap(globalVariables);
-		handleLocalVarMap(localVariables);
 	}
 
 	private void handleGloablVarMap(Map<Object, Object> variables) {
@@ -51,33 +48,33 @@ public class StepMessage {
 		}
 	}
 	
-	private void handleLocalVarMap(Map<String, Map<Object, Object>> variables) {
-		if (variables == null) {
-			this.localVars = null;
-			this.localVals = null;
-		}
-		else {
-			this.bThreadNames = new LinkedList<>();
-			this.localVars = new LinkedList<>();
-			this.localVals = new LinkedList<>();
-			for (Entry<String, Map<Object, Object>> entry: variables.entrySet()) {
-				this.bThreadNames.add(entry.getKey());
-				List<Object> vars = new LinkedList<>();
-				List<Object> vals = new LinkedList<>();
-				for(Entry<Object, Object> entry2: entry.getValue().entrySet()) {
-					vars.add(entry2.getKey());
-					vals.add(entry2.getValue());
-				}
-				this.localVars.add(vars);
-				this.localVals.add(vals);
-		    } 
-		}
-	}
+//	private void handleLocalVarMap(Map<String, Map<Object, Object>> variables) {
+//		if (variables == null) {
+//			this.localVars = null;
+//			this.localVals = null;
+//		}
+//		else {
+//			this.bThreadNames = new LinkedList<>();
+//			this.localVars = new LinkedList<>();
+//			this.localVals = new LinkedList<>();
+//			for (Entry<String, Map<Object, Object>> entry: variables.entrySet()) {
+//				this.bThreadNames.add(entry.getKey());
+//				List<Object> vars = new LinkedList<>();
+//				List<Object> vals = new LinkedList<>();
+//				for(Entry<Object, Object> entry2: entry.getValue().entrySet()) {
+//					vars.add(entry2.getKey());
+//					vals.add(entry2.getValue());
+//				}
+//				this.localVars.add(vars);
+//				this.localVals.add(vals);
+//		    } 
+//		}
+//	}
 	
 	
 	
 	public String toString() {
-		return "|" + bpss + "|\n|" + "|" + globalVars + "|\n|" + "|" + globalVals + "|\n|" + "|" + localVars + "|\n|" + "|" + localVals + 
+		return "|" + bpss + "|\n|" + "|" + globalVars + "|\n|" + "|" + globalVals + "|\n|" + "|" + 
 				"|\n|" + "|" + reqList + "|\n|" + "|" + selectableEvents + "|\n|" + "|" + waitList + "|\n|" + "|" + blockList + 
 				"|\n|" + selectedEvent + "|";
 	}

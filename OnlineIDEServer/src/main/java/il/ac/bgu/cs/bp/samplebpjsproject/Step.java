@@ -13,7 +13,6 @@ import il.ac.bgu.cs.bp.bpjs.model.eventsets.EventSet;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
@@ -29,8 +28,7 @@ public class Step {
     private final Set<BEvent> selectableEvents;
     private final BEvent selectedEvent;
 
-    private Step(ExecutorService execSvc, BProgram bprog, BProgramSyncSnapshot bProgramSyncSnapshot,
-                 BEvent selectedEvent) {
+    private Step(ExecutorService execSvc, BProgram bprog, BProgramSyncSnapshot bProgramSyncSnapshot, BEvent selectedEvent) {
         this.execSvc = execSvc;
         this.bprog = bprog;
         this.selectedEvent = selectedEvent;
@@ -40,11 +38,10 @@ public class Step {
 
     public static Step Deserialize(ExecutorService execSvc, BProgram bprog, byte[] bProgramSyncSnapshot)
             throws IOException, ClassNotFoundException {
-        if (bProgramSyncSnapshot != null) {
+        if (bProgramSyncSnapshot != null)
             return new Step(execSvc, bprog, new BProgramSyncSnapshotIO(bprog).deserialize(bProgramSyncSnapshot), null);
-        } else {
+        else
             return new Step(execSvc, bprog, null, null);
-        }
     }
 
     public Step step() throws InterruptedException {
@@ -71,20 +68,25 @@ public class Step {
 		 */
        
         
+        //idata -> firstLinePC
+        
         Map<Object, Object> globalVariables = new HashMap<>();
-        Map<String, Map<Object, Object>> localVariables = new HashMap<>();
+//        Map<String, Map<Object, Object>> localVariables = new HashMap<>();
+        List<BthreadInfo> bThreads = new LinkedList<>();
        
-       
-        bpss.getBThreadSnapshots().forEach(s -> {
+        
+        
+        bpss.getBThreadSnapshots().forEach(s -> { 
         	NativeContinuation nc = ((NativeContinuation)s.getContinuation());
-	       	 Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
-	       	 getGlobalValues(nc, variables, globalVariables);
-	       	 Map<Object, Object> tmpLocal = new HashMap<>();
-	       	 for(Object var: variables.keySet()) {
-	       		 if(!globalVariables.containsKey(var))
-	       			 tmpLocal.put(var, variables.get(var));
-	       	 }
-	       	 localVariables.put(s.getName(), tmpLocal);
+        	Object localShift = getLocalShift(nc.getImplementation());
+        	Object firstLinePC = getfirstLinePC(nc.getImplementation());
+        	Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
+	       	getGlobalValues(nc, variables, globalVariables);
+	       	Map<Object, Object> localVariables = new HashMap<>();
+	       	for(Object var: variables.keySet())
+	       		if(!globalVariables.containsKey(var))
+	       			localVariables.put(var, variables.get(var));
+	       	bThreads.add(new BthreadInfo(s.getName(), (int)firstLinePC, (int)localShift, localVariables));
         });
                
 //        bpss.getBThreadSnapshots().forEach(s -> {
@@ -115,7 +117,7 @@ public class Step {
         return new StepMessage(
                 new BProgramSyncSnapshotIO(bprog).serialize(bpss),
                 globalVariables,
-                localVariables,
+                bThreads,
                 requested.stream().map(BEvent::toString).collect(Collectors.toList()),
                 selectableEvents.stream().map(BEvent::toString).collect(Collectors.toList()),
                 wait.stream().map(Object::toString).collect(Collectors.toList()),
@@ -124,7 +126,31 @@ public class Step {
     }
 
 
-    private Object getValue(Object instance, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+    private Object getfirstLinePC(Object implementation) {
+    	Object firstLinePC = -1;
+    	try {
+    		Object idata = getValue(implementation, "idata");
+    		firstLinePC = getValue(idata, "firstLinePC");
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return firstLinePC;
+		
+	}
+
+	private Object getLocalShift(Object implementation) {
+    	Object localShift = -1;
+    	try {
+    		localShift = getValue(implementation, "localShift");
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return localShift;
+	}
+
+	private Object getValue(Object instance, String fieldName) throws NoSuchFieldException, IllegalAccessException {
         Field fld = instance.getClass().getDeclaredField(fieldName);
         fld.setAccessible(true);
         return fld.get(instance);
