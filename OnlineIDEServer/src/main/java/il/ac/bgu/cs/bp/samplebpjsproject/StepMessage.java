@@ -1,18 +1,15 @@
 package il.ac.bgu.cs.bp.samplebpjsproject;
 
-import il.ac.bgu.cs.bp.bpjs.internal.Pair;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class StepMessage {
 	private final String type;
 	private final byte[] bpss;
 	private List<Object> globalVars;
 	private List<Object> globalVals;
-	private List<BthreadInfo> bThreads;
+	private List<BThreadInfo> bThreads;
 	private final List<String> reqList;
 	private final List<String> selectableEvents;
 	private final List<String> waitList;
@@ -20,7 +17,7 @@ public class StepMessage {
 	private final String selectedEvent;
 	
 	
-	public StepMessage(byte[] bpss, Map<Object, Object> globalVariables, List<BthreadInfo> bThreads, List<String> reqList, 
+	public StepMessage(byte[] bpss, Map<Object, Object> globalVariables, List<BThreadInfo> bThreads, List<String> reqList, 
 			List<String> selectableEvents, List<String> wait, List<String> block, String selectedEvent) {
 		this.type = "step";
 		this.bpss = bpss;
@@ -29,6 +26,7 @@ public class StepMessage {
 		this.waitList = wait;
 		this.blockList = block;
 		this.selectedEvent = selectedEvent;
+		this.bThreads = bThreads;
 		
 		handleGloablVarMap(globalVariables);
 	}
@@ -48,35 +46,16 @@ public class StepMessage {
 		}
 	}
 	
-//	private void handleLocalVarMap(Map<String, Map<Object, Object>> variables) {
-//		if (variables == null) {
-//			this.localVars = null;
-//			this.localVals = null;
-//		}
-//		else {
-//			this.bThreadNames = new LinkedList<>();
-//			this.localVars = new LinkedList<>();
-//			this.localVals = new LinkedList<>();
-//			for (Entry<String, Map<Object, Object>> entry: variables.entrySet()) {
-//				this.bThreadNames.add(entry.getKey());
-//				List<Object> vars = new LinkedList<>();
-//				List<Object> vals = new LinkedList<>();
-//				for(Entry<Object, Object> entry2: entry.getValue().entrySet()) {
-//					vars.add(entry2.getKey());
-//					vals.add(entry2.getValue());
-//				}
-//				this.localVars.add(vars);
-//				this.localVals.add(vals);
-//		    } 
-//		}
-//	}
-	
-	
-	
 	public String toString() {
-		return "|" + bpss + "|\n|" + "|" + globalVars + "|\n|" + "|" + globalVals + "|\n|" + "|" + 
-				"|\n|" + "|" + reqList + "|\n|" + "|" + selectableEvents + "|\n|" + "|" + waitList + "|\n|" + "|" + blockList + 
-				"|\n|" + selectedEvent + "|";
+		String bThreadsString = "\nbThreadWasNull\n";
+		if(bThreads != null) {
+			bThreadsString = "";
+			for(BThreadInfo b: bThreads) {
+				bThreadsString += b.toString();
+			}
+		}
+		return "|" + bpss + "|\n|" + "|" + globalVars + "|\n|" + "|" + globalVals + "|\n|" + bThreadsString +
+				reqList + "|\n|" + "|" + selectableEvents + "|\n|" + "|" + waitList + "|\n|" + "|" + blockList +  "|\n|" + selectedEvent + "|";
 	}
 
 	

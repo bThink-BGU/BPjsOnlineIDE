@@ -18,43 +18,41 @@ export class WebSocketService {
   }
 
   public sendDataStep(type: string, debugStep: DebugStep) {
-    let gVars = [];
-    let gVals = [];
-    if (debugStep.globalVariables === undefined) {
-      gVars = undefined;
-      gVals = undefined;
+    const gv = this.mapVarsToLists(debugStep.globalVariables);
+
+    let bThreads = [];
+    if (debugStep.bThreads === undefined) {
+      bThreads = undefined;
     } else {
-      for (const key of debugStep.globalVariables.keys()) {
-        gVars.push(key);
-        gVals.push(debugStep.globalVariables.get(key));
+      for (let i = 0; i < debugStep.bThreads.length; i++) {
+        const b = debugStep.bThreads[i];
+        const lv = this.mapVarsToLists(b.localVariables);
+        bThreads.push({bThreadName: b.bThreadName, firstLinePC: b.firstLinePC, localShift: b.localShift,
+          localVars: lv[0], localVals: lv[1]});
       }
     }
 
-    let bThreadNames = [];
-    let lVars = [];
-    let lVals = [];
-    if (debugStep.localVariables === undefined) {
-      bThreadNames = undefined;
-      lVars = undefined;
-      lVals = undefined;
+
+    const response = {type: type, bpss: debugStep.bpss, globalVars: gv[0], globalVals: gv[1],
+      bThreads: bThreads, reqList: debugStep.reqList, selectableEvents: debugStep.selectableEvents,
+      waitList: debugStep.waitList, blockList: debugStep.blockList, selectedEvent: debugStep.selectedEvent};
+
+    this._webSocket.next(response);
+  }
+
+  private mapVarsToLists(map: Map<object, object>) {
+    let vars = [];
+    let vals = [];
+    if (map === undefined) {
+      vars = undefined;
+      vals = undefined;
     } else {
-      for (const key of debugStep.localVariables.keys()) {
-        bThreadNames.push(key);
-        const tmpVars = [];
-        const tmpVals = [];
-        for (const key2 of debugStep.localVariables.get(key)) {
-          tmpVars.push(key2);
-          tmpVals.push(debugStep.localVariables.get(key).get(key2));
-        }
-        lVars.push(tmpVars);
-        lVals.push(tmpVals);
+      for (const key of map.keys()) {
+        vars.push(key);
+        vals.push(map.get(key));
       }
     }
-
-    this._webSocket.next({type: type, bpss: debugStep.bpss, globalVars: gVars, globalVals: gVals,
-      bThreadNames: bThreadNames, localVars: lVars, localVals: lVals, reqList: debugStep.reqList,
-      selectableEvents: debugStep.selectableEvents, waitList: debugStep.waitList, blockList: debugStep.blockList,
-      selectedEvent: debugStep.selectedEvent});
+    return [vars, vals];
   }
 
   public getObservable() {

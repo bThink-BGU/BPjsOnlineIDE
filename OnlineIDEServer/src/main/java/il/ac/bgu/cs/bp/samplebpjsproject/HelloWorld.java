@@ -31,16 +31,22 @@ public class HelloWorld {
     	
     	Service service = new Service(null, execSvc);
     	
-    	String code = "//*****Hello BPjs World*****\r\n" + 
-    			"function foo() {\r\n" + 
-    			"    let y = 700;\r\n" + 
-    			"    //*****Hello BPjs World*****\r\n" + 
+    	String code = "let x = 1;\r\n" + 
+    			"\r\n" + 
+    			"bp.registerBThread(\"A\", function() {\r\n" + 
+    			"    let y = x++;\r\n" + 
+    			"    bp.sync({\r\n" + 
+    			"        request: bp.Event(x)});\r\n" + 
     			"    bp.sync({\r\n" + 
     			"        request: bp.Event(y)});\r\n" + 
-    			"}\r\n" + 
-    			"bp.registerBThread(\"ofek\", function() {\r\n" + 
-    			"    let y = 4;\r\n" + 
-    			"    foo();\r\n" + 
+    			"})\r\n" + 
+    			"\r\n" + 
+    			"bp.registerBThread(\"B\", function() {\r\n" + 
+    			"    let z = x++;\r\n" + 
+    			"    bp.sync({\r\n" + 
+    			"        request: bp.Event(x)});\r\n" + 
+    			"    bp.sync({\r\n" + 
+    			"        request: bp.Event(++z)});\r\n" + 
     			"})";
     	
     	service.init(code);

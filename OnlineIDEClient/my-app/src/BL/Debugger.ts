@@ -1,7 +1,7 @@
 import {BpService} from '../CL/BpService';
 import {DebugStep} from '../CL/DebugStep';
 import {BreakPoint} from './BreakPoint';
-import {translateStatement} from "@angular/compiler-cli/src/ngtsc/translator";
+import {BThreadInfo} from '../CL/BThreadInfo';
 
 export class Debugger {
   private _stepTrace: DebugStep[];
@@ -49,8 +49,9 @@ export class Debugger {
 
   stepBackToIndex(stepNumber: number) {
     // Check the cases: i) length = 0, ii) stepNumber < 0, iii) this._stepTrace.length - stepNumber < 0
-    if (stepNumber <= 0)
+    if (stepNumber <= 0) {
       return;
+    }
     this._stepTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
     this._eventTrace.splice(stepNumber, this._eventTrace.length - stepNumber);
     this._stdout = '';
@@ -67,14 +68,15 @@ export class Debugger {
   }
 
   postStep(response) {
-    if (this._programEnded) // The program ended
+    window.alert('response:' + JSON.stringify(response.bThreads));
+    if (this._programEnded) { // The program ended
       return;
+    }
     if (this.isFinished(response)) { // The program finished
       this._stdout += '\n' + 'The Program Ended';
       this._programEnded = true;
     } else {
-      this._stepTrace.push(new DebugStep(response.bpss, this.toGVarsMap(response), this.toLVarsMap(response),
-        response.reqList, response.selectableEvents, response.waitList, response.blockList, response.selectedEvent));
+      this._stepTrace.push(this.buildDebugStep(response));
       if (response.selectedEvent !== undefined) {
         this._eventTrace.push(response.selectedEvent);
         this._stdout += '\n' + response.selectedEvent;
@@ -84,13 +86,24 @@ export class Debugger {
     }
   }
 
+  private buildDebugStep(response) {
+    const bThreadsResponse = response.bThreads;
+    const bThreads = [];
+    for (let i = 0; i < bThreadsResponse.length; i++) {
+      const bThreadInfo = new BThreadInfo(bThreadsResponse[i].bThreadName, bThreadsResponse[i].firstLinePC,
+        bThreadsResponse[i].localShift, this.toVarsMap(bThreadsResponse[i].localVars, bThreadsResponse[i].localVals));
+      bThreads.push(bThreadInfo);
+    }
+    return new DebugStep(response.bpss, this.toVarsMap(response.globalVars, response.globalVals), bThreads,
+      response.reqList, response.selectableEvents, response.waitList, response.blockList, response.selectedEvent);
+  }
+
   getLastStep() {
     if (!(this._stepTrace.length === 0)) {
       return this._stepTrace[this._stepTrace.length - 1];
-    }
-    else {
+    } else {
       return new DebugStep(undefined, new Map<object, object>(),
-        new Map<string, Map<object, object>>(), [], [], [],
+        [], [], [], [],
         [], '');
     }
   }
@@ -102,28 +115,15 @@ export class Debugger {
       response.blockList === undefined && response.selectedEvent === undefined;
   }
 
-  private toGVarsMap(response: any) {
-    if (response.globalVars === undefined || response.globalVals === undefined)
+  private toVarsMap(vars, vals) {
+    if (vars === undefined || vals === undefined) {
       return undefined;
-    const gVariables = new Map();
-    for (let i = 0; i < response.globalVars.length; i++) {
-      gVariables.set(response.globalVars[i], response.globalVals[i]);
     }
-    return gVariables;
-  }
-
-  private toLVarsMap(response: any) {
-    if (response.bThreadNames === undefined || response.localVars === undefined || response.localVals === undefined)
-      return undefined;
-    const lVariables = new Map();
-    const tmpLVariables = new Map();
-    for (let i = 0; i < response.bThreadNames.length; i++) {
-      for (let j = 0; j < response.localVars[i].length; j++){
-        tmpLVariables.set(response.localVars[i][j], response.localVals[i][j]);
-      }
-      lVariables.set(response.bThreadNames[i], tmpLVariables);
+    const variables = new Map();
+    for (let i = 0; i < vars.length; i++) {
+      variables.set(vars[i], vals[i]);
     }
-    return lVariables;
+    return variables;
   }
 
   get stepTrace(): DebugStep[] {

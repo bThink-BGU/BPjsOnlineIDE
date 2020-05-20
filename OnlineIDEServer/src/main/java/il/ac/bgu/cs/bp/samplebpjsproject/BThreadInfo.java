@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class BthreadInfo {
+public class BThreadInfo {
 	
-	String bThreadName;
-	int firstLinePC;
-	int localShift;
-	List<Object> localVars;
-	List<Object> localVals;
+	private String bThreadName;
+	private int firstLinePC;
+	private int localShift;
+	private List<Object> localVars;
+	private List<Object> localVals;
 	
-	public BthreadInfo(String bThreadName, int firstLinePC, int localShift, Map<Object, Object> variables) {
+	public BThreadInfo(String bThreadName, int firstLinePC, int localShift, Map<Object, Object> variables) {
 		this.bThreadName = bThreadName;
 		this.firstLinePC = firstLinePC;
 		this.localShift = localShift;
@@ -35,6 +35,8 @@ public class BthreadInfo {
 		}
 	}
 	
-	
+	public String toString() {
+		return "\n|" + bThreadName + "|\n|" + firstLinePC + "|\n|" + localShift + "|\n|" + localVars + "|\n|" + localVals + "|\n|";
+	}
 	
 }

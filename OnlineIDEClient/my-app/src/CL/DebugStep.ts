@@ -1,3 +1,4 @@
+import {BThreadInfo} from "./BThreadInfo";
 
 
 export class DebugStep {
@@ -5,22 +6,20 @@ export class DebugStep {
   private readonly _type: string;
   private readonly _bpss: any[];
   private readonly _globalVariables: Map<object, object>;
-  private readonly _localVariables: Map<string, Map<object, object>>;
-  // private readonly _bThreadDebugData: any[];
-  // private readonly _globalVariables: Map<string, string>;
+  private readonly _bThreads: BThreadInfo[];
   private readonly _reqList: string[];
   private readonly _selectableEvents: string[];
   private readonly _waitList: string[];
   private readonly _blockList: string[];
   private readonly _selectedEvent: string;
 
-  constructor(bpss: any[], gVariables: Map<object, object>, lVariables: Map<string, Map<object, object>>,
+  constructor(bpss: any[], gVariables: Map<object, object>, bThreads: BThreadInfo[],
               reqList: string[], selectableEvents: string[], waitList: string[], blockList: string[],
               selectedEvent: string) {
     this._type = 'step';
     this._bpss = bpss;
     this._globalVariables = gVariables;
-    this._localVariables = lVariables;
+    this._bThreads = bThreads;
     this._reqList = reqList; // BpEvents' list
     this._selectableEvents = selectableEvents;
     this._waitList = waitList; // BpEvents' list
@@ -37,13 +36,9 @@ export class DebugStep {
     return this._bpss;
   }
 
-  // get bThreadDebugData(): any[] {
-  //   return this._bThreadDebugData;
-  // }
-  //
-  // get globalVariables(): any[] {
-  //   return this._globalVariables;
-  // }
+  get bThreads(): BThreadInfo[] {
+    return this._bThreads;
+  }
 
   get reqList(): string[] {
     return this._reqList;
@@ -67,10 +62,6 @@ export class DebugStep {
 
   get globalVariables(): Map<object, object> {
     return this._globalVariables;
-  }
-
-  get localVariables(): Map<string, Map<object, object>> {
-    return this._localVariables;
   }
 }
 

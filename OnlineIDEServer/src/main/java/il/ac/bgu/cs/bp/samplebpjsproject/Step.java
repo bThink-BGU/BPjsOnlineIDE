@@ -59,20 +59,9 @@ public class Step {
         List<EventSet> wait = bpss.getStatements().stream().map(SyncStatement::getWaitFor).collect(Collectors.toList());
         List<EventSet> blocked = bpss.getStatements().stream().map(SyncStatement::getBlock).collect(Collectors.toList());
         List<BEvent> requested = bpss.getStatements().stream().map(SyncStatement::getRequest).flatMap(Collection::stream).collect(Collectors.toList());
-
-        // the following map structure is:
-		/*
-		Key = bthread name
-		Value.Left = Current row
-		Value.Right = Map of stack variables, with the following structure: Key = variable name, Value = variable value (as json string)
-		 */
-       
-        
-        //idata -> firstLinePC
         
         Map<Object, Object> globalVariables = new HashMap<>();
-//        Map<String, Map<Object, Object>> localVariables = new HashMap<>();
-        List<BthreadInfo> bThreads = new LinkedList<>();
+        List<BThreadInfo> bThreads = new LinkedList<>();
        
         
         
@@ -86,34 +75,9 @@ public class Step {
 	       	for(Object var: variables.keySet())
 	       		if(!globalVariables.containsKey(var))
 	       			localVariables.put(var, variables.get(var));
-	       	bThreads.add(new BthreadInfo(s.getName(), (int)firstLinePC, (int)localShift, localVariables));
+	       	bThreads.add(new BThreadInfo(s.getName(), (int)firstLinePC, (int)localShift, localVariables));
         });
-               
-//        bpss.getBThreadSnapshots().forEach(s -> {
-//        	localVariables.putAll(s.getContinuationProgramState().getVisibleVariables());
-//        });
-        
-        
-//        Map<String, Pair<Integer, Map<Object, Object>>> bThreadDebugData = new HashMap<>();
-        
-        
-//        int lineNumber = -1; // TODO get this number
-//        
-//        bpss.getBThreadSnapshots().forEach(s -> {
-//        	Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
-//        	bThreadDebugData.put(s.getName(), new Pair<>(lineNumber, variables));
-//        });
-                        
-        
-//		bpss.getBThreadSnapshots().forEach(s-> {
-//			// to find the stack variables and the current line, you need to dig in the continuation object
-//			// to see how to work with this object, take a look at https://github.com/bThink-BGU/BPjs/blob/develop/src/main/java/il/ac/bgu/cs/bp/bpjs/model/internal/ContinuationProgramState.java
-//			Object continuation = ((NativeContinuation)s.getContinuation()).getImplementation();
-//			int lineNumber = -1;
-//			Map<Object, Object> bthreadVariables = new HashMap<>();
-//			bThreadDebugData.put(s.getName(), new Pair<Integer, Map<Object, Object>>(lineNumber, bthreadVariables));
-//		});        
-
+           
         return new StepMessage(
                 new BProgramSyncSnapshotIO(bprog).serialize(bpss),
                 globalVariables,
