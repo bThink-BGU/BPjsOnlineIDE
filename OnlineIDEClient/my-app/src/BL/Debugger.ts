@@ -68,7 +68,6 @@ export class Debugger {
   }
 
   postStep(response) {
-    window.alert('response:' + JSON.stringify(response.bThreads));
     if (this._programEnded) { // The program ended
       return;
     }
