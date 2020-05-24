@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
+import org.mozilla.javascript.NativeContinuation;
 import org.w3c.dom.css.Counter;
 
 import com.bpjs.onlineide.Server;
 
 import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
 import il.ac.bgu.cs.bp.bpjs.internal.Pair;
+import il.ac.bgu.cs.bp.bpjs.model.BThreadSyncSnapshot;
 
 /**
  * Simple class running a BPjs program that selects "hello world" events.
@@ -20,40 +22,31 @@ import il.ac.bgu.cs.bp.bpjs.internal.Pair;
  */
 public class HelloWorld {
     
+	private static Service service;
+	private static Step currStep;
+	private static StepMessage currStepMess;
+	
     public static void main(String[] args) throws InterruptedException {
-    	
-    	
-      	
-    	
   
     	ExecutorService execSvc = ExecutorServiceMaker.makeWithName("executor");
 
     	
-    	Service service = new Service(null, execSvc);
+    	service = new Service(null, execSvc);
     	
-    	String code = "let x = 1;\r\n" + 
+    	String code = "//*****Hello BPjs World*****\r\n" + 
     			"\r\n" + 
-    			"bp.registerBThread(\"A\", function() {\r\n" + 
-    			"    let y = x++;\r\n" + 
+    			"bp.registerBThread(function() {\r\n" + 
     			"    bp.sync({\r\n" + 
-    			"        request: bp.Event(x)});\r\n" + 
+    			"        request: bp.Event(\"OFEK1\")});\r\n" + 
     			"    bp.sync({\r\n" + 
-    			"        request: bp.Event(y)});\r\n" + 
-    			"})\r\n" + 
-    			"\r\n" + 
-    			"bp.registerBThread(\"B\", function() {\r\n" + 
-    			"    let z = x++;\r\n" + 
-    			"    bp.sync({\r\n" + 
-    			"        request: bp.Event(x)});\r\n" + 
-    			"    bp.sync({\r\n" + 
-    			"        request: bp.Event(++z)});\r\n" + 
+    			"        request: bp.Event(\"OFEK2\")});\r\n" + 
     			"})";
     	
     	service.init(code);
     	
     	
   	
-    	StepMessage stepMessage = new StepMessage(null, null, null, null, null, null, null, null);
+    	currStepMess = new StepMessage(null, null, null, null, null, null, null, null);
     	
     	int counter = 0;
     	
@@ -63,16 +56,25 @@ public class HelloWorld {
 //    			stepMessage = service.step(stepMessage);
 //    		} while(counter++ < 3);
     		
-    		stepMessage = service.step(stepMessage);
+    		currStepMess = service.step(currStepMess);
+    		currStepMess = service.step(currStepMess);
+//    		StepMessage stepMessage2 = service.step(stepMessage);
 //    		stepMessage = service.step(stepMessage);
 //    		stepMessage = service.step(stepMessage);
 //    		stepMessage = service.step(stepMessage);
 //    		stepMessage = service.step(stepMessage);
-//    		stepMessage = service.step(stepMessage);
+    		
+    	
+//    		NativeContinuation nc1 = NC(currStepMess);
+//    		NativeContinuation nc2 = NC(currStepMess);
+//    		NativeContinuation nc3 = NC(currStepMess);
+//    		
+//    		Object imp1 = nc1.getImplementation();
+//    		Object imp2 = nc2.getImplementation();
     		
     		
     		System.out.println("-----------------------------");
-    		System.out.println(stepMessage.toString());
+    		System.out.println(currStepMess.toString());
     		System.out.println("-----------------------------");
 //    		
 //    		System.out.println("first step done\n");
@@ -94,5 +96,17 @@ public class HelloWorld {
 			System.out.println("here");
 		}
     	
-    }    
+    } 
+    
+    private static NativeContinuation NC(StepMessage stepMessage) throws ClassNotFoundException, IOException, InterruptedException {
+    	Step s = Step.Deserialize(service.getExecSvc(), service.getBprog(), stepMessage.getBpss());
+		currStep = s.step();
+		currStepMess = currStep.toStepMessage();
+		
+		for(BThreadSyncSnapshot ss: currStep.getBpss().getBThreadSnapshots()) {
+        	NativeContinuation nc = ((NativeContinuation)ss.getContinuation());
+        	return nc;
+        }
+		return null;
+    } 
 }
