@@ -1,6 +1,7 @@
 import {BpService} from '../CL/BpService';
 import {DebugStep} from '../CL/DebugStep';
 import {BreakPoint} from './BreakPoint';
+import {BThreadInfo} from '../CL/BThreadInfo';
 
 export class Debugger {
   private _stepTrace: DebugStep[];
@@ -34,7 +35,7 @@ export class Debugger {
   step() {
     const traceLength = this._stepTrace.length;
     const debugStep = traceLength === 0 ? new DebugStep(undefined, undefined, undefined,
-      undefined, undefined, undefined, undefined) :
+      undefined, undefined, undefined, undefined, undefined) :
       this._stepTrace[traceLength - 1];
     this._bpService.stepCL(debugStep);
   }
@@ -48,8 +49,9 @@ export class Debugger {
 
   stepBackToIndex(stepNumber: number) {
     // Check the cases: i) length = 0, ii) stepNumber < 0, iii) this._stepTrace.length - stepNumber < 0
-    if (stepNumber <= 0)
+    if (stepNumber <= 0) {
       return;
+    }
     this._stepTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
     this._eventTrace.splice(stepNumber, this._eventTrace.length - stepNumber);
     this._stdout = '';
@@ -66,14 +68,14 @@ export class Debugger {
   }
 
   postStep(response) {
-    if (this._programEnded) // The program ended
+    if (this._programEnded) { // The program ended
       return;
+    }
     if (this.isFinished(response)) { // The program finished
       this._stdout += '\n' + 'The Program Ended';
       this._programEnded = true;
     } else {
-      this._stepTrace.push(new DebugStep(response.bpss, this.toVarsMap(response), response.reqList,
-        response.selectableEvents, response.waitList, response.blockList, response.selectedEvent));
+      this._stepTrace.push(this.buildDebugStep(response));
       if (response.selectedEvent !== undefined) {
         this._eventTrace.push(response.selectedEvent);
         this._stdout += '\n' + response.selectedEvent;
@@ -83,12 +85,24 @@ export class Debugger {
     }
   }
 
+  private buildDebugStep(response) {
+    const bThreadsResponse = response.bThreads;
+    const bThreads = [];
+    for (let i = 0; i < bThreadsResponse.length; i++) {
+      const bThreadInfo = new BThreadInfo(bThreadsResponse[i].bThreadName, bThreadsResponse[i].firstLinePC,
+        bThreadsResponse[i].localShift, this.toVarsMap(bThreadsResponse[i].localVars, bThreadsResponse[i].localVals));
+      bThreads.push(bThreadInfo);
+    }
+    return new DebugStep(response.bpss, this.toVarsMap(response.globalVars, response.globalVals), bThreads,
+      response.reqList, response.selectableEvents, response.waitList, response.blockList, response.selectedEvent);
+  }
+
   getLastStep() {
     if (!(this._stepTrace.length === 0)) {
       return this._stepTrace[this._stepTrace.length - 1];
-    }
-    else {
-      return new DebugStep(undefined, new Map<object, object>(), [], [], [],
+    } else {
+      return new DebugStep(undefined, new Map<object, object>(),
+        [], [], [], [],
         [], '');
     }
   }
@@ -100,12 +114,13 @@ export class Debugger {
       response.blockList === undefined && response.selectedEvent === undefined;
   }
 
-  private toVarsMap(response: any) {
-    if (response.vars === undefined || response.vals === undefined)
+  private toVarsMap(vars, vals) {
+    if (vars === undefined || vals === undefined) {
       return undefined;
+    }
     const variables = new Map();
-    for (let i = 0; i < response.vars.length; i++) {
-      variables.set(response.vars[i], response.vals[i]);
+    for (let i = 0; i < vars.length; i++) {
+      variables.set(vars[i], vals[i]);
     }
     return variables;
   }
