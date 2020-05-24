@@ -14,12 +14,18 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { SharedService } from "./data.service";
+import { LayoutModule } from '@progress/kendo-angular-layout';
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {SideRightComponent} from "./side-right/side-right.component";
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SideComponent,
+    SideRightComponent,
     HeaderComponent,
     CodeEditorComponent,
     SaveFileDialogComponent
@@ -33,7 +39,11 @@ import { SharedService } from "./data.service";
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LayoutModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatToolbarModule
   ],
   entryComponents: [
     SaveFileDialogComponent

@@ -35,43 +35,48 @@
 <ng-template #debug>
   <clr-tabs>
     <clr-tab class="nav-link">
-      <button clrTabLink>Request</button>
+      <button clrTabLink>Request / Request & Block</button>
       <ng-template [(clrIfActive)]="Request">
         <clr-tab-content>
           <div class="list-container">
             <tr *ngFor="let rqst of request">
-              <td>{{rqst}}</td>
+              <ng-container *ngIf="selectable.includes(rqst); else elseBlock;">
+                <td>☑ {{rqst}}</td>
+              </ng-container>
+              <ng-template #elseBlock>
+                <td>☐ {{rqst}}</td>
+              </ng-template>
             </tr>
           </div>
         </clr-tab-content>
       </ng-template>
     </clr-tab>
 
-    <clr-tab >
-      <button clrTabLink>Block</button>
-      <ng-template [(clrIfActive)]="Block">
-        <clr-tab-content>
-          <div class="list-container">
-            <tr *ngFor="let blck of block">
-              <td>{{blck}}</td>
-            </tr>
-          </div>
-        </clr-tab-content>
-      </ng-template>
-    </clr-tab>
+<!--    <clr-tab >-->
+<!--      <button clrTabLink>Block</button>-->
+<!--      <ng-template [(clrIfActive)]="Block">-->
+<!--        <clr-tab-content>-->
+<!--          <div class="list-container">-->
+<!--            <tr *ngFor="let blck of block">-->
+<!--              <td>{{blck}}</td>-->
+<!--            </tr>-->
+<!--          </div>-->
+<!--        </clr-tab-content>-->
+<!--      </ng-template>-->
+<!--    </clr-tab>-->
 
-    <clr-tab>
-      <button clrTabLink>Wait</button>
-      <ng-template [(clrIfActive)]="Wait">
-        <clr-tab-content>
-          <div class="list-container">
-            <tr *ngFor="let wt of wait">
-              <td>{{wt}}</td>
-            </tr>
-          </div>
-        </clr-tab-content>
-      </ng-template>
-    </clr-tab>
+<!--    <clr-tab>-->
+<!--      <button clrTabLink>Wait</button>-->
+<!--      <ng-template [(clrIfActive)]="Wait">-->
+<!--        <clr-tab-content>-->
+<!--          <div class="list-container">-->
+<!--            <tr *ngFor="let wt of wait">-->
+<!--              <td>{{wt}}</td>-->
+<!--            </tr>-->
+<!--          </div>-->
+<!--        </clr-tab-content>-->
+<!--      </ng-template>-->
+<!--    </clr-tab>-->
   </clr-tabs>
 
   <!--<section class="sidenav-content">-->

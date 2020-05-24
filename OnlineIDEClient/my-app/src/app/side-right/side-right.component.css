@@ -1,0 +1,39 @@
+/*Variables Section*/
+
+div.list-container-variables{
+  height: 200px;
+  overflow: auto;
+  border: solid 0.1px #c2ccbf;
+  outline: none;
+}
+
+#Lvariables {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  outline: none;
+}
+
+#Lvariables td, #Lvariables th {
+  border: 0.2px solid #c2ccbf;
+  text-align: center;
+  color: #000000;
+}
+
+#Lvariables tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+#Lvariables tr:hover {
+  background-color: #f6af41;
+}
+
+#Lvariables th {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  text-align: center;
+  background-color: #000000;
+  border-bottom: solid 0.1px #c2ccbf;
+  color: #EC8C23;
+}
+

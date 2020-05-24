@@ -27,7 +27,7 @@ describe('code editor tests', () => {
     fixture.debugElement.nativeElement.remove();
     fixture.destroy();
   });
-
+  //7.1
   it('should instantiate the component and code editor with the wanted code', () => {
     expect(fixture.debugElement.query(By.css('#editor')).nativeElement).toBeTruthy(); // shows up on view
     expect(fixture.debugElement.query(By.css('textarea.outputStyle')).nativeElement).toBeTruthy(); // shows up on view
@@ -38,7 +38,7 @@ describe('code editor tests', () => {
       '  bp.sync({request:bp.Event("world")});\n' +
       '})');
   });
-
+  //7.2
   it('should bind the shared code and the editor value', () => {
     sharedService.sharedCodeEditor.setValue('test');
     expect(sharedService.sharedCode).toBe('test');

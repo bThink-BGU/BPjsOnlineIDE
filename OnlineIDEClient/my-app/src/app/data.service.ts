@@ -28,44 +28,6 @@ export class SharedService {
     this.sharedProgram  = new Program('ws://localhost:8080/OnlineIDEServer/api');
   }
 
-  trace = [
-    {name:'Superman'},
-    {name:'Batman'},
-    {name:'BatGirl'},
-    {name:'Robin'},
-    {name:'Flash'},
-    {name:'Superman'},
-    {name:'BatGirl'},
-    {name:'Robin'},
-    {name:'Flash'},
-    {name:'Superman'},
-    {name:'BatGirl'},
-    {name:'Robin'},
-    {name:'Flash'},
-    {name:'Superman'}
-  ];
-  request = [
-    {name:'-Superman'},
-    {name:'-Batman'},
-    {name:'-BatGirl'},
-    {name:'-Robin'},
-    {name:'-Flash'},
-    {name:'-Superman'},
-    {name:'-BatGirl'},
-    {name:'-Robin'},
-    {name:'-Flash'},
-    {name:'-Superman'},
-    {name:'-BatGirl'},
-    {name:'-Robin'},
-    {name:'-Flash'},
-    {name:'-Superman'}
-  ];
-  block = [
-    {name:'Superman'},
-    {name:'Batman'},
-    {name:'BatGirl'},
-    {name:'Robin'}
-  ];
   wait = [
     {name:'hello'},
     {name:'Worls'},
@@ -79,24 +41,8 @@ export class SharedService {
     {name:'s'},{name:'hello'},
     {name:'Worls'},
     {name:'Stop'},
-    {name:'longLongLongLongLongLongEvent'},
+    {name:'longLongLongLodddddddddddddddddddddddngLongLongEvent'},
     {name:'s'}
-  ];
-  variables = [
-    {id: 1, name:'x'},
-    {id: 2, name:'Batman'},
-    {id: 5, name:'amir'},
-    {id: 3, name:'Robin'},
-    {id: 4, name:'y'},
-    {id: 1, name:'Superman'},
-    {id: '2x+5', name:'Batman'},
-    {id: 500, name:'helloWorld'},
-    {id: '2a', name:'Robin'},
-    {id: 4000, name:'Flash'},
-    {id: 0.9, name:'guy'},
-    {id: 200, name:'Batman'},
-    {id: 5, name:'ofek'},
-    {id: 3, name:'Robin'},
   ];
 
   sentence = [

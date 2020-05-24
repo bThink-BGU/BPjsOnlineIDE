@@ -1,27 +1,59 @@
-<div id="editor"></div>
+<div id="editor" style="height: 70%;"></div>
 
-<div class="label-box border">
-  <span class="mx-4 font-weight-light">Output</span>
-</div>
+<!--<div class="label-box border">-->
+<!--  <span class="mx-4 font-weight-light">Output</span>-->
+<!--</div>-->
 
-<div *ngIf="!staticDebugger">
-<textarea
-  id="run_textarea"
-  class="form-control outputStyle"
-  rows="6"
-  disabled
-  aria-label="output-textarea">
-  {{output}}
-  </textarea>
-</div>
+<mat-tab-group style="height: 40%">
+  <mat-tab label="Output">
+    <ng-template matTabContent>
+    <div *ngIf="!staticDebugger">
+      <textarea
+        id="run_textarea"
+        class="form-control outputStyle"
+        rows="6"
+        disabled
+        aria-label="output-textarea">
+        {{output}}
+      </textarea>
+    </div>
+    <div *ngIf="staticDebugger">
+      <textarea
+        id="debug_textarea"
+        class="form-control outputStyle"
+        rows="6"
+        disabled
+        aria-label="output-textarea">
+        {{outputDebug}}
+      </textarea>
+    </div>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Variables" *ngIf="staticDebugger" >
+    <ng-template matTabContent>
+      <div style="height: 200px">
+        <table id="variables">
+          <tr>
+            <th width="25%">BT Name</th>
+            <th width="25%">G\L</th>
+            <th width="25%">Variable</th>
+            <th width="25%">Value</th>
+          </tr>
+          <tr *ngFor="let x of LIST">
+            <ng-container *ngIf="LIST.includes(x)">
+              <td width="25%">{{x.name}}</td>
+              <td width="25%">{{x.name}}</td>
+              <td width="25%">{{x.name}}</td>
+              <td width="25%">{{x.name}}</td>
+            </ng-container>
+          </tr>
+        </table>
+      </div>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
 
-<div *ngIf="staticDebugger">
-<textarea
-  id="debug_textarea"
-  class="form-control outputStyle"
-  rows="6"
-  disabled
-  aria-label="output-textarea">
-  {{outputDebug}}
-  </textarea>
-</div>
+
+
+
+

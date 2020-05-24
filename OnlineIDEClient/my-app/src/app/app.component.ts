@@ -20,4 +20,8 @@ export class AppComponent implements AfterViewInit {
     this.sharedService.sharedProgram.subscribeOutputStream(this.sharedService);
   }
 
+  get staticDebugger() {
+    return this.sharedService.sharedDebuggerMode;
+  }
+
 }

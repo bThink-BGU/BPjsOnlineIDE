@@ -20,31 +20,44 @@
   </div>
 
   <div class="header-actions">
-    <a href="javascript://" (click)="setting()" class="nav-link nav-icon" aria-label="settings">
-      <clr-icon shape="cog"></clr-icon>
-    </a>
+    <clr-dropdown [clrCloseMenuOnItemClick]="false">
+      <button clrDropdownTrigger>
+<!--              aria-label="Dropdown demo button">-->
+        <clr-icon shape="caret down"></clr-icon>
+        <clr-icon shape="wand" style="color: #fd7104" size="30"></clr-icon>
+      </button>
+      <clr-dropdown-menu clrPosition="bottom-right" *clrIfOpen>
+        <label class="dropdown-header" aria-hidden="true">THEMES</label>
+        <div (click)="theme(1)" clrDropdownItem>Black Theme</div>
+        <div (click)="theme(2)" clrDropdownItem>White Theme</div>
+        <div (click)="theme(3)" clrDropdownItem>Dark Theme</div>
+        <div (click)="theme(4)" clrDropdownItem>Solarized Light Theme</div>
+        <div (click)="theme(5)" clrDropdownItem>Terminal Theme</div>
+        <div (click)="theme(6)" clrDropdownItem>Ambiance Theme</div>
+      </clr-dropdown-menu>
+    </clr-dropdown>
   </div>
 </header>
 
-<nav class="subnav">
-  <clr-tabs>
-    <clr-tab>
-      <button clrTabLink (click)="theme(1)">Black Theme</button>
-    </clr-tab>
-    <clr-tab>
-      <button clrTabLink (click)="theme(2)">White Theme</button>
-    </clr-tab>
-    <clr-tab>
-      <button clrTabLink (click)="theme(3)">Dark Theme</button>
-    </clr-tab>
-    <clr-tab>
-      <button clrTabLink (click)="theme(4)">Solarized Light Theme</button>
-    </clr-tab>
-    <clr-tab>
-      <button clrTabLink (click)="theme(5)">Terminal Theme</button>
-    </clr-tab>
-    <clr-tab>
-      <button clrTabLink (click)="theme(6)">Ambiance Theme</button>
-    </clr-tab>
-  </clr-tabs>
-</nav>
+<!--<nav class="subnav">-->
+<!--  <clr-tabs>-->
+<!--    <clr-tab>-->
+<!--      <button clrTabLink (click)="theme(1)">Black Theme</button>-->
+<!--    </clr-tab>-->
+<!--    <clr-tab>-->
+<!--      <button clrTabLink (click)="theme(2)">White Theme</button>-->
+<!--    </clr-tab>-->
+<!--    <clr-tab>-->
+<!--      <button clrTabLink (click)="theme(3)">Dark Theme</button>-->
+<!--    </clr-tab>-->
+<!--    <clr-tab>-->
+<!--      <button clrTabLink (click)="theme(4)">Solarized Light Theme</button>-->
+<!--    </clr-tab>-->
+<!--    <clr-tab>-->
+<!--      <button clrTabLink (click)="theme(5)">Terminal Theme</button>-->
+<!--    </clr-tab>-->
+<!--    <clr-tab>-->
+<!--      <button clrTabLink (click)="theme(6)">Ambiance Theme</button>-->
+<!--    </clr-tab>-->
+<!--  </clr-tabs>-->
+<!--</nav>-->

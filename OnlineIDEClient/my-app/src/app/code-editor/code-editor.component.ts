@@ -8,7 +8,6 @@ import 'ace-builds/src-noconflict/ext-language_tools'; // for auto-completion on
 import 'ace-builds/webpack-resolver'; // for syntax checking to work properly
 import {SharedService} from "../data.service";
 
-
 @Component({
   selector: 'app-code-editor',
   templateUrl: './code-editor.component.html',
@@ -17,12 +16,13 @@ import {SharedService} from "../data.service";
 
 export class CodeEditorComponent implements AfterViewInit {
 
+
   private _codeEditor: Ace.Editor;
   private _breakpoints: {};
 
   get output() {
     let textarea = document.getElementById('run_textarea');
-    textarea.scrollTop = textarea.scrollHeight;
+   // textarea.scrollTop = textarea.scrollHeight;
     return this.sharedService.sharedProgram.runner.stdout;
   }
 
@@ -30,6 +30,10 @@ export class CodeEditorComponent implements AfterViewInit {
     let textarea = document.getElementById('debug_textarea');
     textarea.scrollTop = textarea.scrollHeight;
     return this.sharedService.sharedProgram.debugger.stdout;
+  }
+
+  get LIST(){
+    return this.sharedService.wait;
   }
 
   get staticDebugger() {
@@ -72,8 +76,8 @@ export class CodeEditorComponent implements AfterViewInit {
       highlightActiveLine: true,
       autoScrollEditorIntoView: true,
       showFoldWidgets: true,
-      minLines: 14,
-      maxLines: 14,
+      minLines: 18,
+      maxLines: 20 ,
       fontSize: 16,
     };
     const extraEditorOptions = {

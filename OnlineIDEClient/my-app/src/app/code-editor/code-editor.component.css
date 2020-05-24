@@ -1,4 +1,3 @@
-
 #editor {
   margin-left: auto;
   width: 100%;
@@ -16,6 +15,52 @@
 }
 
 .outputStyle{
-  color: #24fcf5;
-  resize: none;
+  color: #fd7104;
+  /*resize: none;*/
 }
+::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+  min-width: 4px!important;
+  /*padding: 3px!important;*/
+  /*margin: 3px!important;*/
+  color: black;
+  height: 25px!important;
+}
+
+::ng-deep .mat-ink-bar {
+  background-color:#fd7104 !important;}
+
+
+#variables {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  outline: none;
+  overflow: auto;
+  table-layout: fixed;
+}
+
+#variables td, #variables th {
+  border: 0.2px solid #c2ccbf;
+  text-align: center;
+  color: #000000;
+  overflow: auto;
+}
+
+#variables tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+#variables tr:hover {
+  background-color: #f6af41;
+}
+
+#variables th {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  text-align: center;
+  background-color: #000000;
+  border-bottom: solid 0.1px #c2ccbf;
+  color: #EC8C23;
+}
+
+
