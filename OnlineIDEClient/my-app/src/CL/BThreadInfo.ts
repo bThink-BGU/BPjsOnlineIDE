@@ -6,7 +6,6 @@ export class BThreadInfo {
   private _localShift: number;
   private _localVariables: Map<object, object>;
 
-
   constructor(bThreadName: string, firstLinePC: number, localShift: number, localVariables: Map<object, object>) {
     this._bThreadName = bThreadName;
     this._firstLinePC = firstLinePC;
@@ -29,5 +28,40 @@ export class BThreadInfo {
 
   get localVariables(): Map<object, object> {
     return this._localVariables;
+  }
+
+  getNextSync(code: string) {
+    const currCode = this.getLineOfFirstLinePC(code);
+    return this._firstLinePC + this.getLineOfLocalShift(currCode) + 1;
+    }
+
+
+  private getLineOfFirstLinePC(code: string) {
+    let counter = 0;
+    let currCode = code;
+    let endOfLineIndex = -1;
+    while (counter++ < this._firstLinePC) {
+      endOfLineIndex = currCode.search('\n');
+      currCode = currCode.substr(endOfLineIndex + 1);
+    }
+    return currCode;
+  }
+
+  private getLineOfLocalShift(code: string) {
+    let lineNumber = 0;
+    let counter = 0;
+    let currCode = code;
+    let endOfLineIndex = -1;
+    let line = '';
+    while (lineNumber < this._localShift) {
+      endOfLineIndex = currCode.search('\n');
+      line =  currCode.substr(0, endOfLineIndex);
+      currCode = currCode.substr(endOfLineIndex + 1);
+      counter++;
+      if (line.length === 0 || (line[0] === '/' && line[1] === '/'))
+        continue;
+      lineNumber++;
+    }
+      return counter;
   }
 }

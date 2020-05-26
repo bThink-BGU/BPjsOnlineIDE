@@ -1,13 +1,9 @@
 <div id="editor" style="height: 70%;"></div>
 
-<!--<div class="label-box border">-->
-<!--  <span class="mx-4 font-weight-light">Output</span>-->
-<!--</div>-->
-
 <mat-tab-group style="height: 40%">
   <mat-tab label="Output">
     <ng-template matTabContent>
-    <div *ngIf="!staticDebugger">
+      <div *ngIf="!staticDebugger">
       <textarea
         id="run_textarea"
         class="form-control outputStyle"
@@ -16,8 +12,8 @@
         aria-label="output-textarea">
         {{output}}
       </textarea>
-    </div>
-    <div *ngIf="staticDebugger">
+      </div>
+      <div *ngIf="staticDebugger">
       <textarea
         id="debug_textarea"
         class="form-control outputStyle"
@@ -26,25 +22,33 @@
         aria-label="output-textarea">
         {{outputDebug}}
       </textarea>
-    </div>
+      </div>
     </ng-template>
   </mat-tab>
   <mat-tab label="Variables" *ngIf="staticDebugger" >
     <ng-template matTabContent>
-      <div style="height: 200px">
+      <div style="height: 200px; border: 1px solid black;">
         <table id="variables">
           <tr>
             <th width="25%">BT Name</th>
-            <th width="25%">G\L</th>
+            <th width="25%">Global\Local</th>
             <th width="25%">Variable</th>
             <th width="25%">Value</th>
           </tr>
-          <tr *ngFor="let x of LIST">
-            <ng-container *ngIf="LIST.includes(x)">
-              <td width="25%">{{x.name}}</td>
-              <td width="25%">{{x.name}}</td>
-              <td width="25%">{{x.name}}</td>
-              <td width="25%">{{x.name}}</td>
+          <ng-container *ngFor="let gv of globalVariables | keyvalue">
+            <td width="25%">-</td>
+            <td width="25%">Global</td>
+            <td width="25%">{{gv.key}}</td>
+            <td width="25%">{{gv.value}}</td>
+          </ng-container>
+          <tr *ngFor="let bt of bthreads">
+            <ng-container *ngFor="let lv of bt.localVariables | keyvalue">
+              <ng-container *ngIf="bthreadList.includes(bt.bThreadName)">
+                <td width="25%">{{bt.bThreadName}}</td>
+                <td width="25%">Local</td>
+                <td width="25%">{{lv.key}}</td>
+                <td width="25%">{{lv.value}}</td>
+              </ng-container>
             </ng-container>
           </tr>
         </table>

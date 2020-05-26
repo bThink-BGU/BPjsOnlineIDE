@@ -2,6 +2,7 @@
   margin-left: auto;
   width: 100%;
   padding: 5px;
+  resize: vertical;
 }
 
 .form-control {
@@ -32,6 +33,7 @@
 
 #variables {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border: 1px solid black;
   border-collapse: collapse;
   width: 100%;
   outline: none;

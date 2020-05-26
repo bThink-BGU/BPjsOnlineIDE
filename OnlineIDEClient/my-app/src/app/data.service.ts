@@ -28,22 +28,8 @@ export class SharedService {
     this.sharedProgram  = new Program('ws://localhost:8080/OnlineIDEServer/api');
   }
 
-  wait = [
-    {name:'hello'},
-    {name:'Worls'},
-    {name:'Stop'},
-    {name:'longLongLongEvent'},
-    {name:'s'},
-    {name:'hello'},
-    {name:'Worls'},
-    {name:'Stop'},
-    {name:'longLongLongEvent'},
-    {name:'s'},{name:'hello'},
-    {name:'Worls'},
-    {name:'Stop'},
-    {name:'longLongLongLodddddddddddddddddddddddngLongLongEvent'},
-    {name:'s'}
-  ];
+
+  BtrheadsList = [];
 
   sentence = [
     '\nbp.registerBThread ("...",function(){\n' +

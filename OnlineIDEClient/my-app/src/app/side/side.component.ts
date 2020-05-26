@@ -39,18 +39,16 @@ export class SideComponent implements AfterViewInit {
   get block (){
     return this.sharedService.sharedProgram.debugger.getLastStep().blockList;
   }
-  get wait (){
-    return this.sharedService.sharedProgram.debugger.getLastStep().waitList;
-  }
+  // get wait (){
+  //   return this.sharedService.sharedProgram.debugger.getLastStep().waitList;
+  // }
   get selectable (){
     return this.sharedService.sharedProgram.debugger.getLastStep().selectableEvents;
   }
   get Lvariables (){
     return this.sharedService.sharedProgram.debugger.getLastStep().globalVariables;
   }
-  // get Gvariables (){
-  //   return this.sharedService.sharedProgram.debugger.getLastStep().globalVariables;
-  // }
+
   get sentences (){
     return this.sharedService.sentences;
   }

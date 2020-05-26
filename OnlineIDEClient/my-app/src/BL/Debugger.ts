@@ -83,7 +83,7 @@ export class Debugger {
         this._eventTrace.push('');
       }
     }
-  }
+  } ז
 
   private buildDebugStep(response) {
     const bThreadsResponse = response.bThreads;

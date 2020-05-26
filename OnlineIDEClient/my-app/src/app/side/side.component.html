@@ -41,10 +41,10 @@
           <div class="list-container">
             <tr *ngFor="let rqst of request">
               <ng-container *ngIf="selectable.includes(rqst); else elseBlock;">
-                <td>☑ {{rqst}}</td>
+                <td style="color: green">☑ {{rqst}}</td>
               </ng-container>
               <ng-template #elseBlock>
-                <td>☐ {{rqst}}</td>
+                <td style="color: red">☒ {{rqst}}</td>
               </ng-template>
             </tr>
           </div>
@@ -94,25 +94,25 @@
         </ng-template>
       </clr-tab>
 
-      <clr-tab class="nav-link">
-        <button clrTabLink>Variables</button>
-        <ng-template [(clrIfActive)]="Variables">
-          <clr-tab-content class="bptab">
-            <div class="list-container-variables">
-            <table id="Lvariables">
-              <tr>
-                <th width="50%">Variable</th>
-                <th width="50%">Value</th>
-              </tr>
-              <tr *ngFor="let ent of Lvariables | keyvalue">
-                <td width="50%">{{ent.key}}</td>
-                <td width="50%">{{ent.value}}</td>
-              </tr>
-            </table>
-            </div>
-          </clr-tab-content>
-        </ng-template>
-      </clr-tab>
+<!--      <clr-tab class="nav-link">-->
+<!--        <button clrTabLink>Variables</button>-->
+<!--        <ng-template [(clrIfActive)]="Variables">-->
+<!--          <clr-tab-content class="bptab">-->
+<!--            <div class="list-container-variables">-->
+<!--            <table id="Lvariables">-->
+<!--              <tr>-->
+<!--                <th width="50%">Variable</th>-->
+<!--                <th width="50%">Value</th>-->
+<!--              </tr>-->
+<!--              <tr *ngFor="let ent of Lvariables | keyvalue">-->
+<!--                <td width="50%">{{ent.key}}</td>-->
+<!--                <td width="50%">{{ent.value}}</td>-->
+<!--              </tr>-->
+<!--            </table>-->
+<!--            </div>-->
+<!--          </clr-tab-content>-->
+<!--        </ng-template>-->
+<!--      </clr-tab>-->
     </clr-tabs>
   <!--</section>-->
 </ng-template>

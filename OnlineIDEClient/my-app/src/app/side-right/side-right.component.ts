@@ -23,14 +23,19 @@ export class SideRightComponent implements AfterViewInit {
     return this.sharedService.sharedDebuggerMode;
   }
 
-  get Lvariables (){
-    return this.sharedService.sharedProgram.debugger.getLastStep().variables;
+  get bthreads() {
+    return this.sharedService.sharedProgram.debugger.getLastStep().bThreads;
   }
 
-  // get bthreads() {
-  //   return this.sharedService.sharedProgram.debugger.getLastStep()....;
-  // }
-  Variables: any;
+  changed(evt, bt) {
+    var isChecked = evt.target.checked;
+    if(isChecked)
+      this.sharedService.BtrheadsList.push(bt._bThreadName)
+    else{
+      this.sharedService.BtrheadsList = this.sharedService.BtrheadsList.filter(e => e != bt.bThreadName);    }
+  }
+  BThreads: any;
+  checkbox: any = true;
 }
 
 

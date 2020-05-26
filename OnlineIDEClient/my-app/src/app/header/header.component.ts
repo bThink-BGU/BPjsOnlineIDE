@@ -81,6 +81,7 @@ export class HeaderComponent implements AfterViewInit  {
   public closeDebuggerMode() {
     this._sharedService.nextDebugger(!this._sharedService.sharedDebuggerMode);
     this._sharedService.sharedProgram.debugger.initDebugger();
+    this._sharedService.BtrheadsList=[];
   }
 
   public loadFile(event) {
@@ -137,10 +138,12 @@ export class HeaderComponent implements AfterViewInit  {
 
   public stepNext() {
     this._sharedService.sharedProgram.debugger.step();
+    this.sharedService.BtrheadsList = this.sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
   }
 
   public stepBack(){
     this._sharedService.sharedProgram.debugger.stepBack();
+    this.sharedService.BtrheadsList = this.sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
   }
 
   public nextBreakPoint() {

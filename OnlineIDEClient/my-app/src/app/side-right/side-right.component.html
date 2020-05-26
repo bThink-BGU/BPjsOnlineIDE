@@ -1,19 +1,23 @@
 <section class="sidenav-content">
-<!--  <ng-template >-->
+  <div style="text-align: center; border: 1px solid black; margin: 5px">Check/Uncheck to display the variables for the selected Bthreads</div>
     <clr-tabs>
       <clr-tab class="nav-link">
         <button clrTabLink>BThreads</button>
-        <ng-template [(clrIfActive)]="Variables">
+        <ng-template [(clrIfActive)]="BThreads">
           <clr-tab-content class="bptab">
             <div class="list-container-variables">
-              <table id="Lvariables">
+              <table id="BThreads">
                 <tr>
-                  <th width="50%">Variable</th>
-                  <th width="50%">Value</th>
+                  <th width="10%"></th>
+                  <th width="45%">Line</th>
+                  <th width="45%">Name</th>
                 </tr>
-                <tr *ngFor="let ent of Lvariables | keyvalue">
-                  <td width="50%">{{ent.key}}</td>
-                  <td width="50%">{{ent.value}}</td>
+                <tr *ngFor="let bt of bthreads">
+                  <td width="10%">
+                    <input type="checkbox" checked [checked]="checkbox" (change)="changed($event,bt)"/>
+                  </td>
+                  <td width="45%">{{bt.bThreadName}}</td>
+                  <td width="45%">{{bt.bThreadName}}</td>
                 </tr>
               </table>
             </div>
@@ -21,5 +25,4 @@
         </ng-template>
       </clr-tab>
     </clr-tabs>
-<!--  </ng-template>-->
 </section>
