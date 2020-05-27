@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import {Ace} from 'ace-builds';
 import * as ace from 'ace-builds';
 import {Program} from "../BL/Program";
+import {environment} from "../environments/environment";
 
 @Injectable()
 export class SharedService {
@@ -25,7 +26,7 @@ export class SharedService {
 
   constructor() {
     this.sharedEditorBeautify = ace.require('ace/ext/beautify');
-    this.sharedProgram  = new Program('ws://localhost:8080/OnlineIDEServer/api');
+    this.sharedProgram  = new Program(environment.API_URL);
   }
 
 

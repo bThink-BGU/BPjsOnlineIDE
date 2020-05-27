@@ -17,11 +17,18 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 
 export class SaveFileDialogComponent implements OnInit {
+  get text(): FormControl {
+    return this._text;
+  }
+
+  get matcher(): MyErrorStateMatcher {
+    return this._matcher;
+  }
 
   constructor(public dialogRef: MatDialogRef<SaveFileDialogComponent>) {}
 
-  private text = new FormControl('', [Validators.required]);
-  private matcher = new MyErrorStateMatcher();
+  private _text = new FormControl('', [Validators.required]);
+  private _matcher = new MyErrorStateMatcher();
 
   ngOnInit() {
   }
@@ -31,7 +38,7 @@ export class SaveFileDialogComponent implements OnInit {
   }
 
   onSaveClick() {
-    if(this.text.valid)
-      this.dialogRef.close(this.text.value);
+    if(this._text.valid)
+      this.dialogRef.close(this._text.value);
   }
 }
