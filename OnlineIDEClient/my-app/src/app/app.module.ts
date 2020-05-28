@@ -19,6 +19,8 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {SideRightComponent} from "./side-right/side-right.component";
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import {SideRightComponent} from "./side-right/side-right.component";
     LayoutModule,
     MatTabsModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule
   ],
   entryComponents: [
     SaveFileDialogComponent
