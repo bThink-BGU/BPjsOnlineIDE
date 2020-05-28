@@ -1,6 +1,9 @@
-import {AfterViewInit, Component} from '@angular/core';
-import {SharedService} from '../data.service';
-import {MatDialog} from '@angular/material/dialog';
+import {Component} from '@angular/core';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {Observable} from 'rxjs';
+import {map, shareReplay} from 'rxjs/operators';
+import {SharedService} from "../data.service";
+import {MatDialog} from "@angular/material/dialog";
 import {SaveFileDialogComponent} from "../save-file-dialog/save-file-dialog.component";
 
 @Component({
@@ -8,80 +11,51 @@ import {SaveFileDialogComponent} from "../save-file-dialog/save-file-dialog.comp
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+export class HeaderComponent {
 
-export class HeaderComponent implements AfterViewInit  {
+  /********************************************************************************************************************/
+  // SETTERS, GETTERS AND META DATA STUFF
+  /********************************************************************************************************************/
 
-  private _debugger: boolean;
-  private _themes = [
-    'ace/theme/twilight',
-    'ace/theme/eclipse',
-    'ace/theme/gob',
-    'ace/theme/solarized_light',
-    'ace/theme/terminal',
-    'ace/theme/ambiance'
-  ];
-
-  get debugger(): boolean {
-    return this._debugger;
-  }
-
-  get themes(): string[] {
-    return this._themes;
-  }
-
-  get sharedService(): SharedService {
-    return this._sharedService;
-  }
-
-  get dialog(): MatDialog {
-    return this._dialog;
-  }
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
 
   get staticDebugger() {
     return this._sharedService.sharedDebuggerMode;
   }
 
-  constructor(private _sharedService: SharedService, public _dialog: MatDialog) { }
-
-  ngAfterViewInit(): void {
-    this._debugger = this._sharedService.sharedDebuggerMode;
+  constructor(private _sharedService: SharedService,
+              private breakpointObserver: BreakpointObserver,
+              private _dialog: MatDialog) {
   }
 
-  // buttons
-  public runCode() {
+  /********************************************************************************************************************/
+  // RUN MODE BUTTONS
+  /********************************************************************************************************************/
+
+  public run() {
     this._sharedService.sharedProgram.init('initRun', this._sharedService.sharedCode);
   }
 
-  public beautifyContent() {
-    if (this._sharedService.sharedCodeEditor && this._sharedService.sharedEditorBeautify) {
-      const session = this._sharedService.sharedCodeEditor.getSession();
-      this._sharedService.sharedEditorBeautify.beautify(session);
-    }
+  public stopRun() {
+    window.alert('here')
   }
 
-  public undoContent() {
-    if (this._sharedService.sharedCodeEditor) {
-      this._sharedService.sharedCodeEditor.undo();
-    }
-  }
-
-  public clearContent() {
-    if (this._sharedService.sharedCodeEditor) {
-      this._sharedService.sharedCodeEditor.getSession().setValue('');
-    }
-  }
-
-  public debuggerMode() {
+  public debug() {
     this._sharedService.nextDebugger(!this._sharedService.sharedDebuggerMode);
     this._sharedService.sharedProgram.init('initStep', this._sharedService.sharedCode);
     this._sharedService.sharedProgram.runner.setIsError(false);
     this._sharedService.sharedProgram.runner.setStdout('');
   }
 
-  public closeDebuggerMode() {
-    this._sharedService.nextDebugger(!this._sharedService.sharedDebuggerMode);
-    this._sharedService.sharedProgram.debugger.initDebugger();
-    this._sharedService.BtrheadsList=[];
+  public beautify() {
+    if (this._sharedService.sharedCodeEditor && this._sharedService.sharedEditorBeautify) {
+      const session = this._sharedService.sharedCodeEditor.getSession();
+      this._sharedService.sharedEditorBeautify.beautify(session);
+    }
   }
 
   public loadFile(event) {
@@ -136,14 +110,26 @@ export class HeaderComponent implements AfterViewInit  {
     });
   }
 
-  public stepNext() {
-    this._sharedService.sharedProgram.debugger.step();
-    this.sharedService.BtrheadsList = this.sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
+  /********************************************************************************************************************/
+  // DEBUG MODE BUTTONS
+  /********************************************************************************************************************/
+
+  public stopDebug() {
+    this._sharedService.nextDebugger(!this._sharedService.sharedDebuggerMode);
+    this._sharedService.sharedProgram.debugger.initDebugger();
+    this._sharedService.BtrheadsList = [];
   }
 
-  public stepBack(){
+  public nextStep() {
+    this._sharedService.sharedProgram.debugger.step();
+    this._sharedService.BtrheadsList =
+      this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
+  }
+
+  public previousStep(){
     this._sharedService.sharedProgram.debugger.stepBack();
-    this.sharedService.BtrheadsList = this.sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
+    this._sharedService.BtrheadsList =
+      this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
   }
 
   public nextBreakPoint() {
@@ -154,11 +140,14 @@ export class HeaderComponent implements AfterViewInit  {
     window.alert('previousBreakPoint');
   }
 
-  public theme(n) {
-    this._sharedService.sharedCodeEditor.setTheme(this._themes[n-1]);
+  /********************************************************************************************************************/
+  // MUTUAL BUTTONS
+  /********************************************************************************************************************/
+
+  public theme(){
+    window.alert('theme');
   }
 
-  public setting() {
-    window.open('https://bpjs.readthedocs.io/en/latest/#');
-  }
+
+
 }

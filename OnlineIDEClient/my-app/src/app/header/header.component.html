@@ -1,63 +1,67 @@
-<header class="header headerColor">
-  <div class="branding">
-    <img src="assets/bpjs_logo.ico" class="nav-link nav-text" alt="logo">
-  </div>
+<!-- THIS IS A HIDDEN INPUT ELEMENT FOR LOADING FILES INTO THE EDITOR, SHOULD'NT SHOW UP ON VIEW -->
+<input style="display: none" type="file" accept=".txt, .js, .ts" (change)="loadFile($event)" #fileInput>
+<!-- THIS IS A HIDDEN INPUT ELEMENT FOR LOADING FILES INTO THE EDITOR, SHOULD'NT SHOW UP ON VIEW -->
 
-  <div class="header-nav" >
-    <a *ngIf="!staticDebugger" (click)="runCode()" class="nav-link nav-text">▶ RUN</a>
-    <a *ngIf="!staticDebugger" (click)="beautifyContent()" class="nav-link nav-text">⦃ ⦄ BEAUTIFY</a>
-    <a *ngIf="!staticDebugger" (click)="clearContent()" class="nav-link nav-text">✖ CLEAR</a>
-    <a *ngIf="!staticDebugger" (click)="undoContent()" class="nav-link nav-text">↩ UNDO</a>
-    <input style="display: none" type="file" accept=".txt, .js, .ts" (change)="loadFile($event)" #fileInput>
-    <a *ngIf="!staticDebugger" (click)="fileInput.click()" class="nav-link nav-text">📤 LOAD FILE</a>
-    <a *ngIf="!staticDebugger" (click)="downloadFile()" class="nav-link nav-text">📥 DOWNLOAD FILE</a>
-    <a *ngIf="!staticDebugger" (click)="debuggerMode()" class="nav-link nav-text">🐞 DEBUG</a>
-    <a *ngIf="staticDebugger" (click)="closeDebuggerMode()" class="nav-link nav-text">🛑 STOP</a>
-    <a *ngIf="staticDebugger" (click)="stepNext()" class="nav-link nav-text">⏬ STEP NEXT</a>
-    <a *ngIf="staticDebugger" (click)="stepBack()" class="nav-link nav-text">⏫ STEP BACK</a>
-    <a *ngIf="staticDebugger" (click)="nextBreakPoint()" class="nav-link nav-text">⏩ NEXT BREAKPOINT</a>
-    <a *ngIf="staticDebugger" (click)="previousBreakPoint()" class="nav-link nav-text">⏪ PREVIOUS BREAKPOINT</a>
-  </div>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+               [ngClass]="{hidden: (isHandset$ | async) === false}"
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu:</mat-toolbar>
+    <mat-nav-list>
 
-  <div class="header-actions">
-    <clr-dropdown [clrCloseMenuOnItemClick]="false">
-      <button clrDropdownTrigger>
-<!--              aria-label="Dropdown demo button">-->
-        <clr-icon shape="caret down"></clr-icon>
-        <clr-icon shape="wand" style="color: #fd7104" size="30"></clr-icon>
+      <div class="run-view-handset" *ngIf="!staticDebugger">
+        <a mat-list-item (click)="run()"> Run </a>
+        <a mat-list-item (click)="stopRun()"> Stop </a>
+        <a mat-list-item (click)="debug()"> Debug </a>
+        <a mat-list-item (click)="beautify()"> Beautify </a>
+        <a mat-list-item (click)="fileInput.click()"> Load File </a>
+        <a mat-list-item (click)="downloadFile()"> Download File </a>
+      </div>
+
+      <div class="run-view-handset" *ngIf="staticDebugger">
+        <a mat-list-item (click)="stopDebug()"> Stop </a>
+        <a mat-list-item (click)="nextStep()"> Next Step </a>
+        <a mat-list-item (click)="previousStep()"> Previous Step </a>
+        <a mat-list-item (click)="nextBreakPoint()"> Next Breakpoint </a>
+        <a mat-list-item (click)="previousBreakPoint()"> Previous Breakpoint </a>
+      </div>
+
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <clr-dropdown-menu clrPosition="bottom-right" *clrIfOpen>
-        <label class="dropdown-header" aria-hidden="true">THEMES</label>
-        <div (click)="theme(1)" clrDropdownItem>Black Theme</div>
-        <div (click)="theme(2)" clrDropdownItem>White Theme</div>
-        <div (click)="theme(3)" clrDropdownItem>Dark Theme</div>
-        <div (click)="theme(4)" clrDropdownItem>Solarized Light Theme</div>
-        <div (click)="theme(5)" clrDropdownItem>Terminal Theme</div>
-        <div (click)="theme(6)" clrDropdownItem>Ambiance Theme</div>
-      </clr-dropdown-menu>
-    </clr-dropdown>
-  </div>
-</header>
+      <img src="assets/bpjs_logo.ico" class="nav-link nav-text" alt="logo">
+      <div class="spacer"></div>
+      <div class="run-view" *ngIf="!staticDebugger">
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="run()"> Run </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="stopRun()"> Stop </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="debug()"> Debug </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="beautify()"> Beautify </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="fileInput.click()"> Load File </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="downloadFile()"> Download File </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="theme()"> Theme </a>
+      </div>
 
-<!--<nav class="subnav">-->
-<!--  <clr-tabs>-->
-<!--    <clr-tab>-->
-<!--      <button clrTabLink (click)="theme(1)">Black Theme</button>-->
-<!--    </clr-tab>-->
-<!--    <clr-tab>-->
-<!--      <button clrTabLink (click)="theme(2)">White Theme</button>-->
-<!--    </clr-tab>-->
-<!--    <clr-tab>-->
-<!--      <button clrTabLink (click)="theme(3)">Dark Theme</button>-->
-<!--    </clr-tab>-->
-<!--    <clr-tab>-->
-<!--      <button clrTabLink (click)="theme(4)">Solarized Light Theme</button>-->
-<!--    </clr-tab>-->
-<!--    <clr-tab>-->
-<!--      <button clrTabLink (click)="theme(5)">Terminal Theme</button>-->
-<!--    </clr-tab>-->
-<!--    <clr-tab>-->
-<!--      <button clrTabLink (click)="theme(6)">Ambiance Theme</button>-->
-<!--    </clr-tab>-->
-<!--  </clr-tabs>-->
-<!--</nav>-->
+      <div class="debug-view" *ngIf="staticDebugger">
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="stopDebug()"> Stop </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="nextStep()"> Next Step </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="previousStep()"> Previous Step </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="nextBreakPoint()"> Next Breakpoint </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="previousBreakPoint()"> Previous Breakpoint </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="theme()"> Theme </a>
+      </div>
+
+    </mat-toolbar>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

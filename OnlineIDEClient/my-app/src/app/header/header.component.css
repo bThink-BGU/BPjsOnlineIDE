@@ -1,25 +1,60 @@
-.header {
+::ng-deep .nav .nav-link.active, ::ng-deep .nav .nav-link:hover {
+  box-shadow: 0 -3px 0 #000000 inset;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.mat-toolbar{
   background-color: black;
 }
 
-.nav-text:active {
-  transform: translateY(3px);
-  color: rgb(0, 0, 0);
-  float: left;
+.mat-raised-button{
+  margin-right: 10px;
+  background-color: #000000;
+  border-color: #000000;
+  color: lightgrey;
+  text-decoration: none;
 }
 
-.nav-text:hover {
-  background-color: #f6af41;
-  color: rgb(0, 0, 0);
+.mat-raised-button:hover{
+  background-color: #ec8c23;
+  border-color: #ec8c23;
+  color: #000000;
+}
+.mat-raised-button:active {
+  transform: scale(0.95);
 }
 
-.nav-icon:hover{
-  background-color: #f6af41;
-  color: rgb(0, 0, 0);
+/*@media (min-width: 768px) {*/
+/*  .sidenav{*/
+/*    display: none;*/
+/*  }*/
+
+/*}*/
+
+.hidden{
+  display: none;
 }
 
-::ng-deep .nav .nav-link.active, ::ng-deep .nav .nav-link:hover {
-  box-shadow: 0 -3px 0 #000000 inset;
+.spacer{
+  flex: 1 1 auto;
 }
 
 
