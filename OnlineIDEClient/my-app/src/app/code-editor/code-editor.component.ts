@@ -39,6 +39,7 @@ export class CodeEditorComponent implements AfterViewInit {
   get globalVariables(){
     return this.sharedService.sharedProgram.debugger.getLastStep().globalVariables;
   }
+
   get bthreadList(){
     return this.sharedService.BtrheadsList;
   }
@@ -83,8 +84,8 @@ export class CodeEditorComponent implements AfterViewInit {
       highlightActiveLine: true,
       autoScrollEditorIntoView: true,
       showFoldWidgets: true,
-      minLines: 18,
-      maxLines: 18 ,
+      // minLines: 18,
+      // maxLines: 18,
       fontSize: 16,
     };
     const extraEditorOptions = {

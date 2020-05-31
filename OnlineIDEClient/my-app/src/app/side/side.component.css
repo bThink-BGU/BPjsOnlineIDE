@@ -1,5 +1,16 @@
+
+.html,
+body {
+  height: 100%;
+  margin: auto;
+}
+.section {
+  height: 30%;
+}
+
 div.list-container-externalevent{
-  height: 120px;
+  min-height: 120px;
+  /*height: 120px;*/
   overflow: auto;
   outline: none;
   padding: 3px;
@@ -23,15 +34,17 @@ button.addExEvButton:hover{
 }
 
 div.list-container{
+  min-height: 110px;
   padding-left: 15px;
-  height: 105px;
+  /*height: 105px;*/
   overflow: auto;
   border: solid 0.1px #c2ccbf;
   outline: none;
 }
 
 div.list-container-sentences{
-  height: 140px;
+  min-height: 140px;
+  /*height: 140px;*/
   padding-left: 15px;
   overflow: auto;
   outline: none;
@@ -93,29 +106,35 @@ div.list-container-variables{
 }
 
 /*!*Global Variables Section*!*/
+/*div.list-container-variables{*/
+/*  height: 115px;*/
+/*  overflow: auto;*/
+/*  border: solid 0.1px #c2ccbf;*/
+/*  outline: none;*/
+/*}*/
 
-/*#Gvariables {*/
+/*#Lvariables {*/
 /*  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
 /*  border-collapse: collapse;*/
 /*  width: 100%;*/
 /*  outline: none;*/
 /*}*/
 
-/*#Gvariables td, #Gvariables th {*/
+/*#Lvariables td, #Lvariables th {*/
 /*  border: 0.2px solid #c2ccbf;*/
 /*  text-align: center;*/
 /*  color: #000000;*/
 /*}*/
 
-/*#Gvariables tr:nth-child(even){*/
+/*#Lvariables tr:nth-child(even){*/
 /*  background-color: #f2f2f2;*/
 /*}*/
 
-/*#Gvariables tr:hover {*/
+/*#Lvariables tr:hover {*/
 /*  background-color: #f6af41;*/
 /*}*/
 
-/*#Gvariables th {*/
+/*#Lvariables th {*/
 /*  padding-top: 1px;*/
 /*  padding-bottom: 1px;*/
 /*  text-align: center;*/

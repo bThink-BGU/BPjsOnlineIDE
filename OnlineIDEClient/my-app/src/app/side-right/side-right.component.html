@@ -1,28 +1,28 @@
 <section class="sidenav-content">
-  <div style="text-align: center; border: 1px solid black; margin: 5px">Check/Uncheck to display the variables for the selected Bthreads</div>
-    <clr-tabs>
-      <clr-tab class="nav-link">
-        <button clrTabLink>BThreads</button>
-        <ng-template [(clrIfActive)]="BThreads">
-          <clr-tab-content class="bptab">
-            <div class="list-container-variables">
-              <table id="BThreads">
-                <tr>
-                  <th width="10%"></th>
-                  <th width="45%">Line</th>
-                  <th width="45%">Name</th>
-                </tr>
-                <tr *ngFor="let bt of bthreads">
-                  <td width="10%">
-                    <input type="checkbox" checked [checked]="checkbox" (change)="changed($event,bt)"/>
-                  </td>
-                  <td width="45%">{{bt.bThreadName}}</td>
-                  <td width="45%">{{bt.bThreadName}}</td>
-                </tr>
-              </table>
-            </div>
-          </clr-tab-content>
-        </ng-template>
-      </clr-tab>
-    </clr-tabs>
+  <div style="text-align: center; border: 1px solid black; margin: 5px; ">Check/Uncheck to display the variables for the selected Bthreads</div>
+  <clr-tabs>
+    <clr-tab class="nav-link">
+      <button clrTabLink>BThreads</button>
+      <ng-template [(clrIfActive)]="BThreads">
+        <clr-tab-content class="bptab">
+          <div class="list-container-variables">
+            <table id="BThreads">
+              <tr>
+                <th width="10%"></th>
+                <th width="45%">Line</th>
+                <th width="45%">Name</th>
+              </tr>
+              <tr *ngFor="let bt of bthreads">
+                <td width="10%">
+                  <input type="checkbox" checked [checked]="checkbox" (change)="changed($event,bt)"/>
+                </td>
+                <td width="45%">{{bt.bThreadName}}</td>
+                <td width="45%">{{bt.bThreadName}}</td>
+              </tr>
+            </table>
+          </div>
+        </clr-tab-content>
+      </ng-template>
+    </clr-tab>
+  </clr-tabs>
 </section>

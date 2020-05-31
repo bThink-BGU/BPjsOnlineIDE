@@ -1,9 +1,9 @@
-<div id="editor" style="height: 70%;"></div>
-
-<mat-tab-group style="height: 40%">
-  <mat-tab label="Output">
-    <ng-template matTabContent>
-      <div *ngIf="!staticDebugger">
+<div id="editor" ></div>
+<div style="height:30%; width: 100%;">
+  <mat-tab-group>
+    <mat-tab label="Output">
+      <ng-template matTabContent>
+        <div *ngIf="!staticDebugger">
       <textarea
         id="run_textarea"
         class="form-control outputStyle"
@@ -12,8 +12,8 @@
         aria-label="output-textarea">
         {{output}}
       </textarea>
-      </div>
-      <div *ngIf="staticDebugger">
+        </div>
+        <div *ngIf="staticDebugger">
       <textarea
         id="debug_textarea"
         class="form-control outputStyle"
@@ -22,40 +22,49 @@
         aria-label="output-textarea">
         {{outputDebug}}
       </textarea>
-      </div>
-    </ng-template>
-  </mat-tab>
-  <mat-tab label="Variables" *ngIf="staticDebugger" >
-    <ng-template matTabContent>
-      <div style="height: 200px; border: 1px solid black;">
-        <table id="variables">
-          <tr>
-            <th width="25%">BT Name</th>
-            <th width="25%">Global\Local</th>
-            <th width="25%">Variable</th>
-            <th width="25%">Value</th>
-          </tr>
-          <ng-container *ngFor="let gv of globalVariables | keyvalue">
-            <td width="25%">-</td>
-            <td width="25%">Global</td>
-            <td width="25%">{{gv.key}}</td>
-            <td width="25%">{{gv.value}}</td>
-          </ng-container>
-          <tr *ngFor="let bt of bthreads">
-            <ng-container *ngFor="let lv of bt.localVariables | keyvalue">
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Local Variables" *ngIf="staticDebugger" >
+      <ng-template matTabContent>
+        <div style="height: 200px; border: 1px solid #c2ccbf; width: 100%">
+          <table id="localVariables">
+            <tr>
+              <th width="34%">BT Name</th>
+              <th width="33%">Variable</th>
+              <th width="33%">Value</th>
+            </tr>
+            <ng-container *ngFor="let bt of bthreads">
               <ng-container *ngIf="bthreadList.includes(bt.bThreadName)">
-                <td width="25%">{{bt.bThreadName}}</td>
-                <td width="25%">Local</td>
-                <td width="25%">{{lv.key}}</td>
-                <td width="25%">{{lv.value}}</td>
+                <tr *ngFor="let lv of bt.localVariables | keyvalue">
+                  <td width="34%">{{bt.bThreadName}}</td>
+                  <td width="33%">{{lv.key}}</td>
+                  <td width="33%">{{lv.value}}</td>
+                </tr>
               </ng-container>
             </ng-container>
-          </tr>
-        </table>
-      </div>
-    </ng-template>
-  </mat-tab>
-</mat-tab-group>
+          </table>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Global Variables" *ngIf="staticDebugger" >
+      <ng-template matTabContent>
+        <div style="height: 200px; border: 1px solid #c2ccbf; width: 100%">
+          <table id="globalVariables">
+            <tr>
+              <th width="50%">Variable</th>
+              <th width="50%">Value</th>
+            </tr>
+            <tr *ngFor="let gv of globalVariables | keyvalue">
+              <td width="50%">{{gv.key}}</td>
+              <td width="50%">{{gv.value}}</td>
+            </tr>
+          </table>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>
 
 
 
