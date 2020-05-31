@@ -11,14 +11,14 @@ button.addExEvButton{
   display:block;
   background-color: #000000;
   border-color: #000000;
-  color: #EC8C23;
+  color: #01a0e4;
   font-weight: bold;
   border-bottom: black;
 }
 
 button.addExEvButton:hover{
-  background-color: #ec8c23;
-  border-color: #ec8c23;
+  background-color: #01a0e4;
+  border-color: #01a0e4;
   color: #000000;
 }
 
@@ -44,7 +44,7 @@ div.list-container-sentences{
 }
 #sentence tr:hover{
   background-color: #000000;
-  color: #EC8C23;
+  color: #01C0DD;
   font-weight: bold;
 }
 
@@ -80,7 +80,7 @@ div.list-container-variables{
 }
 
 #Lvariables tr:hover {
-  background-color: #f6af41;
+  background-color: #01C0DD;
 }
 
 #Lvariables th {
@@ -89,7 +89,7 @@ div.list-container-variables{
   text-align: center;
   background-color: #000000;
   border-bottom: solid 0.1px #c2ccbf;
-  color: #EC8C23;
+  color: #01C0DD;
 }
 
 /*!*Global Variables Section*!*/

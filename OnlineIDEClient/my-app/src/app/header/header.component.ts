@@ -27,6 +27,17 @@ export class HeaderComponent {
     return this._sharedService.sharedDebuggerMode;
   }
 
+  private _themes = [
+    'ace/theme/github',
+    'ace/theme/sqlserver',
+    'ace/theme/eclipse',
+    'ace/theme/twilight',
+    'ace/theme/vibrant_ink',
+    'ace/theme/ambiance',
+    'ace/theme/merbivore',
+    'ace/theme/cobalt',
+  ];
+
   constructor(private _sharedService: SharedService,
               private breakpointObserver: BreakpointObserver,
               private _dialog: MatDialog) {
@@ -144,10 +155,8 @@ export class HeaderComponent {
   // MUTUAL BUTTONS
   /********************************************************************************************************************/
 
-  public theme(){
-    window.alert('theme');
+  public theme(n) {
+    this._sharedService.sharedCodeEditor.setTheme(this._themes[n]);
   }
-
-
 
 }

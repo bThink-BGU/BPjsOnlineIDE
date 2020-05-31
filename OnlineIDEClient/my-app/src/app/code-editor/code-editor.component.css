@@ -16,7 +16,7 @@
 }
 
 .outputStyle{
-  color: #fd7104;
+  color: #01a0e4;
   /*resize: none;*/
 }
 ::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
@@ -28,7 +28,8 @@
 }
 
 ::ng-deep .mat-ink-bar {
-  background-color:#fd7104 !important;}
+  background-color: black !important;
+}
 
 
 #variables {
@@ -53,7 +54,7 @@
 }
 
 #variables tr:hover {
-  background-color: #f6af41;
+  background-color: #01a0e4;
 }
 
 #variables th {
@@ -62,7 +63,7 @@
   text-align: center;
   background-color: #000000;
   border-bottom: solid 0.1px #c2ccbf;
-  color: #EC8C23;
+  color: #01a0e4;
 }
 
 

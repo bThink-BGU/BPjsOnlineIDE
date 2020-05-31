@@ -12,20 +12,42 @@
     <mat-nav-list>
 
       <div class="run-view-handset" *ngIf="!staticDebugger">
-        <a mat-list-item (click)="run()"> Run </a>
-        <a mat-list-item (click)="stopRun()"> Stop </a>
-        <a mat-list-item (click)="debug()"> Debug </a>
-        <a mat-list-item (click)="beautify()"> Beautify </a>
-        <a mat-list-item (click)="fileInput.click()"> Load File </a>
-        <a mat-list-item (click)="downloadFile()"> Download File </a>
+        <a mat-list-item (click)="run()">
+          <mat-icon aria-hidden="false">play_arrow</mat-icon>
+          Run </a>
+        <a mat-list-item (click)="stopRun()">
+          <mat-icon aria-hidden="false">stop</mat-icon>
+          Stop </a>
+        <a mat-list-item (click)="debug()">
+          <mat-icon aria-hidden="false">bug_report</mat-icon>
+          Debug </a>
+        <a mat-list-item (click)="beautify()">
+          <mat-icon aria-hidden="false">code</mat-icon>
+          Beautify </a>
+        <a mat-list-item (click)="fileInput.click()">
+          <mat-icon aria-hidden="false">publish</mat-icon>
+          Load File </a>
+        <a mat-list-item (click)="downloadFile()">
+          <mat-icon aria-hidden="false">get_app</mat-icon>
+          Download File </a>
       </div>
 
       <div class="run-view-handset" *ngIf="staticDebugger">
-        <a mat-list-item (click)="stopDebug()"> Stop </a>
-        <a mat-list-item (click)="nextStep()"> Next Step </a>
-        <a mat-list-item (click)="previousStep()"> Previous Step </a>
-        <a mat-list-item (click)="nextBreakPoint()"> Next Breakpoint </a>
-        <a mat-list-item (click)="previousBreakPoint()"> Previous Breakpoint </a>
+        <a mat-list-item (click)="stopDebug()">
+          <mat-icon aria-hidden="false">stop</mat-icon>
+          Stop </a>
+        <a mat-list-item (click)="nextStep()">
+          <mat-icon aria-hidden="false">skip_next</mat-icon>
+          Next Step </a>
+        <a mat-list-item (click)="previousStep()">
+          <mat-icon aria-hidden="false">skip_previous</mat-icon>
+          Previous Step </a>
+        <a mat-list-item (click)="nextBreakPoint()">
+          <mat-icon aria-hidden="false">fast_forward</mat-icon>
+          Next Breakpoint </a>
+        <a mat-list-item (click)="previousBreakPoint()">
+          <mat-icon aria-hidden="false">fast_rewind</mat-icon>
+          Previous Breakpoint </a>
       </div>
 
     </mat-nav-list>
@@ -40,25 +62,75 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <img src="assets/bpjs_logo.ico" class="nav-link nav-text" alt="logo">
+      <img src="assets/bpjs_logo.ico" alt="logo" class="logo">
       <div class="spacer"></div>
       <div class="run-view" *ngIf="!staticDebugger">
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="run()"> Run </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="stopRun()"> Stop </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="debug()"> Debug </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="beautify()"> Beautify </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="fileInput.click()"> Load File </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="downloadFile()"> Download File </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="theme()"> Theme </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="run()">
+          <mat-icon aria-hidden="false">play_arrow</mat-icon>
+          Run </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="stopRun()">
+          <mat-icon aria-hidden="false">stop</mat-icon>
+          Stop </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="debug()">
+          <mat-icon aria-hidden="false">bug_report</mat-icon>
+          Debug </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="beautify()">
+          <mat-icon aria-hidden="false">code</mat-icon>
+          Beautify </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="fileInput.click()">
+          <mat-icon aria-hidden="false">publish</mat-icon>
+          Load File </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="downloadFile()">
+          <mat-icon aria-hidden="false">get_app</mat-icon>
+          Download File </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" [matMenuTriggerFor]="themeMenu">
+          <mat-icon aria-hidden="false">colorize</mat-icon>
+          Theme </a>
+        <mat-menu #themeMenu="matMenu" xPosition="before">
+          <a mat-menu-item class="divider">BRIGHT:</a>
+          <a mat-menu-item (click)="theme(0)">GitHub</a>
+          <a mat-menu-item (click)="theme(1)">Eclipse</a>
+          <a mat-menu-item (click)="theme(2)">SQL Server</a>
+          <a mat-menu-item class="divider">DARK:</a>
+          <a mat-menu-item (click)="theme(3)">Twilight (default)</a>
+          <a mat-menu-item (click)="theme(4)">Vibrant Ink</a>
+          <a mat-menu-item (click)="theme(5)">Ambiance</a>
+          <a mat-menu-item (click)="theme(6)">Merbivore</a>
+          <a mat-menu-item (click)="theme(7)">Cobalt</a>
+        </mat-menu>
       </div>
 
       <div class="debug-view" *ngIf="staticDebugger">
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="stopDebug()"> Stop </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="nextStep()"> Next Step </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="previousStep()"> Previous Step </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="nextBreakPoint()"> Next Breakpoint </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="previousBreakPoint()"> Previous Breakpoint </a>
-        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="theme()"> Theme </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="stopDebug()">
+          <mat-icon aria-hidden="false">stop</mat-icon>
+          Stop </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="nextStep()">
+          <mat-icon aria-hidden="false">skip_next</mat-icon>
+          Next Step </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="previousStep()">
+          <mat-icon aria-hidden="false">skip_previous</mat-icon>
+          Previous Step </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="nextBreakPoint()">
+          <mat-icon aria-hidden="false">fast_forward</mat-icon>
+          Next Breakpoint </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" (click)="previousBreakPoint()">
+          <mat-icon aria-hidden="false">fast_rewind</mat-icon>
+          Previous Breakpoint </a>
+        <a mat-raised-button [ngClass]="{hidden: (isHandset$ | async)}" [matMenuTriggerFor]="themeMenu">
+          <mat-icon aria-hidden="false">colorize</mat-icon>
+          Theme </a>
+        <mat-menu #themeMenu="matMenu" xPosition="before">
+          <a mat-menu-item class="divider">BRIGHT:</a>
+          <a mat-menu-item (click)="theme(0)">GitHub</a>
+          <a mat-menu-item (click)="theme(1)">Eclipse</a>
+          <a mat-menu-item (click)="theme(2)">SQL Server</a>
+          <a mat-menu-item class="divider">DARK:</a>
+          <a mat-menu-item (click)="theme(3)">Twilight (default)</a>
+          <a mat-menu-item (click)="theme(4)">Vibrant Ink</a>
+          <a mat-menu-item (click)="theme(5)">Ambiance</a>
+          <a mat-menu-item (click)="theme(6)">Merbivore</a>
+          <a mat-menu-item (click)="theme(7)">Cobalt</a>
+        </mat-menu>
       </div>
 
     </mat-toolbar>
