@@ -49,6 +49,8 @@ export class HeaderComponent {
     this._sharedService.sharedProgram.init('initStep', this._sharedService.sharedCode);
     this._sharedService.sharedProgram.runner.setIsError(false);
     this._sharedService.sharedProgram.runner.setStdout('');
+    this._sharedService.BtrheadsList = this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
+
   }
 
   public beautify() {
@@ -122,8 +124,7 @@ export class HeaderComponent {
 
   public nextStep() {
     this._sharedService.sharedProgram.debugger.step();
-    this._sharedService.BtrheadsList =
-      this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
+    this._sharedService.BtrheadsList = this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
   }
 
   public previousStep(){

@@ -45,9 +45,6 @@ export class SideComponent implements AfterViewInit {
   get selectable (){
     return this.sharedService.sharedProgram.debugger.getLastStep().selectableEvents;
   }
-  get Lvariables (){
-    return this.sharedService.sharedProgram.debugger.getLastStep().globalVariables;
-  }
 
   get sentences (){
     return this.sharedService.sentences;
@@ -69,10 +66,12 @@ export class SideComponent implements AfterViewInit {
   public addExternalEvent() {
     this.sharedService.sharedProgram.addExternalEvent(this.sharedService.sharedExternalEvent);
     this.sharedService.sharedExternalEvent = '';
+    this.sharedService.BtrheadsList = this.sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
   }
 
   public clickOnTrace(n){
     this.sharedService.sharedProgram.debugger.stepBackToIndex(n);
+    this.sharedService.BtrheadsList = this.sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
   }
 }
 

@@ -1,5 +1,16 @@
+
+.html,
+body {
+  height: 100%;
+  margin: auto;
+}
+.section {
+  height: 30%;
+}
+
 div.list-container-externalevent{
-  height: 120px;
+  min-height: 120px;
+  /*height: 120px;*/
   overflow: auto;
   outline: none;
   padding: 3px;
@@ -23,15 +34,17 @@ button.addExEvButton:hover{
 }
 
 div.list-container{
+  min-height: 110px;
   padding-left: 15px;
-  height: 105px;
+  /*height: 105px;*/
   overflow: auto;
   border: solid 0.1px #c2ccbf;
   outline: none;
 }
 
 div.list-container-sentences{
-  height: 140px;
+  min-height: 140px;
+  /*height: 140px;*/
   padding-left: 15px;
   overflow: auto;
   outline: none;

@@ -1,12 +1,14 @@
 #editor {
   margin-left: auto;
   width: 100%;
+  height: 70%;
   padding: 5px;
   resize: vertical;
 }
 
 .form-control {
   border-radius: 0 !important;
+  width: 100%;
 }
 
 .form-control:disabled {
@@ -17,7 +19,8 @@
 
 .outputStyle{
   color: #fd7104;
-  /*resize: none;*/
+  box-sizing: border-box;
+  width: 100%;
 }
 ::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
   min-width: 4px!important;
@@ -30,10 +33,11 @@
 ::ng-deep .mat-ink-bar {
   background-color:#fd7104 !important;}
 
+/*localVariables*/
 
-#variables {
+#localVariables {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   border-collapse: collapse;
   width: 100%;
   outline: none;
@@ -41,28 +45,63 @@
   table-layout: fixed;
 }
 
-#variables td, #variables th {
+#localVariables td, #localVariables th {
   border: 0.2px solid #c2ccbf;
   text-align: center;
   color: #000000;
   overflow: auto;
 }
 
-#variables tr:nth-child(even){
+#localVariables tr:nth-child(even){
   background-color: #f2f2f2;
 }
 
-#variables tr:hover {
+#localVariables tr:hover {
   background-color: #f6af41;
 }
 
-#variables th {
-  padding-top: 1px;
-  padding-bottom: 1px;
+#localVariables th {
+  /*padding-top: 1px;*/
+  /*padding-bottom: 1px;*/
   text-align: center;
   background-color: #000000;
   border-bottom: solid 0.1px #c2ccbf;
   color: #EC8C23;
 }
 
+/*globalVariables*/
+
+#globalVariables {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  /*border: 1px solid black;*/
+  border-collapse: collapse;
+  width: 100%;
+  outline: none;
+  overflow: auto;
+  table-layout: fixed;
+}
+
+#globalVariables td, #globalVariables th {
+  border: 0.2px solid #c2ccbf;
+  text-align: center;
+  color: #000000;
+  overflow: auto;
+}
+
+#globalVariables tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+#globalVariables tr:hover {
+  background-color: #f6af41;
+}
+
+#globalVariables th {
+  /*padding-top: 1px;*/
+  /*padding-bottom: 1px;*/
+  text-align: center;
+  background-color: #000000;
+  border-bottom: solid 0.1px #c2ccbf;
+  color: #EC8C23;
+}
 
