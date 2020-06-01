@@ -22,6 +22,8 @@ import {SideRightComponent} from "./side-right/side-right.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import {MatMenuModule} from "@angular/material/menu";
+import { OutputComponent } from './output/output.component';
+import {AngularSplitModule} from "angular-split";
 
 
 @NgModule({
@@ -31,26 +33,28 @@ import {MatMenuModule} from "@angular/material/menu";
     SideRightComponent,
     HeaderComponent,
     CodeEditorComponent,
-    SaveFileDialogComponent
+    SaveFileDialogComponent,
+    OutputComponent
   ],
-  imports: [
-    BrowserModule,
-    ClarityModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    LayoutModule,
-    MatTabsModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatListModule,
-    MatMenuModule
-  ],
+    imports: [
+        BrowserModule,
+        ClarityModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        LayoutModule,
+        MatTabsModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatListModule,
+        MatMenuModule,
+        AngularSplitModule
+    ],
   entryComponents: [
     SaveFileDialogComponent
   ],

@@ -61,6 +61,9 @@ export class HeaderComponent {
     this._sharedService.sharedProgram.runner.setIsError(false);
     this._sharedService.sharedProgram.runner.setStdout('');
     this._sharedService.BtrheadsList = this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
+    this._sharedService.sharedCodeEditor.setReadOnly(true);
+    // @ts-ignore
+    this._sharedService.sharedCodeEditor.renderer.$cursorLayer.element.style.opacity=0;
 
   }
 
@@ -131,6 +134,9 @@ export class HeaderComponent {
     this._sharedService.nextDebugger(!this._sharedService.sharedDebuggerMode);
     this._sharedService.sharedProgram.debugger.initDebugger();
     this._sharedService.BtrheadsList = [];
+    this._sharedService.sharedCodeEditor.setReadOnly(false);
+    // @ts-ignore
+    this._sharedService.sharedCodeEditor.renderer.$cursorLayer.element.style.opacity=1;
   }
 
   public nextStep() {

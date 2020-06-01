@@ -1,14 +1,18 @@
+.nav-link{
+  pointer-events: none;
+}
 
 .html,
 body {
   height: 100%;
   margin: auto;
 }
+
 .section {
   height: 30%;
 }
 
-div.list-container-externalevent{
+div.list-container-externalevent {
   min-height: 120px;
   /*height: 120px;*/
   overflow: auto;
@@ -16,10 +20,10 @@ div.list-container-externalevent{
   padding: 3px;
 }
 
-button.addExEvButton{
+button.addExEvButton {
   width: 50%;
-  margin:auto;
-  display:block;
+  margin: auto;
+  display: block;
   background-color: #000000;
   border-color: #000000;
   color: #01a0e4;
@@ -27,13 +31,13 @@ button.addExEvButton{
   border-bottom: black;
 }
 
-button.addExEvButton:hover{
+button.addExEvButton:hover {
   background-color: #01a0e4;
   border-color: #01a0e4;
   color: #000000;
 }
 
-div.list-container{
+div.list-container {
   min-height: 110px;
   padding-left: 15px;
   /*height: 105px;*/
@@ -42,7 +46,7 @@ div.list-container{
   outline: none;
 }
 
-div.list-container-sentences{
+div.list-container-sentences {
   min-height: 140px;
   /*height: 140px;*/
   padding-left: 15px;
@@ -52,10 +56,11 @@ div.list-container-sentences{
   border-bottom: solid 0.1px #c2ccbf;
 }
 
-#sentence tr{
+#sentence tr {
   color: black;
 }
-#sentence tr:hover{
+
+#sentence tr:hover {
   background-color: #000000;
   color: #01C0DD;
   font-weight: bold;
@@ -68,7 +73,7 @@ div.list-container-sentences{
 
 /*Variables Section*/
 
-div.list-container-variables{
+div.list-container-variables {
   height: 115px;
   overflow: auto;
   border: solid 0.1px #c2ccbf;
@@ -88,7 +93,7 @@ div.list-container-variables{
   color: #000000;
 }
 
-#Lvariables tr:nth-child(even){
+#Lvariables tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
@@ -104,6 +109,7 @@ div.list-container-variables{
   border-bottom: solid 0.1px #c2ccbf;
   color: #01C0DD;
 }
+
 
 /*!*Global Variables Section*!*/
 /*div.list-container-variables{*/

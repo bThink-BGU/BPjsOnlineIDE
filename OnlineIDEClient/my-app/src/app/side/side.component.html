@@ -5,81 +5,83 @@
         <button clrTabLink>External Event</button>
         <clr-tab-content class="bptab">
           <!--<form class="clr-form">-->
-            <div class="list-container-externalevent">
-              <textarea placeholder="Enter External Event" style="width: 100%; overflow: auto; height: 60%" [(ngModel)] = 'externalEvent' name="externalEvent"></textarea>
-              <button class="btn btn-primary btn-sm addExEvButton" (click)="addExternalEvent()">ADD</button>
-            </div>
+          <div class="list-container-externalevent">
+              <textarea placeholder="Enter External Event" style="width: 100%; overflow: auto;
+              height: 60%; resize: none;"
+                        [(ngModel)]='externalEvent' name="externalEvent"></textarea>
+            <button class="btn btn-primary btn-sm addExEvButton" (click)="addExternalEvent()">ADD</button>
+          </div>
           <!--</form>-->
         </clr-tab-content>
       </clr-tab>
     </clr-tabs>
   </section>
 
-<section *ngIf="!staticDebugger; else debug">
-   <clr-tabs>
-    <clr-tab class="nav-link">
-      <button clrTabLink>Add Sentence</button>
-      <ng-template [(clrIfActive)]="sentence">
-        <clr-tab-content>
-          <div class="list-container-sentences"  id="sentence">
-            <tr *ngFor="let sen of sentences; index as j">
-              <td (click)="addSentence(j)">{{sen}}</td>
-            </tr>
-          </div>
-        </clr-tab-content>
-      </ng-template>
-    </clr-tab>
+  <section *ngIf="!staticDebugger; else debug">
+    <clr-tabs>
+      <clr-tab class="nav-link">
+        <button clrTabLink>Add Sentence</button>
+        <ng-template [(clrIfActive)]="sentence">
+          <clr-tab-content>
+            <div class="list-container-sentences" id="sentence">
+              <tr *ngFor="let sen of sentences; index as j">
+                <td (click)="addSentence(j)">{{sen}}</td>
+              </tr>
+            </div>
+          </clr-tab-content>
+        </ng-template>
+      </clr-tab>
     </clr-tabs>
-</section>
+  </section>
 
-<ng-template #debug>
-  <clr-tabs>
-    <clr-tab class="nav-link">
-      <button clrTabLink>Request / Request & Block</button>
-      <ng-template [(clrIfActive)]="Request">
-        <clr-tab-content>
-          <div class="list-container">
-            <tr *ngFor="let rqst of request">
-              <ng-container *ngIf="selectable.includes(rqst); else elseBlock;">
-                <td style="color: green">☑ {{rqst}}</td>
-              </ng-container>
-              <ng-template #elseBlock>
-                <td style="color: red">☒ {{rqst}}</td>
-              </ng-template>
-            </tr>
-          </div>
-        </clr-tab-content>
-      </ng-template>
-    </clr-tab>
+  <ng-template #debug>
+    <clr-tabs>
+      <clr-tab class="nav-link">
+        <button clrTabLink>Request / Request & Block</button>
+        <ng-template [(clrIfActive)]="Request">
+          <clr-tab-content>
+            <div class="list-container">
+              <tr *ngFor="let rqst of request">
+                <ng-container *ngIf="selectable.includes(rqst); else elseBlock;">
+                  <td style="color: green">☑ {{rqst}}</td>
+                </ng-container>
+                <ng-template #elseBlock>
+                  <td style="color: red">☒ {{rqst}}</td>
+                </ng-template>
+              </tr>
+            </div>
+          </clr-tab-content>
+        </ng-template>
+      </clr-tab>
 
-<!--    <clr-tab >-->
-<!--      <button clrTabLink>Block</button>-->
-<!--      <ng-template [(clrIfActive)]="Block">-->
-<!--        <clr-tab-content>-->
-<!--          <div class="list-container">-->
-<!--            <tr *ngFor="let blck of block">-->
-<!--              <td>{{blck}}</td>-->
-<!--            </tr>-->
-<!--          </div>-->
-<!--        </clr-tab-content>-->
-<!--      </ng-template>-->
-<!--    </clr-tab>-->
+      <!--    <clr-tab >-->
+      <!--      <button clrTabLink>Block</button>-->
+      <!--      <ng-template [(clrIfActive)]="Block">-->
+      <!--        <clr-tab-content>-->
+      <!--          <div class="list-container">-->
+      <!--            <tr *ngFor="let blck of block">-->
+      <!--              <td>{{blck}}</td>-->
+      <!--            </tr>-->
+      <!--          </div>-->
+      <!--        </clr-tab-content>-->
+      <!--      </ng-template>-->
+      <!--    </clr-tab>-->
 
-<!--    <clr-tab>-->
-<!--      <button clrTabLink>Wait</button>-->
-<!--      <ng-template [(clrIfActive)]="Wait">-->
-<!--        <clr-tab-content>-->
-<!--          <div class="list-container">-->
-<!--            <tr *ngFor="let wt of wait">-->
-<!--              <td>{{wt}}</td>-->
-<!--            </tr>-->
-<!--          </div>-->
-<!--        </clr-tab-content>-->
-<!--      </ng-template>-->
-<!--    </clr-tab>-->
-  </clr-tabs>
+      <!--    <clr-tab>-->
+      <!--      <button clrTabLink>Wait</button>-->
+      <!--      <ng-template [(clrIfActive)]="Wait">-->
+      <!--        <clr-tab-content>-->
+      <!--          <div class="list-container">-->
+      <!--            <tr *ngFor="let wt of wait">-->
+      <!--              <td>{{wt}}</td>-->
+      <!--            </tr>-->
+      <!--          </div>-->
+      <!--        </clr-tab-content>-->
+      <!--      </ng-template>-->
+      <!--    </clr-tab>-->
+    </clr-tabs>
 
-  <!--<section class="sidenav-content">-->
+    <!--<section class="sidenav-content">-->
     <clr-tabs>
       <clr-tab class="nav-link">
         <button clrTabLink>Trace</button>
@@ -87,34 +89,34 @@
           <clr-tab-content class="bptab">
             <div class="list-container" id="events">
               <tr *ngFor="let trc of trace; index as i">
-                <td (click) ="clickOnTrace(i+1)">{{i+1}}: {{trc}}</td>
+                <td (click)="clickOnTrace(i+1)">{{i + 1}}: {{trc}}</td>
               </tr>
             </div>
           </clr-tab-content>
         </ng-template>
       </clr-tab>
 
-<!--      <clr-tab class="nav-link">-->
-<!--        <button clrTabLink>Variables</button>-->
-<!--        <ng-template [(clrIfActive)]="Variables">-->
-<!--          <clr-tab-content class="bptab">-->
-<!--            <div class="list-container-variables">-->
-<!--            <table id="Lvariables">-->
-<!--              <tr>-->
-<!--                <th width="50%">Variable</th>-->
-<!--                <th width="50%">Value</th>-->
-<!--              </tr>-->
-<!--              <tr *ngFor="let ent of Lvariables | keyvalue">-->
-<!--                <td width="50%">{{ent.key}}</td>-->
-<!--                <td width="50%">{{ent.value}}</td>-->
-<!--              </tr>-->
-<!--            </table>-->
-<!--            </div>-->
-<!--          </clr-tab-content>-->
-<!--        </ng-template>-->
-<!--      </clr-tab>-->
+      <!--      <clr-tab class="nav-link">-->
+      <!--        <button clrTabLink>Variables</button>-->
+      <!--        <ng-template [(clrIfActive)]="Variables">-->
+      <!--          <clr-tab-content class="bptab">-->
+      <!--            <div class="list-container-variables">-->
+      <!--            <table id="Lvariables">-->
+      <!--              <tr>-->
+      <!--                <th width="50%">Variable</th>-->
+      <!--                <th width="50%">Value</th>-->
+      <!--              </tr>-->
+      <!--              <tr *ngFor="let ent of Lvariables | keyvalue">-->
+      <!--                <td width="50%">{{ent.key}}</td>-->
+      <!--                <td width="50%">{{ent.value}}</td>-->
+      <!--              </tr>-->
+      <!--            </table>-->
+      <!--            </div>-->
+      <!--          </clr-tab-content>-->
+      <!--        </ng-template>-->
+      <!--      </clr-tab>-->
     </clr-tabs>
-  <!--</section>-->
-</ng-template>
+    <!--</section>-->
+  </ng-template>
 
 </section>

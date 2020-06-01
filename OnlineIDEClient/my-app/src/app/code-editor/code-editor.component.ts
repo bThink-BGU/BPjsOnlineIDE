@@ -20,34 +20,6 @@ export class CodeEditorComponent implements AfterViewInit {
   private _codeEditor: Ace.Editor;
   private _breakpoints: {};
 
-  get output() {
-    let textarea = document.getElementById('run_textarea');
-   // textarea.scrollTop = textarea.scrollHeight;
-    return this.sharedService.sharedProgram.runner.stdout;
-  }
-
-  get outputDebug() {
-    let textarea = document.getElementById('debug_textarea');
-    textarea.scrollTop = textarea.scrollHeight;
-    return this.sharedService.sharedProgram.debugger.stdout;
-  }
-
-  get bthreads() {
-    return this.sharedService.sharedProgram.debugger.getLastStep().bThreads;
-  }
-
-  get globalVariables(){
-    return this.sharedService.sharedProgram.debugger.getLastStep().globalVariables;
-  }
-
-  get bthreadList(){
-    return this.sharedService.BtrheadsList;
-  }
-
-  get staticDebugger() {
-    return this.sharedService.sharedDebuggerMode;
-  }
-
   get externalEvent() {
     return this.sharedService.sharedExternalEvent;
   }
@@ -113,6 +85,7 @@ export class CodeEditorComponent implements AfterViewInit {
   private enableBreakpoints() {
     // not "on(...)" to prevent ace from calling the original default handler
     this._codeEditor.setDefaultHandler('guttermousedown', (e) => {
+
       // if (!this.codeEditor.isFocused()) // a preference thing ...
       //   return;
       if (e.domEvent.target.className.indexOf("ace_gutter-cell") == -1)

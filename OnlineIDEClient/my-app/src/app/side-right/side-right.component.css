@@ -1,3 +1,7 @@
+.nav-link{
+  pointer-events: none;
+}
+
 /*BThreads*/
 
 div.list-container-variables{

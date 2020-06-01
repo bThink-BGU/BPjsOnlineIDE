@@ -60,8 +60,6 @@ public class Server {
 				break;
 		}
     }
-    
-    
   
 	private void step(StepMessage stepMessage) {
 		StepMessage nextStepMessage;

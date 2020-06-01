@@ -32,6 +32,7 @@
     "@progress/kendo-angular-progressbar": "^0.2.3",
     "@webcomponents/custom-elements": "^1.0.0",
     "ace-builds": "^1.4.7",
+    "angular-split": "^3.0.3",
     "axios": "^0.19.1",
     "rxjs": "~6.4.0",
     "rxjs-compat": "^6.5.5",
