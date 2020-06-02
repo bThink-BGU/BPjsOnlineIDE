@@ -63,11 +63,23 @@ public class Server {
 			case "externalEvent":
 				addExternalEvent(decodedMessage);
 				break;
+			case "stop":
+				stop();
 			default:
 				break;
 		}
     }
   
+	private void stop() {
+		try {
+			service.Stop();
+			this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(new Message("stop", "")));
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error in stop");
+		}
+	}
+
 	private void step(StepMessage stepMessage) {
 		StepMessage nextStepMessage;
 		try {
