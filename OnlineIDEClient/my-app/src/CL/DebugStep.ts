@@ -12,10 +12,11 @@ export class DebugStep {
   private readonly _waitList: string[];
   private readonly _blockList: string[];
   private readonly _selectedEvent: string;
+  private readonly _line: number;
 
   constructor(bpss: any[], gVariables: Map<object, object>, bThreads: BThreadInfo[],
               reqList: string[], selectableEvents: string[], waitList: string[], blockList: string[],
-              selectedEvent: string) {
+              selectedEvent: string, line: number) {
     this._type = 'step';
     this._bpss = bpss;
     this._globalVariables = gVariables;
@@ -62,6 +63,10 @@ export class DebugStep {
 
   get globalVariables(): Map<object, object> {
     return this._globalVariables;
+  }
+
+  get line(): number {
+    return this._line;
   }
 }
 

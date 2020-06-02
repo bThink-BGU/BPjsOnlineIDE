@@ -35,9 +35,40 @@ export class Debugger {
   step() {
     const traceLength = this._stepTrace.length;
     const debugStep = traceLength === 0 ? new DebugStep(undefined, undefined, undefined,
-      undefined, undefined, undefined, undefined, undefined) :
-      this._stepTrace[traceLength - 1];
+      undefined, undefined, undefined, undefined, undefined,
+      undefined) : this._stepTrace[traceLength - 1];
     this._bpService.stepCL(debugStep);
+  }
+
+  postStep(response) {
+    if (this._programEnded) { // The program ended
+      return;
+    }
+    if (this.isFinished(response)) { // The program finished
+      this._stdout += '\n' + 'The Program Ended';
+      this._programEnded = true;
+    } else {
+      this._stepTrace.push(this.buildDebugStep(response));
+      if (response.selectedEvent !== undefined) {
+        this._eventTrace.push(response.selectedEvent);
+        this._stdout += '\n' + response.selectedEvent;
+      } else {
+        this._eventTrace.push('');
+      }
+    }
+  }
+
+  private buildDebugStep(response) {
+    const bThreadsResponse = response.bThreads;
+    const bThreads = [];
+    for (let i = 0; i < bThreadsResponse.length; i++) {
+      const bThreadInfo = new BThreadInfo(bThreadsResponse[i].bThreadName, bThreadsResponse[i].firstLinePC,
+        bThreadsResponse[i].localShift, this.toVarsMap(bThreadsResponse[i].localVars, bThreadsResponse[i].localVals));
+      bThreads.push(bThreadInfo);
+    }
+    return new DebugStep(response.bpss, this.toVarsMap(response.globalVars, response.globalVals), bThreads,
+      response.reqList, response.selectableEvents, response.waitList, response.blockList, response.selectedEvent,
+      this.getLineOfStep(bThreads));
   }
 
   stepBack() {
@@ -67,34 +98,18 @@ export class Debugger {
     this._breakPoints.push(new BreakPoint(line));
   }
 
-  postStep(response) {
-    if (this._programEnded) { // The program ended
-      return;
-    }
-    if (this.isFinished(response)) { // The program finished
-      this._stdout += '\n' + 'The Program Ended';
-      this._programEnded = true;
-    } else {
-      this._stepTrace.push(this.buildDebugStep(response));
-      if (response.selectedEvent !== undefined) {
-        this._eventTrace.push(response.selectedEvent);
-        this._stdout += '\n' + response.selectedEvent;
-      } else {
-        this._eventTrace.push('');
-      }
-    }
-  } ז
+  removeBreakPoint(line: number) {
+    const idx = this.getIndexOfBreakPoint(line);
+    if (idx !== -1)
+      delete this._breakPoints[idx];
+  }
 
-  private buildDebugStep(response) {
-    const bThreadsResponse = response.bThreads;
-    const bThreads = [];
-    for (let i = 0; i < bThreadsResponse.length; i++) {
-      const bThreadInfo = new BThreadInfo(bThreadsResponse[i].bThreadName, bThreadsResponse[i].firstLinePC,
-        bThreadsResponse[i].localShift, this.toVarsMap(bThreadsResponse[i].localVars, bThreadsResponse[i].localVals));
-      bThreads.push(bThreadInfo);
-    }
-    return new DebugStep(response.bpss, this.toVarsMap(response.globalVars, response.globalVals), bThreads,
-      response.reqList, response.selectableEvents, response.waitList, response.blockList, response.selectedEvent);
+  private getIndexOfBreakPoint(line) {
+    for (let i = 0; i < this._breakPoints.length; i++)
+      if (this._breakPoints[i].line === line) {
+        return i;
+      }
+    return -1;
   }
 
   getLastStep() {
@@ -103,7 +118,7 @@ export class Debugger {
     } else {
       return new DebugStep(undefined, new Map<object, object>(),
         [], [], [], [],
-        [], '');
+        [], '', -1);
     }
   }
 
@@ -149,4 +164,41 @@ export class Debugger {
     this._eventTrace = l;
   }
 
+  moveToTheFirstLine() {
+    if (this._breakPoints.length === 0)
+      this.step();
+    else
+      this.stepToBreakPoint();
+  }
+
+  stepToBreakPoint() {
+    while (!this._programEnded) {
+      this.step();
+      if (this.getIndexOfBreakPoint(this.getLastStep().line) > -1)
+        break;
+    }
+  }
+
+  stepBackToBreakPoint() {
+    while (this._stepTrace.length > 0) {
+      this.stepBack();
+      if (this.getIndexOfBreakPoint(this.getLastStep().line) > -1)
+        break;
+    }
+  }
+
+  private getLineOfStep(currStepBThreads: BThreadInfo[]) {
+    const nextLines = [];
+    const currLines = [];
+    this.getLastStep().bThreads.forEach(function(bt) {
+      nextLines.push(bt.getNextSyncLineNumber());
+    });
+    currStepBThreads.forEach(function(bt) {
+      currLines.push(bt.getNextSyncLineNumber());
+    })
+    for (let line of currLines)
+      if (!nextLines.includes(line)) // The line already chosen
+        return line;
+    return -1;
+  }
 }

@@ -117,6 +117,7 @@ export class CodeEditorComponent implements AfterViewInit {
       'fullLine',
       false);
     this._breakpoints[row] = {'markerID': markerID};
+    this.sharedService.sharedProgram.debugger.addBreakPoint(row);
   }
 
   private removeBreakpoint(row: number) {
@@ -125,6 +126,7 @@ export class CodeEditorComponent implements AfterViewInit {
     this._codeEditor.session.clearBreakpoint(row);
     this._codeEditor.session.removeMarker(this._breakpoints[row]['markerID']);
     delete this._breakpoints[row];
+    this.sharedService.sharedProgram.debugger.removeBreakPoint(row);
   }
 
   private sortKeys() {
