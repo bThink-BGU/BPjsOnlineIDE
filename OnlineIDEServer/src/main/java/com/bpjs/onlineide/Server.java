@@ -50,8 +50,15 @@ public class Server {
 					System.out.println(e.getMessage());
 				}
 				break;
-			case "step":				
-				step(EncodeDecode.decodeStepMessage(message));
+			case "step":
+				try {
+					step(EncodeDecode.decodeStepMessage(message));					
+				}	
+				catch(Exception e) {
+					StepMessage nextStepMessage = new StepMessage(null, null, null, null, null, null, null, e.getMessage());
+					this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(nextStepMessage));
+					System.out.println(e.getMessage());
+				}
 				break;
 			case "externalEvent":
 				addExternalEvent(decodedMessage);

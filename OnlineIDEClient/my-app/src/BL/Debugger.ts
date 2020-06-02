@@ -45,9 +45,15 @@ export class Debugger {
       return;
     }
     if (this.isFinished(response)) { // The program finished
-      this._stdout += '\n' + 'The Program Ended';
-      this._programEnded = true;
-    } else {
+      if (response.selectedEvent === undefined) {
+        this._stdout += '\n' + 'The Program Ended';
+        this._programEnded = true;
+      } else { // Finished because a bug occur
+        this._stdout = response.selectedEvent;
+        this._programEnded = true;
+      }
+    }
+    else {
       this._stepTrace.push(this.buildDebugStep(response));
       if (response.selectedEvent !== undefined) {
         this._eventTrace.push(response.selectedEvent);
@@ -126,7 +132,7 @@ export class Debugger {
     return response.bpss === undefined && response.bThreadDebugData === undefined &&
       response.globalVariables === undefined && response.reqList === undefined &&
       response.selectableEvents === undefined && response.waitList === undefined &&
-      response.blockList === undefined && response.selectedEvent === undefined;
+      response.blockList === undefined;
   }
 
   private toVarsMap(vars, vals) {
