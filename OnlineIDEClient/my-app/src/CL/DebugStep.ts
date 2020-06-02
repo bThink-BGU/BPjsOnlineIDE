@@ -61,7 +61,7 @@ export class DebugStep {
     return this._selectedEvent;
   }
 
-  get globalVariables(): Map<object, object> {
+  get globalVariables(): Map<any, any> {
     return this._globalVariables;
   }
 

@@ -26,7 +26,7 @@ export class BThreadInfo {
     return this._localShift;
   }
 
-  get localVariables(): Map<object, object> {
+  get localVariables(): Map<any, any> {
     return this._localVariables;
   }
 
