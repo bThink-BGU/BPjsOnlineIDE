@@ -2,13 +2,13 @@
 
 export class BreakPoint {
 
-  private _line: Number;
+  private readonly _line: number;
 
-  constructor(line: Number) {
+  constructor(line: number) {
     this._line = line;
   }
 
-  get line(): Number {
+  get line(): number {
     return this._line;
   }
 }

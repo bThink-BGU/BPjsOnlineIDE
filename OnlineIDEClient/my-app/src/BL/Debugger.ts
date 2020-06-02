@@ -140,30 +140,6 @@ export class Debugger {
     return variables;
   }
 
-  get stepTrace(): DebugStep[] {
-    return this._stepTrace;
-  }
-
-  get breakPoints(): BreakPoint[] {
-    return this._breakPoints;
-  }
-
-  get programEnded(): boolean {
-    return this._programEnded;
-  }
-
-  get bpService(): BpService {
-    return this._bpService;
-  }
-
-  setStepTrace(l: DebugStep[]) {
-    this._stepTrace = l;
-  }
-
-  setEventTrace(l: string[]) {
-    this._eventTrace = l;
-  }
-
   moveToTheFirstLine() {
     if (this._breakPoints.length === 0)
       this.step();
@@ -195,10 +171,34 @@ export class Debugger {
     });
     currStepBThreads.forEach(function(bt) {
       currLines.push(bt.getNextSyncLineNumber());
-    })
-    for (let line of currLines)
+    });
+    for (const line of currLines)
       if (!nextLines.includes(line)) // The line already chosen
         return line;
     return -1;
+  }
+
+  get stepTrace(): DebugStep[] {
+    return this._stepTrace;
+  }
+
+  get breakPoints(): BreakPoint[] {
+    return this._breakPoints;
+  }
+
+  get programEnded(): boolean {
+    return this._programEnded;
+  }
+
+  get bpService(): BpService {
+    return this._bpService;
+  }
+
+  setStepTrace(l: DebugStep[]) {
+    this._stepTrace = l;
+  }
+
+  setEventTrace(l: string[]) {
+    this._eventTrace = l;
   }
 }
