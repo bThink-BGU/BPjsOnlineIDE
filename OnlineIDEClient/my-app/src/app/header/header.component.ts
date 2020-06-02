@@ -52,7 +52,7 @@ export class HeaderComponent {
   }
 
   public stopRun() {
-    window.alert('here')
+    window.alert('here');
   }
 
   public debug() {
@@ -144,7 +144,7 @@ export class HeaderComponent {
     this._sharedService.BtrheadsList = this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
   }
 
-  public previousStep(){
+  public previousStep() {
     this._sharedService.sharedProgram.debugger.stepBack();
     this._sharedService.BtrheadsList =
       this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);

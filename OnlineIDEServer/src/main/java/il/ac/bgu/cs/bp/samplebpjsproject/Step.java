@@ -65,11 +65,7 @@ public class Step {
         Map<Object, Object> globalVariables = new HashMap<>();
         List<BThreadInfo> bThreads = new LinkedList<>();
        
-        for(BThreadSyncSnapshot s: bpss.getBThreadSnapshots()) {
-        	
-        	SyncStatement syncStatement = s.getSyncStatement();
-        	       	
-        	
+        for(BThreadSyncSnapshot s: bpss.getBThreadSnapshots()) { 	       	 	
         	NativeContinuation nc = ((NativeContinuation)s.getContinuation());
         	Object localShift = getLocalShift(nc.getImplementation());
         	Object firstLinePC = getfirstLinePC(nc.getImplementation());
@@ -82,19 +78,6 @@ public class Step {
 	       	bThreads.add(new BThreadInfo(s.getName(), (int)firstLinePC, (int)localShift, localVariables));
         }
         
-//        bpss.getBThreadSnapshots().forEach(s -> { 
-//        	NativeContinuation nc = ((NativeContinuation)s.getContinuation());
-//        	Object localShift = getLocalShift(nc.getImplementation());
-//        	Object firstLinePC = getfirstLinePC(nc.getImplementation());
-//        	Map<Object, Object> variables = s.getContinuationProgramState().getVisibleVariables();
-//	       	getGlobalValues(nc, variables, globalVariables);
-//	       	Map<Object, Object> localVariables = new HashMap<>();
-//	       	for(Object var: variables.keySet())
-//	       		if(!globalVariables.containsKey(var))
-//	       			localVariables.put(var, variables.get(var));
-//	       	bThreads.add(new BThreadInfo(s.getName(), (int)firstLinePC, (int)localShift, localVariables));
-//        });
-           
         return new StepMessage(
                 new BProgramSyncSnapshotIO(bprog).serialize(bpss),
                 globalVariables,
