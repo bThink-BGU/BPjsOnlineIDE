@@ -51,6 +51,8 @@ public class Step {
         	return null;
         ArrayList<BEvent> eventOrdered = new ArrayList<>(selectableEvents);
         Collections.shuffle(eventOrdered);
+        if(eventOrdered.size() == 0)
+        	return null;
         BEvent e = eventOrdered.get(0);
         return new Step(execSvc, bprog, BProgramSyncSnapshotCloner.clone(bpss).triggerEvent(e, execSvc, Collections.emptyList()), e);
     }
