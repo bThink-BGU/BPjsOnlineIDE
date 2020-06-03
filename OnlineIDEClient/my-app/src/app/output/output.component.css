@@ -3,7 +3,7 @@
   width: 100%;
 }
 
-.output{
+#run_textarea {
   background-color: rgba(10, 11, 10, 0.97);
   color: #01a0e4;
   width: 100%;
@@ -22,8 +22,6 @@
 ::ng-deep.mat-tab-body-wrapper {
   flex-grow: 1;
 }
-
-
 
 
 ::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
@@ -86,10 +84,13 @@
   table-layout: fixed;
 }
 
+
 #globalVariables td, #globalVariables th {
   border: 0.2px solid #c2ccbf;
   text-align: center;
   color: #000000;
+  display: inline-block;
+  white-space: nowrap;
   overflow: auto;
 }
 

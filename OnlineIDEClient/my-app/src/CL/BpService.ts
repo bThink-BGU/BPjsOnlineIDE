@@ -13,6 +13,10 @@ export class BpService {
     this._connection.sendDataMess(type, code);
   }
 
+  stopCL() {
+    this._connection.sendDataMess('stop', '');
+  }
+
   runCL() {
     this._connection.sendDataMess('run', '');
   }

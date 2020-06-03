@@ -19,9 +19,11 @@ export class SharedService {
   sharedEditorBeautify;
 
   sharedCode = '//*****Hello BPjs World*****\n\n' +
-    'bp.registerBThread(function(){\n' +
-    '  bp.sync({request:bp.Event("hello")});\n' +
-    '  bp.sync({request:bp.Event("world")});\n' +
+    'bp.registerBThread("welcome", function() {\n' +
+    '    bp.sync({\n' +
+    '        request: bp.Event("hello")});\n' +
+    '    bp.sync({\n' +
+    '        request: bp.Event("world")});\n' +
     '})';
 
   constructor() {
@@ -36,6 +38,7 @@ export class SharedService {
     '\nbp.registerBThread ("...",function(){\n' +
     '            ...\n' +
     '            })\n',
+    '\nbp.sync("...")\n',
     '\nbp.sync({waitFor:bp.Event("...")});\n',
     '\nbp.sync({request:bp.Event("...")});\n',
     '\nbp.sync({request:bp.Event("..."),' +
@@ -43,11 +46,28 @@ export class SharedService {
   ];
   sentences = [
     'bp.registerBThread',
+    'bp.sync',
     'bp.sync - waitFor',
     'bp.sync - request',
     'bp.sync - request + block'
   ];
-
+  shortcuts ={
+    'Find': 'Ctrl-F',
+    'Remove to  Line Start' : 'Alt-Backspace',
+    'Remove to Line End' : 'Alt-Delete',
+    'Remove Word Left' : 'Ctrl-Backspace',
+    'Remove Word Right' : 'Ctrl-Delete',
+    'Copy Lines Up' : 'Alt-Shift-Up',
+    'Move Lines Up' : 'Alt-Up',
+    'Copy Lines Down' : 'Alt-Shift-Down',
+    'Move Lines Down' : 'Alt-Down',
+    'Replace' : 'Ctrl-H',
+    'Remove Line' : 'Ctrl-D',
+    'Find Next' : 'Ctrl-K',
+    'Find Previous' : 'Ctrl-Shift-K',
+    'Scroll Up' : 'Ctrl-Up',
+    'Scroll Down' : 'Ctrl-Down'
+  }
 
 
   nextOutput(output: string) {

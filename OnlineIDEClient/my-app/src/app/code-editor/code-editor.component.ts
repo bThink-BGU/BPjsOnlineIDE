@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, ElementRef} from '@angular/core';
 import * as ace from 'ace-builds';
 import {Ace, Range} from 'ace-builds';
 import 'ace-builds/src-noconflict/theme-twilight'; // default theme
@@ -70,8 +70,6 @@ export class CodeEditorComponent implements AfterViewInit {
     this.enableMoveBreakpointsOnChange();
     this.disableSettingsMenu();
   }
-
-
 
   private bindCodeVariableAndValue() {
     this._codeEditor.on('change', () => {

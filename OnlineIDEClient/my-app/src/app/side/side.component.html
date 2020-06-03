@@ -32,7 +32,24 @@
         </ng-template>
       </clr-tab>
     </clr-tabs>
+
+    <clr-tabs>
+      <clr-tab class="nav-link">
+        <button clrTabLink>Shortcuts</button>
+        <ng-template [(clrIfActive)]="shortcut">
+          <clr-tab-content>
+            <div class="list-container-shortcuts" id="shortcuts">
+              <tr *ngFor="let shc of shortcuts | keyvalue">
+                <td class="tooltip">{{shc.key}} <span class="tooltiptext">{{shc.value}}</span> </td>
+              </tr>
+            </div>
+          </clr-tab-content>
+        </ng-template>
+      </clr-tab>
+    </clr-tabs>
+
   </section>
+
 
   <ng-template #debug>
     <clr-tabs>
@@ -53,35 +70,8 @@
           </clr-tab-content>
         </ng-template>
       </clr-tab>
-
-      <!--    <clr-tab >-->
-      <!--      <button clrTabLink>Block</button>-->
-      <!--      <ng-template [(clrIfActive)]="Block">-->
-      <!--        <clr-tab-content>-->
-      <!--          <div class="list-container">-->
-      <!--            <tr *ngFor="let blck of block">-->
-      <!--              <td>{{blck}}</td>-->
-      <!--            </tr>-->
-      <!--          </div>-->
-      <!--        </clr-tab-content>-->
-      <!--      </ng-template>-->
-      <!--    </clr-tab>-->
-
-      <!--    <clr-tab>-->
-      <!--      <button clrTabLink>Wait</button>-->
-      <!--      <ng-template [(clrIfActive)]="Wait">-->
-      <!--        <clr-tab-content>-->
-      <!--          <div class="list-container">-->
-      <!--            <tr *ngFor="let wt of wait">-->
-      <!--              <td>{{wt}}</td>-->
-      <!--            </tr>-->
-      <!--          </div>-->
-      <!--        </clr-tab-content>-->
-      <!--      </ng-template>-->
-      <!--    </clr-tab>-->
     </clr-tabs>
 
-    <!--<section class="sidenav-content">-->
     <clr-tabs>
       <clr-tab class="nav-link">
         <button clrTabLink>Trace</button>
@@ -95,28 +85,6 @@
           </clr-tab-content>
         </ng-template>
       </clr-tab>
-
-      <!--      <clr-tab class="nav-link">-->
-      <!--        <button clrTabLink>Variables</button>-->
-      <!--        <ng-template [(clrIfActive)]="Variables">-->
-      <!--          <clr-tab-content class="bptab">-->
-      <!--            <div class="list-container-variables">-->
-      <!--            <table id="Lvariables">-->
-      <!--              <tr>-->
-      <!--                <th width="50%">Variable</th>-->
-      <!--                <th width="50%">Value</th>-->
-      <!--              </tr>-->
-      <!--              <tr *ngFor="let ent of Lvariables | keyvalue">-->
-      <!--                <td width="50%">{{ent.key}}</td>-->
-      <!--                <td width="50%">{{ent.value}}</td>-->
-      <!--              </tr>-->
-      <!--            </table>-->
-      <!--            </div>-->
-      <!--          </clr-tab-content>-->
-      <!--        </ng-template>-->
-      <!--      </clr-tab>-->
     </clr-tabs>
-    <!--</section>-->
   </ng-template>
-
 </section>

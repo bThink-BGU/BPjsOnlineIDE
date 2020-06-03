@@ -39,9 +39,7 @@ export class SideComponent implements AfterViewInit {
   get block() {
     return this.sharedService.sharedProgram.debugger.getLastStep().blockList;
   }
-  // get wait (){
-  //   return this.sharedService.sharedProgram.debugger.getLastStep().waitList;
-  // }
+
   get selectable() {
     return this.sharedService.sharedProgram.debugger.getLastStep().selectableEvents;
   }
@@ -50,13 +48,19 @@ export class SideComponent implements AfterViewInit {
     return this.sharedService.sentences;
   }
 
+  get shortcuts() {
+    return this.sharedService.shortcuts;
+  }
+
+
+
   // buttons
   sentence: any
   Request: any;
   Block: any;
   Wait: any;
   Trace: any;
-  Variables: any;
+  shortcut: any;
 
   public addSentence(n) {
     this.sharedService.sharedCodeEditor.getSession().insert(this.sharedService.sharedCodeEditor.getCursorPosition(),

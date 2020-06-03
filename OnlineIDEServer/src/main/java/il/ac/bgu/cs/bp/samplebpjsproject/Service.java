@@ -16,8 +16,8 @@ public class Service {
 	private String code;
 	private BProgram bprog;
 	private final ExecutorService execSvc;
-	
 	private RunLogger runLogger;
+	private BProgramRunner rnr; 
 	
 	
 	public Service(Session session, ExecutorService execSvc) {
@@ -48,7 +48,7 @@ public class Service {
 	}
 
 	public RunLogger run() {
-		BProgramRunner rnr = new BProgramRunner(this.bprog);
+		rnr = new BProgramRunner(this.bprog);
 	
 		// Print program events to the console		
 		rnr.addListener(new SendBProgramRunnerListener(runLogger));
@@ -56,6 +56,12 @@ public class Service {
 		// go!
 		rnr.run();
 		return runLogger;
+	}
+	
+	public void Stop() {
+		if(rnr != null) {
+			rnr.halt();
+		}
 	}
 	
 	public void addExternalEvent(String e) {
