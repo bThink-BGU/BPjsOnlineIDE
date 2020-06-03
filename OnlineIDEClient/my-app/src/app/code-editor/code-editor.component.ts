@@ -59,6 +59,7 @@ export class CodeEditorComponent implements AfterViewInit {
       // minLines: 18,
       // maxLines: 18,
       fontSize: 16,
+      tabSize: 2,
     };
     const extraEditorOptions = {
       enableBasicAutocompletion: true

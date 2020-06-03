@@ -5,9 +5,9 @@
 /*BThreads*/
 
 div.list-container-variables{
-  max-height: 500px;
-  min-height: 500px;
-  overflow: scroll;
+  /*max-height: 500px;*/
+  /*min-height: 500px;*/
+  overflow: auto;
   border: solid 0.1px #c2ccbf;
   outline: none;
 }
@@ -17,12 +17,15 @@ div.list-container-variables{
   border-collapse: collapse;
   width: 100%;
   outline: none;
+  table-layout: fixed;
+
 }
 
 #BThreads td, #BThreads th {
   border: 0.2px solid #c2ccbf;
   text-align: center;
   color: #000000;
+  overflow: auto;
 }
 
 #BThreads tr:nth-child(even){
