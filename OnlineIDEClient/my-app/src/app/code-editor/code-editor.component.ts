@@ -16,7 +16,6 @@ import {SharedService} from "../data.service";
 
 export class CodeEditorComponent implements AfterViewInit {
 
-
   private _codeEditor: Ace.Editor;
   private _breakpoints: {};
 
@@ -32,7 +31,7 @@ export class CodeEditorComponent implements AfterViewInit {
     return this._breakpoints;
   }
 
-  constructor(private sharedService: SharedService) { }
+  constructor(private sharedService: SharedService, private elRef: ElementRef) { }
 
   ngAfterViewInit(): void {
 
@@ -56,8 +55,6 @@ export class CodeEditorComponent implements AfterViewInit {
       highlightActiveLine: true,
       autoScrollEditorIntoView: true,
       showFoldWidgets: true,
-      // minLines: 18,
-      // maxLines: 18,
       fontSize: 16,
     };
     const extraEditorOptions = {
@@ -73,6 +70,8 @@ export class CodeEditorComponent implements AfterViewInit {
     this.enableMoveBreakpointsOnChange();
     this.disableSettingsMenu();
   }
+
+
 
   private bindCodeVariableAndValue() {
     this._codeEditor.on('change', () => {

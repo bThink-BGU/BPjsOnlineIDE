@@ -9,7 +9,9 @@
     </nav>
 
     <div class="content-area">
-      <as-split unit="percent" direction="vertical">
+      <as-split unit="percent" direction="vertical"
+                (dragStart)="this.sharedService.sharedCodeEditor.resize()"
+                (dragEnd)="this.sharedService.sharedCodeEditor.resize()" >
         <as-split-area size="60">
           <div style="height: 100%; width: 100%;">
             <app-code-editor></app-code-editor>
