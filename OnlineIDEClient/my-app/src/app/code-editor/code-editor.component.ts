@@ -56,6 +56,7 @@ export class CodeEditorComponent implements AfterViewInit {
       autoScrollEditorIntoView: true,
       showFoldWidgets: true,
       fontSize: 16,
+      tabSize: 2,
     };
     const extraEditorOptions = {
       enableBasicAutocompletion: true
