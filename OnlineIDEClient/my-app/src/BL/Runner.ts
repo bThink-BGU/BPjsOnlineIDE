@@ -24,6 +24,10 @@ export class Runner {
     this._bpService.runCL();
   }
 
+  stop() {
+    this._bpService.stopCL();
+  }
+
   private initRun() {
     this._isError = false;
     this._stdout = '';

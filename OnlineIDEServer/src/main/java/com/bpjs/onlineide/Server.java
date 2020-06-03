@@ -50,17 +50,36 @@ public class Server {
 					System.out.println(e.getMessage());
 				}
 				break;
-			case "step":				
-				step(EncodeDecode.decodeStepMessage(message));
+			case "step":
+				try {
+					step(EncodeDecode.decodeStepMessage(message));					
+				}	
+				catch(Exception e) {
+					StepMessage nextStepMessage = new StepMessage(null, null, null, null, null, null, null, e.getMessage());
+					this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(nextStepMessage));
+					System.out.println(e.getMessage());
+				}
 				break;
 			case "externalEvent":
 				addExternalEvent(decodedMessage);
 				break;
+			case "stop":
+				stop();
 			default:
 				break;
 		}
     }
   
+	private void stop() {
+		try {
+			service.Stop();
+			this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(new Message("stop", "")));
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error in stop");
+		}
+	}
+
 	private void step(StepMessage stepMessage) {
 		StepMessage nextStepMessage;
 		try {
