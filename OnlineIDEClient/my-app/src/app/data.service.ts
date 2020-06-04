@@ -31,7 +31,6 @@ export class SharedService {
     this.sharedProgram  = new Program(environment.API_URL);
   }
 
-
   BtrheadsList = [];
 
   sentence = [
@@ -51,7 +50,7 @@ export class SharedService {
     'bp.sync - request',
     'bp.sync - request + block'
   ];
-  shortcuts ={
+  shortcuts = {
     'Find': 'Ctrl-F',
     'Remove to  Line Start' : 'Alt-Backspace',
     'Remove to Line End' : 'Alt-Delete',

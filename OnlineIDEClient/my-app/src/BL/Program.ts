@@ -41,7 +41,8 @@ export class Program {
         // responseHandlers[response.type](sharedService, response);
       },
       error: (error) => {
-        sharedService.sharedOutput = error;
+        this._runner.setStdout('A connection error occurred.\nPlease check your connection or reset the page...');
+        this._runner.setIsError(true);
       }
     };
 

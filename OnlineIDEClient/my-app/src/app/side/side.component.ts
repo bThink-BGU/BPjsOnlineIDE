@@ -52,8 +52,6 @@ export class SideComponent implements AfterViewInit {
     return this.sharedService.shortcuts;
   }
 
-
-
   // buttons
   sentence: any
   Request: any;
