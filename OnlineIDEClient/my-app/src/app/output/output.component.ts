@@ -35,7 +35,6 @@ export class OutputComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-
   }
 
 }

@@ -2,6 +2,7 @@ import {BpService} from '../CL/BpService';
 import {DebugStep} from '../CL/DebugStep';
 import {BreakPoint} from './BreakPoint';
 import {BThreadInfo} from '../CL/BThreadInfo';
+import {Subject} from "rxjs";
 
 export class Debugger {
   private _stepTrace: DebugStep[];
@@ -10,10 +11,16 @@ export class Debugger {
   private _stdout: string;
   private _programEnded: boolean;
   private readonly _bpService: BpService;
+  private bthreadSubject: Subject<BThreadInfo[]>;
 
   constructor(bpService: BpService) {
     this.initDebugger();
     this._bpService = bpService;
+    this.bthreadSubject = new Subject<BThreadInfo[]>();
+  }
+
+  subscribeCodeEditor(observer){
+    this.bthreadSubject.subscribe(observer);
   }
 
   initDebugger() {
@@ -54,17 +61,23 @@ export class Debugger {
       }
     }
     else {
-      this._stepTrace.push(this.buildDebugStep(response));
+      let debugStep = this.buildDebugStep(response);
+      this._stepTrace.push(debugStep);
       if (response.selectedEvent !== undefined) {
         this._eventTrace.push(response.selectedEvent);
         this._stdout += '\n' + response.selectedEvent;
       } else {
         this._eventTrace.push('');
       }
+
+      // call the observer's next method so that bThread colors update
+      // ADD A STEP BACK CALL TOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      this.bthreadSubject.next(debugStep.bThreads);
+
     }
   }
 
-  private buildDebugStep(response) {
+  private buildDebugStep(response): DebugStep {
     const bThreadsResponse = response.bThreads;
     const bThreads = [];
     for (let i = 0; i < bThreadsResponse.length; i++) {

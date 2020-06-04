@@ -13,7 +13,6 @@ export class BThreadInfo {
     this._localVariables = localVariables;
   }
 
-
   get bThreadName(): string {
     return this._bThreadName;
   }

@@ -28,7 +28,6 @@ export class DebugStep {
     this._selectedEvent = selectedEvent;
   }
 
-
   get type(): string {
     return this._type;
   }

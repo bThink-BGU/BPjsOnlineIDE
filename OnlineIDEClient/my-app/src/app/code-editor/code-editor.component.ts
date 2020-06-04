@@ -19,6 +19,7 @@ export class CodeEditorComponent implements AfterViewInit {
   private _codeEditor: Ace.Editor;
   private _breakpoints: {};
 
+
   get externalEvent() {
     return this.sharedService.sharedExternalEvent;
   }
@@ -65,11 +66,20 @@ export class CodeEditorComponent implements AfterViewInit {
   }
 
   private prepareEditor() {
+    this.enableDebuggerColoringFeatures();
     this.setBpjsMode();
     this.bindCodeVariableAndValue();
     this.enableBreakpoints();
     this.enableMoveBreakpointsOnChange();
     this.disableSettingsMenu();
+  }
+
+  private enableDebuggerColoringFeatures(){
+    this.sharedService.sharedProgram.debugger.subscribeCodeEditor({
+      next: (bThreads)=>{
+        //window.alert(JSON.stringify(bThreads));
+      }
+    });
   }
 
   private bindCodeVariableAndValue() {
@@ -95,8 +105,7 @@ export class CodeEditorComponent implements AfterViewInit {
       let row = e.getDocumentPosition().row;
 
       if(!(row in this._breakpoints)) {
-        if(this._codeEditor.session.getLine(row) != '') //add support for only bp breakpoints here
-          //add support for not being able to set a breakpoint on an existing annotation maybe
+        if(this._codeEditor.session.getLine(row).includes('bp.sync'))
           this.addBreakpoint(row);
       }
       else {
