@@ -81,8 +81,10 @@ export class Debugger {
     const bThreadsResponse = response.bThreads;
     const bThreads = [];
     for (let i = 0; i < bThreadsResponse.length; i++) {
-      const bThreadInfo = new BThreadInfo(bThreadsResponse[i].bThreadName, bThreadsResponse[i].firstLinePC,
-        bThreadsResponse[i].localShift, this.toVarsMap(bThreadsResponse[i].localVars, bThreadsResponse[i].localVals));
+      const bThreadName = bThreadsResponse[i].bThreadName;
+      const bThreadInfo = new BThreadInfo(bThreadName, bThreadsResponse[i].firstLinePC, bThreadsResponse[i].localShift,
+        this.toVarsMap(bThreadsResponse[i].localVars, bThreadsResponse[i].localVals),
+        this.getLastSyncOfLastStep(bThreadName));
       bThreads.push(bThreadInfo);
     }
     return new DebugStep(response.bpss, this.toVarsMap(response.globalVars, response.globalVals), bThreads,
@@ -194,6 +196,11 @@ export class Debugger {
     for (const line of currLines)
       if (!nextLines.includes(line)) // The line already chosen
         return line;
+    return -1;
+  }
+
+  private getLastSyncOfLastStep(bThreadName: string) {
+    this.getLastStep().bThreads.forEach(function(b) { if (b.bThreadName === bThreadName) return b.getNextSyncLineNumber(); });
     return -1;
   }
 
