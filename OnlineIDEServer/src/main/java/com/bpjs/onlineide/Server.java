@@ -39,31 +39,23 @@ public class Server {
     	switch (decodedMessage.getType()) {
 			case "initRun":
 			case "initStep":
+				System.out.println("init");
 				init(decodedMessage);
 				break;
 			case "run":
-				try {
-					run();
-				}	
-				catch(Exception e) {
-					this.service.getRunLogger().sendBpStream("error", e.getMessage());
-					System.out.println(e.getMessage());
-				}
+				System.out.println("run");
+				run();				
 				break;
 			case "step":
-				try {
-					step(EncodeDecode.decodeStepMessage(message));					
-				}	
-				catch(Exception e) {
-					StepMessage nextStepMessage = new StepMessage(null, null, null, null, null, null, null, e.getMessage());
-					this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(nextStepMessage));
-					System.out.println(e.getMessage());
-				}
+				System.out.println("step");
+				step(EncodeDecode.decodeStepMessage(message));
 				break;
 			case "externalEvent":
+				System.out.println("externalEvent");
 				addExternalEvent(decodedMessage);
 				break;
 			case "stop":
+				System.out.println("stop");
 				stop();
 			default:
 				break;
@@ -80,14 +72,14 @@ public class Server {
 		}
 	}
 
-	private void step(StepMessage stepMessage) {
+	private void step(StepMessage stepMessage) throws IOException {
 		StepMessage nextStepMessage;
 		try {
 			nextStepMessage = this.service.step(stepMessage);
 			this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(nextStepMessage));
 		} catch (ClassNotFoundException | InterruptedException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			StepMessage nextStepMessageErr = new StepMessage(null, null, null, null, null, null, null, e.getMessage());
+			this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(nextStepMessageErr));
 			System.out.println("Error in step");
 		}
 	}
@@ -113,10 +105,15 @@ public class Server {
     }
 
 	private void run() {
-    	if(this.service != null)
-			this.service.run();	
-		else
-			System.out.println("Not existing service");
+		try {
+			if(this.service != null)
+				this.service.run();	
+			else
+				System.out.println("Not existing service");
+		} catch(Exception e) {
+			this.service.getRunLogger().sendBpStream("error", e.getMessage());
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	  private void addExternalEvent(Message message) {

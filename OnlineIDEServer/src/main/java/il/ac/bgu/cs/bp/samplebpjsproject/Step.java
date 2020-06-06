@@ -2,6 +2,7 @@ package il.ac.bgu.cs.bp.samplebpjsproject;
 
 import il.ac.bgu.cs.bp.bpjs.bprogramio.BProgramSyncSnapshotCloner;
 import il.ac.bgu.cs.bp.bpjs.bprogramio.BProgramSyncSnapshotIO;
+import il.ac.bgu.cs.bp.bpjs.exceptions.BPjsRuntimeException;
 import il.ac.bgu.cs.bp.bpjs.internal.Pair;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
@@ -12,8 +13,15 @@ import il.ac.bgu.cs.bp.bpjs.model.eventsets.EventSet;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.sql.Time;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import org.mozilla.javascript.Context;
@@ -27,6 +35,8 @@ public class Step {
     private final BProgram bprog;
     private final Set<BEvent> selectableEvents;
     private final BEvent selectedEvent;
+    
+    private Step nextStep;
 
     private Step(ExecutorService execSvc, BProgram bprog, BProgramSyncSnapshot bProgramSyncSnapshot, BEvent selectedEvent) {
         this.execSvc = execSvc;
@@ -45,19 +55,50 @@ public class Step {
     }
 
     public Step step() throws InterruptedException {
-        if (bpss == null) // Init state
-            return new Step(execSvc, bprog, bprog.setup().start(execSvc), null);
+        if (bpss == null)
+        	return new Step(execSvc, bprog, bprog.setup().start(execSvc), null);
         if(bpss.noBThreadsLeft()) // The program was finished
         	return null;
         ArrayList<BEvent> eventOrdered = new ArrayList<>(selectableEvents);
         Collections.shuffle(eventOrdered);
         if(eventOrdered.size() == 0)
         	return null;
-        BEvent e = eventOrdered.get(0);
-        return new Step(execSvc, bprog, BProgramSyncSnapshotCloner.clone(bpss).triggerEvent(e, execSvc, Collections.emptyList()), e);
+        BEvent ev = eventOrdered.get(0);       
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        Future<?> future = executor.submit(new Runnable() {
+            @Override
+            public void run() {
+            	try {
+            		nextStep = new Step(execSvc, bprog, BProgramSyncSnapshotCloner.clone(bpss).triggerEvent(ev, execSvc, Collections.emptyList()), ev);
+				} catch (BPjsRuntimeException | InterruptedException e) {
+					// TODO Auto-generated catch block
+//					e.printStackTrace();
+				}
+            }
+        });
+        
+        this.nextStep = new Step(null, null, null, new BEvent("timeout"));
+        executor.shutdown();            //        <-- reject all further submissions
+        try {
+            future.get(500, TimeUnit.MILLISECONDS);  //     <-- wait 500ms to finish
+        } catch (InterruptedException e) {    //    <-- possible error cases
+            System.out.println("job was interrupted");
+        } catch (ExecutionException e) {
+            System.out.println("caught exception: " + e.getCause());
+        } catch (TimeoutException e) {
+        	future.cancel(true);              //     <-- interrupt the job
+            System.out.println("timeout");
+        }
+        executor.shutdownNow();
+        return this.nextStep;
     }
 
-    public StepMessage toStepMessage() throws IOException {    	
+    public StepMessage toStepMessage() throws IOException {
+    	
+    	if(this.execSvc == null && this.bprog == null && this.bpss == null && 
+    			this.selectedEvent.name.equals("timeout")) // timeout
+    		return new StepMessage(null, null, null, null, null, null, null, "timeout");
+    	
         List<EventSet> wait = bpss.getStatements().stream().map(SyncStatement::getWaitFor).collect(Collectors.toList());
         List<EventSet> blocked = bpss.getStatements().stream().map(SyncStatement::getBlock).collect(Collectors.toList());
         List<BEvent> requested = bpss.getStatements().stream().map(SyncStatement::getRequest).flatMap(Collection::stream).collect(Collectors.toList());

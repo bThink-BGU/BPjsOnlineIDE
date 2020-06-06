@@ -55,6 +55,9 @@ export class Debugger {
       if (response.selectedEvent === undefined) {
         this._stdout += '\n' + 'The Program Ended';
         this._programEnded = true;
+      } else if (response.selectedEvent === 'timeout') {
+        this._stdout += '\n' + 'Timeout Occurred';
+        this._programEnded = true;
       } else { // Finished because a bug occur
         this._stdout = response.selectedEvent;
         this._programEnded = true;

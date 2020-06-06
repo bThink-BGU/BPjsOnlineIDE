@@ -39,7 +39,6 @@ export class Program {
             break;
           }
         }
-        // responseHandlers[response.type](sharedService, response);
       },
       error: () => {
         this._runner.setStdout('A connection error occurred.\nPlease check your connection or reset the page...');

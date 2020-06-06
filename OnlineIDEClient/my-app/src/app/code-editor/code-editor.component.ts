@@ -94,7 +94,6 @@ export class CodeEditorComponent implements AfterViewInit {
   private enableDebuggerColoringFeatures() {
     this.sharedService.sharedProgram.debugger.subscribeCodeEditor({
       next: (data) => {
-
         // remove old ones
         this.removeMarkers();
 
@@ -105,7 +104,6 @@ export class CodeEditorComponent implements AfterViewInit {
 
           let rowToBeExecuted = this.counter; //bThread.getNextSyncLineNumber();
           this.counter+=1;
-
           return this._codeEditor.session.addMarker(
             new Range(rowToBeExecuted, 0, rowToBeExecuted, Infinity),
             'thread-advanced-marker',
