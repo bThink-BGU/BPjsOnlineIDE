@@ -55,13 +55,15 @@ export class Debugger {
       if (response.selectedEvent === undefined) {
         this._stdout += '\n' + 'The Program Ended';
         this._programEnded = true;
+      } else if (response.selectedEvent === 'timeout') {
+        this._stdout += '\n' + 'Timeout Occurred';
+        this._programEnded = true;
       } else { // Finished because a bug occur
         this._stdout = response.selectedEvent;
         this._programEnded = true;
       }
-    }
-    else {
-      let debugStep = this.buildDebugStep(response);
+    } else {
+      const debugStep = this.buildDebugStep(response);
       this._stepTrace.push(debugStep);
       if (response.selectedEvent !== undefined) {
         this._eventTrace.push(response.selectedEvent);
@@ -97,6 +99,7 @@ export class Debugger {
     if (traceLength > 1) {
       this.stepBackToIndex(traceLength - 1);
     }
+    window.alert(traceLength + '|' + this._stepTrace.length);
   }
 
   stepBackToIndex(stepNumber: number) {
