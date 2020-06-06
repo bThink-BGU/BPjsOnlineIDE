@@ -64,7 +64,7 @@ export class HeaderComponent {
     this._sharedService.BtrheadsList = this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
     this._sharedService.sharedCodeEditor.setReadOnly(true);
     // @ts-ignore
-    this._sharedService.sharedCodeEditor.renderer.$cursorLayer.element.style.opacity=0;
+    this._sharedService.sharedCodeEditor.renderer.$cursorLayer.element.style.opacity = 0;
   }
 
   public beautify() {
@@ -136,7 +136,8 @@ export class HeaderComponent {
     this._sharedService.BtrheadsList = [];
     this._sharedService.sharedCodeEditor.setReadOnly(false);
     // @ts-ignore
-    this._sharedService.sharedCodeEditor.renderer.$cursorLayer.element.style.opacity=1;
+    this._sharedService.sharedCodeEditor.renderer.$cursorLayer.element.style.opacity = 1;
+    this._sharedService.sharedCodeEditorComponent.removeMarkers();
   }
 
   public nextStep() {

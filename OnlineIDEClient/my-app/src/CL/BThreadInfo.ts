@@ -1,6 +1,7 @@
 
 export class BThreadInfo {
 
+
   private _bThreadName: string;
   private _firstLinePC: number;
   private _localShift: number;
@@ -30,6 +31,10 @@ export class BThreadInfo {
 
   get localVariables(): Map<any, any> {
     return this._localVariables;
+  }
+
+  get isAdvanced(): boolean {
+    return this._isAdvanced;
   }
 
   getNextSyncLineNumber() {

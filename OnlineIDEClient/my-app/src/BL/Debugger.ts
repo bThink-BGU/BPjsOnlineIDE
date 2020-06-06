@@ -11,12 +11,12 @@ export class Debugger {
   private _stdout: string;
   private _programEnded: boolean;
   private readonly _bpService: BpService;
-  private bthreadSubject: Subject<BThreadInfo[]>;
+  private bthreadSubject: Subject<{}>;
 
   constructor(bpService: BpService) {
     this.initDebugger();
     this._bpService = bpService;
-    this.bthreadSubject = new Subject<BThreadInfo[]>();
+    this.bthreadSubject = new Subject<{}>();
   }
 
   subscribeCodeEditor(observer){
@@ -59,6 +59,7 @@ export class Debugger {
         this._stdout = response.selectedEvent;
         this._programEnded = true;
       }
+      this.bthreadSubject.next([]);
     }
     else {
       let debugStep = this.buildDebugStep(response);
@@ -70,8 +71,6 @@ export class Debugger {
         this._eventTrace.push('');
       }
 
-      // call the observer's next method so that bThread colors update
-      // ADD A STEP BACK CALL TOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       this.bthreadSubject.next(debugStep.bThreads);
 
     }
@@ -106,6 +105,9 @@ export class Debugger {
     }
     this._stepTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
     this._eventTrace.splice(stepNumber, this._eventTrace.length - stepNumber);
+
+    this.bthreadSubject.next(this._stepTrace[this._stepTrace.length-1].bThreads);
+
     this._stdout = '';
     for (let i = 0; i < this._eventTrace.length; i++) {
       if (this._eventTrace[i] !== '') {

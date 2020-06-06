@@ -4,6 +4,7 @@ import {Ace} from 'ace-builds';
 import * as ace from 'ace-builds';
 import {Program} from "../BL/Program";
 import {environment} from "../environments/environment";
+import {CodeEditorComponent} from "./code-editor/code-editor.component";
 
 @Injectable()
 export class SharedService {
@@ -16,6 +17,7 @@ export class SharedService {
   sharedProgram: Program;
   sharedDebuggerMode = false;
   sharedCodeEditor: Ace.Editor;
+  sharedCodeEditorComponent: CodeEditorComponent;
   sharedEditorBeautify;
 
   sharedCode = '//*****Hello BPjs World*****\n\n' +
@@ -34,14 +36,14 @@ export class SharedService {
   BtrheadsList = [];
 
   sentence = [
-    '\nbp.registerBThread ("...",function(){\n' +
+    'bp.registerBThread ("...",function(){\n' +
     '            ...\n' +
     '            })\n',
-    '\nbp.sync("...")\n',
-    '\nbp.sync({waitFor:bp.Event("...")});\n',
-    '\nbp.sync({request:bp.Event("...")});\n',
-    '\nbp.sync({request:bp.Event("..."),' +
-    ' block:bp.Event("...")});\n'
+    'bp.sync("...")',
+    'bp.sync({waitFor:bp.Event("...")});',
+    'bp.sync({request:bp.Event("...")});',
+    'bp.sync({request:bp.Event("..."),' +
+    'block:bp.Event("...")});'
   ];
   sentences = [
     'bp.registerBThread',
