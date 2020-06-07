@@ -142,7 +142,6 @@ export class HeaderComponent {
   public nextStep() {
     this._sharedService.sharedProgram.debugger.step();
     this._sharedService.BtrheadsList = this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
-    window.alert(this._sharedService.BtrheadsList);
   }
 
   public previousStep() {

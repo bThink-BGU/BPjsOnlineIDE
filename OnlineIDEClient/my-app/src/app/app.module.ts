@@ -16,7 +16,7 @@ import { MatInputModule } from "@angular/material/input";
 import { SharedService } from "./data.service";
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import {MatTabsModule} from "@angular/material/tabs";
-import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatSidenav, MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {SideRightComponent} from "./side-right/side-right.component";
 import { MatIconModule } from '@angular/material/icon';
@@ -53,7 +53,9 @@ import {AngularSplitModule} from "angular-split";
         MatIconModule,
         MatListModule,
         MatMenuModule,
-        AngularSplitModule
+        AngularSplitModule,
+
+
     ],
   entryComponents: [
     SaveFileDialogComponent

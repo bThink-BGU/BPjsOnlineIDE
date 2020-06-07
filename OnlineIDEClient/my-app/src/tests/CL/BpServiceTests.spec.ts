@@ -95,8 +95,8 @@ describe('stepCL', () => {
       }
     };
     bpService.subscribeObserver(observer);
-    bpService.stepCL(new DebugStep(undefined, undefined, ['a', 'b'], ['c', 'd'],
-      ['e', 'f'], ['g', 'h'], 'e'));
+    bpService.stepCL(new DebugStep(undefined, undefined, null, ['c', 'd'],
+      ['e', 'f'], ['g', 'h'], null, null, null));
   });
 });
 
