@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, ElementRef} from '@angular/core';
 import * as ace from 'ace-builds';
 import {Ace, Range} from 'ace-builds';
 import 'ace-builds/src-noconflict/theme-twilight'; // default theme
@@ -16,9 +16,11 @@ import {SharedService} from "../data.service";
 
 export class CodeEditorComponent implements AfterViewInit {
 
-
   private _codeEditor: Ace.Editor;
   private _breakpoints: {};
+
+  // debugger coloring variables
+  private bThreadMarkers;
 
   get externalEvent() {
     return this.sharedService.sharedExternalEvent;
@@ -32,13 +34,16 @@ export class CodeEditorComponent implements AfterViewInit {
     return this._breakpoints;
   }
 
-  constructor(private sharedService: SharedService) { }
+  constructor(private sharedService: SharedService) {
+  }
 
   ngAfterViewInit(): void {
 
     this._codeEditor = ace.edit('editor', this.getEditorOptions());
     this.sharedService.sharedCodeEditor = this._codeEditor; // make the code editor usable by other components
+    this.sharedService.sharedCodeEditorComponent = this;
     this._breakpoints = {};
+    this.bThreadMarkers = [];
 
     // Basic editor settings, custom mode will be set in the setBpjs() function
     this._codeEditor.setTheme('ace/theme/twilight');
@@ -56,8 +61,6 @@ export class CodeEditorComponent implements AfterViewInit {
       highlightActiveLine: true,
       autoScrollEditorIntoView: true,
       showFoldWidgets: true,
-      // minLines: 18,
-      // maxLines: 18,
       fontSize: 16,
       tabSize: 2,
     };
@@ -68,6 +71,7 @@ export class CodeEditorComponent implements AfterViewInit {
   }
 
   private prepareEditor() {
+    this.enableDebuggerColoringFeatures();
     this.setBpjsMode();
     this.bindCodeVariableAndValue();
     this.enableBreakpoints();
@@ -75,11 +79,47 @@ export class CodeEditorComponent implements AfterViewInit {
     this.disableSettingsMenu();
   }
 
-  private bindCodeVariableAndValue() {
-    this._codeEditor.on('change', () => {
-      this.sharedService.sharedCode = this._codeEditor.getValue();
+  /********************************************************************************************************************/
+  // DEBUGGER COLORING FEATURES
+  /********************************************************************************************************************/
+
+  private counter = 3;
+
+  removeMarkers(){
+    for (let markerID of this.bThreadMarkers) {
+      this.codeEditor.session.removeMarker(markerID);
+    }
+  }
+
+  private enableDebuggerColoringFeatures() {
+    this.sharedService.sharedProgram.debugger.subscribeCodeEditor({
+      next: (data) => {
+        // remove old ones
+        this.removeMarkers();
+
+        // insert new ones
+        this.bThreadMarkers = data.map(bThread => {
+
+          // REPLACE WITH REAL IMPLEMENTATION WHEN NEXT SYNC TO BE EXECUTED ROW IS WORKING
+
+          let rowToBeExecuted = this.counter; //bThread.getNextSyncLineNumber();
+          this.counter+=1;
+          return this._codeEditor.session.addMarker(
+            new Range(rowToBeExecuted, 0, rowToBeExecuted, Infinity),
+            'thread-advanced-marker',
+            'fullLine',
+            false);
+        });
+
+      }
+
+
     });
   }
+
+  /********************************************************************************************************************/
+  // BREAKPOINT HANDLING
+  /********************************************************************************************************************/
 
   /* The ts-ignore suppresses in this method are essential because the ace.d.ts file is not full.
      Typescript throws type errors because some methods exist in ace.js but are not declared in ace.d.ts. */
@@ -87,29 +127,27 @@ export class CodeEditorComponent implements AfterViewInit {
     // not "on(...)" to prevent ace from calling the original default handler
     this._codeEditor.setDefaultHandler('guttermousedown', (e) => {
 
-      // if (!this.codeEditor.isFocused()) // a preference thing ...
-      //   return;
+      if (this.sharedService.sharedDebuggerMode)
+        return;
       if (e.domEvent.target.className.indexOf("ace_gutter-cell") == -1)
         return;
       // @ts-ignore
-      if(this._codeEditor.renderer.$gutterLayer.getRegion(e) === 'foldWidgets')
+      if (this._codeEditor.renderer.$gutterLayer.getRegion(e) === 'foldWidgets')
         return;
       // @ts-ignore
       let row = e.getDocumentPosition().row;
 
-      if(!(row in this._breakpoints)) {
-        if(this._codeEditor.session.getLine(row) != '') //add support for only bp breakpoints here
-          //add support for not being able to set a breakpoint on an existing annotation maybe
+      if (!(row in this._breakpoints)) {
+        if (this._codeEditor.session.getLine(row).includes('bp.sync'))
           this.addBreakpoint(row);
-      }
-      else {
+      } else {
         this.removeBreakpoint(row);
       }
     });
   }
 
   private addBreakpoint(row: number) {
-    if(typeof this._codeEditor.session.getBreakpoints()[row] != typeof undefined) // if a breakpoint exists
+    if (typeof this._codeEditor.session.getBreakpoints()[row] != typeof undefined) // if a breakpoint exists
       return;
     this._codeEditor.session.setBreakpoint(row, 'ace_breakpoint');
     let markerID = this._codeEditor.session.addMarker(
@@ -117,12 +155,13 @@ export class CodeEditorComponent implements AfterViewInit {
       'breakpoint-marker',
       'fullLine',
       false);
+
     this._breakpoints[row] = {'markerID': markerID};
     this.sharedService.sharedProgram.debugger.addBreakPoint(row);
   }
 
   private removeBreakpoint(row: number) {
-    if(typeof this._codeEditor.session.getBreakpoints()[row] == typeof undefined) // if a breakpoint doesn't exist
+    if (typeof this._codeEditor.session.getBreakpoints()[row] == typeof undefined) // if a breakpoint doesn't exist
       return;
     this._codeEditor.session.clearBreakpoint(row);
     this._codeEditor.session.removeMarker(this._breakpoints[row]['markerID']);
@@ -156,19 +195,18 @@ export class CodeEditorComponent implements AfterViewInit {
             }
           } else {  // e.action === 'remove'
 
-            if(breakpointRow > e.start.row && breakpointRow < e.end.row){
+            if (breakpointRow > e.start.row && breakpointRow < e.end.row) {
               this.removeBreakpoint(breakpointRow);
             }
-            if(breakpointRow > e.end.row){
+            if (breakpointRow > e.end.row) {
               this.removeBreakpoint(breakpointRow);
               this.addBreakpoint(breakpointRow - (e.end.row - e.start.row));
             }
-            if(breakpointRow == e.end.row){
-              if(e.lines[e.lines.length-1] === ''){
+            if (breakpointRow == e.end.row) {
+              if (e.lines[e.lines.length - 1] === '') {
                 this.removeBreakpoint(breakpointRow);
                 this.addBreakpoint(breakpointRow - (e.end.row - e.start.row));
-              }
-              else{
+              } else {
                 this.removeBreakpoint(breakpointRow);
               }
             }
@@ -177,6 +215,10 @@ export class CodeEditorComponent implements AfterViewInit {
       }
     });
   }
+
+  /********************************************************************************************************************/
+  // BPjs SYNTAX COLORING FEATURES
+  /********************************************************************************************************************/
 
   private setBpjsMode() {
     let oop = ace.require("ace/lib/oop");
@@ -196,12 +238,12 @@ export class CodeEditorComponent implements AfterViewInit {
 
       let bpjsRules = [
         {
-          token : "bp_commands",
-          regex : /(bp)(\.)(sync|Event|registerBThread)\b/
+          token: "bp_commands",
+          regex: /(bp)(\.)(sync|Event|registerBThread)\b/
         },
         {
-          token : "bp_keywords",
-          regex : /(block|request|waitFor)\b/
+          token: "bp_keywords",
+          regex: /(block|request|waitFor)\b/
         }
       ];
 
@@ -214,7 +256,7 @@ export class CodeEditorComponent implements AfterViewInit {
     oop.inherits(bpjsHighlightRules, JavaScriptHighlightRules);
 
     //custom mode
-    let bpjsMode = function() {
+    let bpjsMode = function () {
       this.HighlightRules = bpjsHighlightRules;
       this.$outdent = new MatchingBraceOutdent();
       this.$behaviour = new CstyleBehaviour();
@@ -223,16 +265,16 @@ export class CodeEditorComponent implements AfterViewInit {
     oop.inherits(bpjsMode, jsMode);
 
     //custom worker for live syntax checking - currently supports javascript syntax only
-    (function() {
-      this.createWorker = function(session) {
+    (function () {
+      this.createWorker = function (session) {
         let worker = new WorkerClient(["ace"], "ace/mode/javascript_worker", "JavaScriptWorker");
         worker.attachToDocument(session.getDocument());
 
-        worker.on("annotate", function(results) {
+        worker.on("annotate", function (results) {
           session.setAnnotations(results.data);
         });
 
-        worker.on("terminate", function() {
+        worker.on("terminate", function () {
           session.clearAnnotations();
         });
 
@@ -248,6 +290,11 @@ export class CodeEditorComponent implements AfterViewInit {
 
   }
 
+  /********************************************************************************************************************/
+  // EXTRA STUFF
+  /********************************************************************************************************************/
+
+
   /* Ace's settings menu feature has things unnecessary for this project, such as setting a mode and disabling
   * the margin. Keeping it will expose the user to errors...*/
   private disableSettingsMenu() {
@@ -257,10 +304,16 @@ export class CodeEditorComponent implements AfterViewInit {
         win: "Ctrl-,",
         mac: "Command-,"
       },
-      exec: function(editor) {
+      exec: function (editor) {
         return false;
       },
       readOnly: true
+    });
+  }
+
+  private bindCodeVariableAndValue() {
+    this._codeEditor.on('change', () => {
+      this.sharedService.sharedCode = this._codeEditor.getValue();
     });
   }
 

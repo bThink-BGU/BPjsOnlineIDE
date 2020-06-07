@@ -6,7 +6,7 @@
         <clr-tab-content class="bptab">
           <!--<form class="clr-form">-->
           <div class="list-container-externalevent">
-              <textarea placeholder="Enter External Event" style="width: 100%; overflow: auto;
+              <textarea placeholder="Enter An External Event" style="width: 100%; overflow: auto;
               height: 60%; resize: none;"
                         [(ngModel)]='externalEvent' name="externalEvent"></textarea>
             <button class="btn btn-primary btn-sm addExEvButton" (click)="addExternalEvent()">ADD</button>
@@ -54,7 +54,7 @@
   <ng-template #debug>
     <clr-tabs>
       <clr-tab class="nav-link">
-        <button clrTabLink>Request / Request & Block</button>
+        <button clrTabLink>Requested / Requested & Blocked</button>
         <ng-template [(clrIfActive)]="Request">
           <clr-tab-content>
             <div class="list-container">

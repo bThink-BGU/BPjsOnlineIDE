@@ -2,6 +2,7 @@ import {BpService} from '../CL/BpService';
 import {DebugStep} from '../CL/DebugStep';
 import {BreakPoint} from './BreakPoint';
 import {BThreadInfo} from '../CL/BThreadInfo';
+import {Subject} from "rxjs";
 
 export class Debugger {
   private _stepTrace: DebugStep[];
@@ -10,10 +11,16 @@ export class Debugger {
   private _stdout: string;
   private _programEnded: boolean;
   private readonly _bpService: BpService;
+  private bthreadSubject: Subject<{}>;
 
   constructor(bpService: BpService) {
     this.initDebugger();
     this._bpService = bpService;
+    this.bthreadSubject = new Subject<{}>();
+  }
+
+  subscribeCodeEditor(observer){
+    this.bthreadSubject.subscribe(observer);
   }
 
   initDebugger() {
@@ -48,28 +55,38 @@ export class Debugger {
       if (response.selectedEvent === undefined) {
         this._stdout += '\n' + 'The Program Ended';
         this._programEnded = true;
+      } else if (response.selectedEvent === 'timeout') {
+        this._stdout += '\n' + 'Timeout Occurred';
+        this._programEnded = true;
       } else { // Finished because a bug occur
         this._stdout = response.selectedEvent;
         this._programEnded = true;
       }
+      this.bthreadSubject.next([]);
     }
     else {
-      this._stepTrace.push(this.buildDebugStep(response));
+      let debugStep = this.buildDebugStep(response);
+      this._stepTrace.push(debugStep);
       if (response.selectedEvent !== undefined) {
         this._eventTrace.push(response.selectedEvent);
         this._stdout += '\n' + response.selectedEvent;
       } else {
         this._eventTrace.push('');
       }
+
+      this.bthreadSubject.next(debugStep.bThreads);
+
     }
   }
 
-  private buildDebugStep(response) {
+  private buildDebugStep(response): DebugStep {
     const bThreadsResponse = response.bThreads;
     const bThreads = [];
     for (let i = 0; i < bThreadsResponse.length; i++) {
-      const bThreadInfo = new BThreadInfo(bThreadsResponse[i].bThreadName, bThreadsResponse[i].firstLinePC,
-        bThreadsResponse[i].localShift, this.toVarsMap(bThreadsResponse[i].localVars, bThreadsResponse[i].localVals));
+      const bThreadName = bThreadsResponse[i].bThreadName;
+      const bThreadInfo = new BThreadInfo(bThreadName, bThreadsResponse[i].firstLinePC, bThreadsResponse[i].localShift,
+        this.toVarsMap(bThreadsResponse[i].localVars, bThreadsResponse[i].localVals),
+        this.getLastSyncOfLastStep(bThreadName));
       bThreads.push(bThreadInfo);
     }
     return new DebugStep(response.bpss, this.toVarsMap(response.globalVars, response.globalVals), bThreads,
@@ -91,6 +108,9 @@ export class Debugger {
     }
     this._stepTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
     this._eventTrace.splice(stepNumber, this._eventTrace.length - stepNumber);
+
+    this.bthreadSubject.next(this._stepTrace[this._stepTrace.length-1].bThreads);
+
     this._stdout = '';
     for (let i = 0; i < this._eventTrace.length; i++) {
       if (this._eventTrace[i] !== '') {
@@ -181,6 +201,11 @@ export class Debugger {
     for (const line of currLines)
       if (!nextLines.includes(line)) // The line already chosen
         return line;
+    return -1;
+  }
+
+  private getLastSyncOfLastStep(bThreadName: string) {
+    this.getLastStep().bThreads.forEach(function(b) { if (b.bThreadName === bThreadName) return b.getNextSyncLineNumber(); });
     return -1;
   }
 

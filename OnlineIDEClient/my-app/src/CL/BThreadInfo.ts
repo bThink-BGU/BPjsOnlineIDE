@@ -1,18 +1,21 @@
 
 export class BThreadInfo {
 
+
   private _bThreadName: string;
   private _firstLinePC: number;
   private _localShift: number;
   private _localVariables: Map<object, object>;
+  private _isAdvanced: boolean;
 
-  constructor(bThreadName: string, firstLinePC: number, localShift: number, localVariables: Map<object, object>) {
+  constructor(bThreadName: string, firstLinePC: number, localShift: number, localVariables: Map<object, object>,
+              lastSync: number) {
     this._bThreadName = bThreadName;
     this._firstLinePC = firstLinePC;
     this._localShift = localShift;
     this._localVariables = localVariables;
+    this._isAdvanced = lastSync === this.getNextSyncLineNumber();
   }
-
 
   get bThreadName(): string {
     return this._bThreadName;
@@ -28,6 +31,10 @@ export class BThreadInfo {
 
   get localVariables(): Map<any, any> {
     return this._localVariables;
+  }
+
+  get isAdvanced(): boolean {
+    return this._isAdvanced;
   }
 
   getNextSyncLineNumber() {

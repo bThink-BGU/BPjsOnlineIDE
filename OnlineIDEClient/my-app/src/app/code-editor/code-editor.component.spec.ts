@@ -1,5 +1,5 @@
 import {SharedService} from "../data.service";
-import {TestBed, ComponentFixture, async, fakeAsync, tick} from "@angular/core/testing";
+import {TestBed, ComponentFixture} from "@angular/core/testing";
 import {CodeEditorComponent} from "./code-editor.component";
 import {FormsModule} from "@angular/forms";
 import {By} from "@angular/platform-browser";

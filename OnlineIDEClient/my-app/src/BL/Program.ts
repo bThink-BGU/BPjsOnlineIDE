@@ -14,9 +14,10 @@ export class Program {
     this._runner = new Runner(this._bpService);
     this._debugger = new Debugger(this._bpService);
     this._code = '';
+    this.subscribeOutputStream();
   }
 
-  subscribeOutputStream(sharedService) {
+  subscribeOutputStream() {
     const observer = {
       next: (response) => {
         switch (response.type) {
@@ -38,10 +39,10 @@ export class Program {
             break;
           }
         }
-        // responseHandlers[response.type](sharedService, response);
       },
-      error: (error) => {
-        sharedService.sharedOutput = error;
+      error: () => {
+        this._runner.setStdout('A connection error occurred.\nPlease check your connection or reset the page...');
+        this._runner.setIsError(true);
       }
     };
 
