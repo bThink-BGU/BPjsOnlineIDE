@@ -63,7 +63,10 @@ public class Step {
         Collections.shuffle(eventOrdered);
         if(eventOrdered.size() == 0)
         	return null;
-        BEvent ev = eventOrdered.get(0);       
+        BEvent ev = eventOrdered.get(0);
+        
+        this.nextStep = new Step(null, null, null, new BEvent("timeout"));
+        
         ExecutorService executor = Executors.newFixedThreadPool(1);
         Future<?> future = executor.submit(new Runnable() {
             @Override
@@ -72,12 +75,10 @@ public class Step {
             		nextStep = new Step(execSvc, bprog, BProgramSyncSnapshotCloner.clone(bpss).triggerEvent(ev, execSvc, Collections.emptyList()), ev);
 				} catch (BPjsRuntimeException | InterruptedException e) {
 					// TODO Auto-generated catch block
-//					e.printStackTrace();
 				}
             }
         });
-        
-        this.nextStep = new Step(null, null, null, new BEvent("timeout"));
+      
         executor.shutdown();            //        <-- reject all further submissions
         try {
             future.get(500, TimeUnit.MILLISECONDS);  //     <-- wait 500ms to finish
