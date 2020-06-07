@@ -5,6 +5,7 @@ export class Runner {
   private _isError: boolean;
   private _stdout: string;
   private readonly _bpService: BpService;
+  private _stop: boolean;
 
   constructor(bpService: BpService) {
     this.initRun();
@@ -25,16 +26,21 @@ export class Runner {
   }
 
   stop() {
+    this._stop = true;
     this._bpService.stopCL();
   }
 
   private initRun() {
     this._isError = false;
     this._stdout = '';
+    this._stop = false;
   }
 
   postRun(response) {
-    if (response.type === 'error') {
+    if (this._stop) {
+      if (!this._stdout.includes('>\tThe Program Was Halted'))
+        this._stdout += '>\tThe Program Was Halted';
+    } else if (response.type === 'error') {
       this._isError = true;
       this._stdout = '>\t' + response.message; // Clean stdout because an exception was thrown
     } else {
