@@ -5,7 +5,6 @@ import {map, shareReplay} from 'rxjs/operators';
 import {SharedService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {SaveFileDialogComponent} from "../save-file-dialog/save-file-dialog.component";
-import {Range} from "ace-builds";
 
 @Component({
   selector: 'app-header',
