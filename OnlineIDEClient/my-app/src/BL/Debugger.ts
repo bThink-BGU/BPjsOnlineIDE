@@ -109,7 +109,7 @@ export class Debugger {
     this._stepTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
     this._eventTrace.splice(stepNumber, this._eventTrace.length - stepNumber);
 
-    this.bthreadSubject.next(this._stepTrace[this._stepTrace.length-1].bThreads);
+    this.bthreadSubject.next(this._stepTrace[this._stepTrace.length - 1].bThreads);
 
     this._stdout = '';
     for (let i = 0; i < this._eventTrace.length; i++) {

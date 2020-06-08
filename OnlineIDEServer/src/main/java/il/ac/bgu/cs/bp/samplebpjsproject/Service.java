@@ -1,15 +1,24 @@
 package il.ac.bgu.cs.bp.samplebpjsproject;
 
+import static java.util.Collections.reverseOrder;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 import javax.websocket.Session;
 
-
+import il.ac.bgu.cs.bp.bpjs.exceptions.BPjsRuntimeException;
 import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
+import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
+import il.ac.bgu.cs.bp.bpjs.model.BProgramSyncSnapshot;
 import il.ac.bgu.cs.bp.bpjs.model.StringBProgram;
+import il.ac.bgu.cs.bp.bpjs.model.eventselection.EventSelectionResult;
 
 public class Service {
 
@@ -19,10 +28,35 @@ public class Service {
 	private RunLogger runLogger;
 	private BProgramRunner rnr; 
 	
+	private Thread thread;
 	
 	public Service(Session session, ExecutorService execSvc) {
 		this.execSvc = execSvc;
 		this.runLogger = new RunLogger(session);
+		
+		initThread();
+	}
+	
+	private void initThread() {
+		this.thread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				rnr = new BProgramRunner(bprog);
+				
+				// Print program events to the console		
+				rnr.addListener(new SendBProgramRunnerListener(runLogger));
+
+				// go!
+				try {
+					rnr.run();
+				} catch(Exception e) {
+					runLogger.sendBpStream("error", e.getMessage());
+					System.out.println(e.getMessage());
+				}
+				
+			}
+		});
 	}
 
 	public RunLogger getRunLogger() {
@@ -47,21 +81,15 @@ public class Service {
 		return tmpStep.toStepMessage();
 	}
 
-	public RunLogger run() {
-		rnr = new BProgramRunner(this.bprog);
-	
-		// Print program events to the console		
-		rnr.addListener(new SendBProgramRunnerListener(runLogger));
-
-		// go!
-		rnr.run();
-		return runLogger;
-	}
+	public void run() {
+		this.thread.start();
+		if(!this.thread.isInterrupted())
+			initThread();
+	}	
 	
 	public void Stop() {
-		if(rnr != null) {
-			rnr.halt();
-		}
+		rnr.halt();
+		initThread();
 	}
 	
 	public void addExternalEvent(String e) {
