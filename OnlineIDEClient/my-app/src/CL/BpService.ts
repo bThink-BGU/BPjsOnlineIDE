@@ -13,7 +13,7 @@ export class BpService {
     this._connection.sendDataMess(type, code);
   }
 
-  stopCL() {
+  stopRunCL() {
     this._connection.sendDataMess('stop', '');
   }
 

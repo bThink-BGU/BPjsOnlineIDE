@@ -52,7 +52,7 @@ export class HeaderComponent {
   }
 
   public stopRun() {
-    this._sharedService.sharedProgram.runner.stop();
+    this._sharedService.sharedProgram.runner.stopRun();
   }
 
   public debug() {

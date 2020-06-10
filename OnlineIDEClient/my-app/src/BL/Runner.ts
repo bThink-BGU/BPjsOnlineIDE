@@ -25,9 +25,9 @@ export class Runner {
     this._bpService.runCL();
   }
 
-  stop() {
+  stopRun() {
     this._stop = true;
-    this._bpService.stopCL();
+    this._bpService.stopRunCL();
   }
 
   private initRun() {
@@ -58,6 +58,10 @@ export class Runner {
 
   setStdout(value: string) {
     this._stdout = value;
+  }
+
+  get stop(): boolean {
+    return this._stop;
   }
 }
 
