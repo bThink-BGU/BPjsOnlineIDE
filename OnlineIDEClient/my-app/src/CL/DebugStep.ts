@@ -26,6 +26,7 @@ export class DebugStep {
     this._waitList = waitList; // BpEvents' list
     this._blockList = blockList; // BpEvents' list
     this._selectedEvent = selectedEvent;
+    this._line = line;
   }
 
   get type(): string {

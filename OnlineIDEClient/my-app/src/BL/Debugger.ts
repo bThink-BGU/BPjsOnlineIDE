@@ -2,7 +2,7 @@ import {BpService} from '../CL/BpService';
 import {DebugStep} from '../CL/DebugStep';
 import {BreakPoint} from './BreakPoint';
 import {BThreadInfo} from '../CL/BThreadInfo';
-import {Subject} from "rxjs";
+import {Subject} from 'rxjs';
 
 export class Debugger {
   private _stepTrace: DebugStep[];
@@ -19,7 +19,7 @@ export class Debugger {
     this.bthreadSubject = new Subject<{}>();
   }
 
-  subscribeCodeEditor(observer){
+  subscribeCodeEditor(observer) {
     this.bthreadSubject.subscribe(observer);
   }
 
@@ -41,7 +41,7 @@ export class Debugger {
 
   step() {
     const traceLength = this._stepTrace.length;
-    const debugStep = traceLength === 0 ? new DebugStep(undefined, undefined, undefined,
+    const debugStep = traceLength === 0 ? new DebugStep(undefined, undefined, [],
       undefined, undefined, undefined, undefined, undefined,
       undefined) : this._stepTrace[traceLength - 1];
     this._bpService.stepCL(debugStep);
@@ -63,9 +63,8 @@ export class Debugger {
         this._programEnded = true;
       }
       this.bthreadSubject.next([]);
-    }
-    else {
-      let debugStep = this.buildDebugStep(response);
+    } else {
+      const debugStep = this.buildDebugStep(response);
       this._stepTrace.push(debugStep);
       if (response.selectedEvent !== undefined) {
         this._eventTrace.push(response.selectedEvent);
@@ -91,7 +90,7 @@ export class Debugger {
     }
     return new DebugStep(response.bpss, this.toVarsMap(response.globalVars, response.globalVals), bThreads,
       response.reqList, response.selectableEvents, response.waitList, response.blockList, response.selectedEvent,
-      this.getLineOfStep(bThreads));
+      this.calcLineOfStep(bThreads));
   }
 
   stepBack() {
@@ -125,16 +124,16 @@ export class Debugger {
   }
 
   removeBreakPoint(line: number) {
-    const idx = this.getIndexOfBreakPoint(line);
-    if (idx !== -1)
-      delete this._breakPoints[idx];
+    const ind = this.getIndexOfBreakPoint(line);
+    this._breakPoints.splice(ind, ind === -1 ? 0 : 1);
   }
 
   private getIndexOfBreakPoint(line) {
-    for (let i = 0; i < this._breakPoints.length; i++)
+    for (let i = 0; i < this._breakPoints.length; i++) {
       if (this._breakPoints[i].line === line) {
         return i;
       }
+    }
     return -1;
   }
 
@@ -149,7 +148,7 @@ export class Debugger {
   }
 
   private isFinished(response: any) {
-    return response.bpss === undefined && response.globalVars === undefined &&
+    return response.bpss === undefined && response.globalVariables === undefined &&
       response.reqList === undefined && response.selectableEvents === undefined &&
       response.waitList === undefined && response.blockList === undefined;
   }
@@ -165,30 +164,33 @@ export class Debugger {
     return variables;
   }
 
-  moveToTheFirstLine() {
-    if (this._breakPoints.length === 0)
+  moveToTheFirstLine() { // Move to the first line with breakpoint
+    if (this._breakPoints.length === 0) {
       this.step();
-    else
+    } else {
       this.stepToBreakPoint();
+    }
   }
 
   stepToBreakPoint() {
     while (!this._programEnded) {
       this.step();
-      if (this.getIndexOfBreakPoint(this.getLastStep().line) > -1)
+      if (this.getIndexOfBreakPoint(this.getLastStep().line) > -1) {
         break;
+      }
     }
   }
 
   stepBackToBreakPoint() {
-    while (this._stepTrace.length > 0) {
+    while (this._stepTrace.length > 1) {
       this.stepBack();
-      if (this.getIndexOfBreakPoint(this.getLastStep().line) > -1)
+      if (this.getIndexOfBreakPoint(this.getLastStep().line) > -1) {
         break;
+      }
     }
   }
 
-  private getLineOfStep(currStepBThreads: BThreadInfo[]) {
+  private calcLineOfStep(currStepBThreads: BThreadInfo[]) {
     const nextLines = [];
     const currLines = [];
     this.getLastStep().bThreads.forEach(function(bt) {
@@ -197,14 +199,17 @@ export class Debugger {
     currStepBThreads.forEach(function(bt) {
       currLines.push(bt.getNextSyncLineNumber());
     });
-    for (const line of currLines)
-      if (!nextLines.includes(line)) // The line already chosen
+    for (const line of currLines) {
+      if (!nextLines.includes(line)) { // The line already chosen
         return line;
+    }
+      }
     return -1;
   }
 
   private getLastSyncOfLastStep(bThreadName: string) {
-    this.getLastStep().bThreads.forEach(function(b) { if (b.bThreadName === bThreadName) return b.getNextSyncLineNumber(); });
+    this.getLastStep().bThreads.forEach(function(b) { if (b.bThreadName === bThreadName) {
+      return b.getNextSyncLineNumber(); } });
     return -1;
   }
 
@@ -230,5 +235,8 @@ export class Debugger {
 
   setEventTrace(l: string[]) {
     this._eventTrace = l;
+  }
+  set programEnded(value: boolean) {
+    this._programEnded = value;
   }
 }
