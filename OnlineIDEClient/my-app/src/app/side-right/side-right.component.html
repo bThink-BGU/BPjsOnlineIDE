@@ -16,7 +16,7 @@
                 <td width="10%">
                   <input type="checkbox" checked [checked]="checkbox" (change)="changed($event,bt)"/>
                 </td>
-                <td width="45%">{{bt.bThreadName}}</td>
+                <td width="45%">{{bt.getNextSyncLineNumber()}}</td>
                 <td width="45%">{{bt.bThreadName}}</td>
               </tr>
             </table>

@@ -149,10 +149,9 @@ export class Debugger {
   }
 
   private isFinished(response: any) {
-    return response.bpss === undefined && response.bThreadDebugData === undefined &&
-      response.globalVariables === undefined && response.reqList === undefined &&
-      response.selectableEvents === undefined && response.waitList === undefined &&
-      response.blockList === undefined;
+    return response.bpss === undefined && response.globalVars === undefined &&
+      response.reqList === undefined && response.selectableEvents === undefined &&
+      response.waitList === undefined && response.blockList === undefined;
   }
 
   private toVarsMap(vars, vals) {
@@ -161,7 +160,7 @@ export class Debugger {
     }
     const variables = new Map();
     for (let i = 0; i < vars.length; i++) {
-      variables.set(vars[i], vals[i]);
+      variables[vars[i]]= vals[i];
     }
     return variables;
   }
