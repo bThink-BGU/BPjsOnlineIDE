@@ -27,6 +27,10 @@ export class HeaderComponent {
     return this._sharedService.sharedDebuggerMode;
   }
 
+  get themes(): string[] {
+    return this._themes;
+  }
+
   private _themes = [
     'ace/theme/github',
     'ace/theme/sqlserver',

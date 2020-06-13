@@ -14,6 +14,8 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatDialogModule} from "@angular/material/dialog";
 
 import {By} from "@angular/platform-browser";
+import {CodeEditorComponent} from "../code-editor/code-editor.component";
+import {OutputComponent} from "../output/output.component";
 
 /**********************************************************************************************************************/
 // THESE TESTS TEST THAT THE COMPONENT WAS LOADED AND THAT THE BUTTONS CALL THE RIGHT FUNCTIONS WHEN PRESSED
@@ -217,11 +219,15 @@ describe('header component - integration tests', () => {
 
   let headerComponent: HeaderComponent;
   let headerFixture: ComponentFixture<HeaderComponent>;
+  let codeEditorFixture: ComponentFixture<CodeEditorComponent>;
+  let codeEditorComponent: CodeEditorComponent;
+  let outputFixture: ComponentFixture<OutputComponent>;
+  let outputComponent: OutputComponent;
   let sharedService: SharedService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HeaderComponent],
+      declarations: [HeaderComponent, CodeEditorComponent, OutputComponent],
       providers: [SharedService],
       imports: [
         NoopAnimationsModule,
@@ -240,13 +246,115 @@ describe('header component - integration tests', () => {
     headerFixture = TestBed.createComponent(HeaderComponent);
     headerComponent = headerFixture.componentInstance;
     headerFixture.detectChanges();
+
+    codeEditorFixture = TestBed.createComponent(CodeEditorComponent);
+    codeEditorComponent = codeEditorFixture.componentInstance;
+    codeEditorComponent.ngAfterViewInit();
+    codeEditorFixture.detectChanges();
+
+    outputFixture = TestBed.createComponent(OutputComponent);
+    outputComponent = outputFixture.componentInstance;
+    outputFixture.detectChanges();
+
     sharedService = TestBed.get(SharedService);
   });
 
   afterEach(()=>{
     headerFixture.debugElement.nativeElement.remove();
     headerFixture.destroy();
+    codeEditorFixture.debugElement.nativeElement.remove();
+    codeEditorFixture.destroy();
   });
+
+  it('should change the theme',  () => {
+    let themeButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
+      button.nativeElement.innerText.includes('Theme'));
+
+    if(themeButton.length != 1)
+      fail();
+
+    themeButton[0].nativeElement.click();
+
+    let menuItems = headerFixture.debugElement.queryAll(By.css('.mat-menu-panel a'));
+
+    let spy = spyOn(headerComponent, 'theme').and.callThrough();
+    let themes = headerComponent.themes;
+    menuItems.forEach((button, index)=>{
+      if(!button.nativeElement.className.includes('divider')){
+        button.nativeElement.click();
+        expect(codeEditorComponent.codeEditor.getTheme()).toBe(themes[spy.calls.mostRecent().args[0]]);
+      }
+    });
+  });
+
+  it('should call the run method',  () => {
+    let runButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
+      button.nativeElement.innerText.includes('Run'));
+
+    if(runButton.length != 1)
+      fail();
+
+    // Check that the call reaches the shared program object
+    spyOn(sharedService.sharedProgram, 'init').and.callFake((type, code)=>{});
+    runButton[0].nativeElement.click();
+    expect(sharedService.sharedProgram.init).toHaveBeenCalledWith('initRun',
+      codeEditorComponent.codeEditor.session.getValue());
+
+    // Check that the code that "returns" from the server and is placed in stdout shows up on view
+    sharedService.sharedProgram.runner.setStdout('This is a test');
+    outputFixture.detectChanges();
+    expect(outputComponent.output).toBe('This is a test');
+  });
+
+  it('should beautify content',  () => {
+    let beautifyButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
+      button.nativeElement.innerText.includes('Beautify'));
+
+    if(beautifyButton.length != 1)
+      fail();
+
+    sharedService.sharedCodeEditor.setValue('//*****Hello BPjs World*****\n\n' +
+      'bp.registerBThread(function(){\n' +
+      '  bp.sync({request:bp.Event("hello")});\n' +
+      '  bp.sync({request:bp.Event("world")});\n' +
+      '})');
+
+    let initialCode = sharedService.sharedCodeEditor.session.getValue(); // this code needs beautifying
+    beautifyButton[0].nativeElement.click();
+    let codeAfterFirstPress = sharedService.sharedCodeEditor.session.getValue();
+    beautifyButton[0].nativeElement.click();
+    let codeAfterSecondPress = sharedService.sharedCodeEditor.session.getValue();
+    expect(initialCode).not.toBe(codeAfterFirstPress);
+    expect(codeAfterFirstPress).toBe(codeAfterSecondPress);
+  });
+
+  it('should load a file',  async (() => {
+    let loadFileButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
+      button.nativeElement.innerText.includes('Load File'));
+
+    if(loadFileButton.length != 1)
+      fail();
+
+    spyOn(window, 'alert');
+    let badMockFile_1 = new File(['This is a test'], 'test.xml', { type: 'text/xml' });
+    let badMockEvt_1 = { target: { files: [badMockFile_1] } };
+    headerComponent.loadFile(badMockEvt_1);
+    expect(window.alert).toHaveBeenCalledWith('Please choose an appropriate file type');
+
+    let badMockEvt_2 = { target: { files: [] } };
+    headerComponent.loadFile(badMockEvt_2);
+    expect(window.alert).toHaveBeenCalledWith('Something went wrong.\nPlease try again...');
+
+
+    spyOn(sharedService.sharedCodeEditor.session, 'setValue');
+    let goodMockFile = new File(['This is a test'], 'test.txt', { type: 'text/plain' });
+    let goodMockEvt = { target: { files: [goodMockFile] } };
+    headerComponent.loadFile(goodMockEvt);
+
+    headerFixture.whenStable().then(()=>{
+      expect(sharedService.sharedCodeEditor.session.setValue).toHaveBeenCalledWith('This is a test');
+    });
+  }));
 
 
 });
