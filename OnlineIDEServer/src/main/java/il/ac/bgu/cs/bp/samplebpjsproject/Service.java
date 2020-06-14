@@ -1,4 +1,4 @@
-package il.ac.bgu.cs.bp.samplebpjsproject;
+	package il.ac.bgu.cs.bp.samplebpjsproject;
 
 import static java.util.Collections.reverseOrder;
 
@@ -114,5 +114,13 @@ public class Service {
 
 	public ExecutorService getExecSvc() {
 		return execSvc;
+	}
+
+	public BProgramRunner getRnr() {
+		return rnr;
+	}
+
+	public void setRnr(BProgramRunner rnr) {
+		this.rnr = rnr;
 	}
 }

@@ -34,9 +34,18 @@ public class BThreadInfo {
 		    } 
 		}
 	}
-	
-	public String toString() {
-		return "\n|" + bThreadName + "|\n|" + firstLinePC + "|\n|" + localShift + "|\n|" + localVars + "|\n|" + localVals + "|\n|";
+
+	public List<Object> getLocalVars() {
+		return localVars;
 	}
+
+	public List<Object> getLocalVals() {
+		return localVals;
+	}
+	
+//	public String toString() {
+//		return "\n|" + bThreadName + "|\n|" + firstLinePC + "|\n|" + localShift + "|\n|" + localVars + "|\n|" + localVals + "|\n|";
+//	}
+	
 	
 }

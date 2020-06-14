@@ -16,7 +16,6 @@ public class RunLogger {
 		
 	public void sendBpStream(String type, String bpst) {
 		Message message = new Message(type, bpst);
-		System.out.println(EncodeDecode.encode(message));
 		try {
 			this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(message));
 		} catch (IOException e) {

@@ -46,24 +46,19 @@ public class StepMessage {
 		}
 	}
 	
-	public String toString() {
-		String bThreadsString = "\nbThreadWasNull\n";
-		if(bThreads != null) {
-			bThreadsString = "";
-			for(BThreadInfo b: bThreads) {
-				bThreadsString += b.toString();
-			}
-		}
-		return "|" + bpss + "|\n|" + "|" + globalVars + "|\n|" + "|" + globalVals + "|\n|" + bThreadsString +
-				reqList + "|\n|" + "|" + selectableEvents + "|\n|" + "|" + waitList + "|\n|" + "|" + blockList +  "|\n|" + selectedEvent + "|";
-	}
+//	public String toString() {
+//		String bThreadsString = "\nbThreadWasNull\n";
+//		if(bThreads != null) {
+//			bThreadsString = "";
+//			for(BThreadInfo b: bThreads) {
+//				bThreadsString += b.toString();
+//			}
+//		}
+//		return "|" + bpss + "|\n|" + "|" + globalVars + "|\n|" + "|" + globalVals + "|\n|" + bThreadsString +
+//				reqList + "|\n|" + "|" + selectableEvents + "|\n|" + "|" + waitList + "|\n|" + "|" + blockList +  "|\n|" + selectedEvent + "|";
+//	}
 
 	
-
-	public String getType() {
-		return type;
-	}
-
 	public byte[] getBpss() {
 		return bpss;
 	}
@@ -86,6 +81,26 @@ public class StepMessage {
 
 	public String getSelectedEvent() {
 		return selectedEvent;
+	}
+
+	public List<Object> getGlobalVars() {
+		return globalVars;
+	}
+
+	public void setGlobalVars(List<Object> globalVars) {
+		this.globalVars = globalVars;
+	}
+
+	public List<Object> getGlobalVals() {
+		return globalVals;
+	}
+
+	public void setGlobalVals(List<Object> globalVals) {
+		this.globalVals = globalVals;
+	}
+
+	public List<BThreadInfo> getbThreads() {
+		return bThreads;
 	}
 	
 	

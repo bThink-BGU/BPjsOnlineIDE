@@ -15,17 +15,6 @@ public class HelloWorld {
 
     public static void main(String[] args) throws InterruptedException, ClassNotFoundException, IOException {
         
-    	ExecutorService execSvc = ExecutorServiceMaker.makeWithName("executor");
-    	service = new Service(null, execSvc);
-    	service.init("bp.registerBThread(\"welcome\", function() {\r\n" + 
-    			"    let i = 0;\r\n" + 
-    			"    while(true) {\r\n" + 
-    			"       bp.sync({\r\n" + 
-    			"        request: bp.Event(i++)});\r\n" + 
-    			"    }\r\n" + 
-    			"})");
-
-    	service.run();
     }	
    
 }
