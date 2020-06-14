@@ -32,7 +32,7 @@ public class Server {
     	this.service = new Service(this.session, execSvc);
     }
     
-    @OnMessage(maxMessageSize = 1024*1024)
+    @OnMessage(maxMessageSize = 9999999) // maybe add more size
     public void onMessage(Session session, String message) throws IOException, DecodeException {
     	Message decodedMessage = EncodeDecode.decode(message);
     	

@@ -91,30 +91,34 @@ export class CodeEditorComponent implements AfterViewInit {
     }
   }
 
+  // UNCOMMENT WHEN NEXT SYNC LINE NUMBER FUNCTIONALITY IS ADDED
+  // RIGHT NOW IT JUST PAINTS RANDOM LINES IN EACH DEBUGGER STEP
   private enableDebuggerColoringFeatures() {
-    this.sharedService.sharedProgram.debugger.subscribeCodeEditor({
-      next: (data) => {
-        // remove old ones
-        this.removeMarkers();
-
-        // insert new ones
-        this.bThreadMarkers = data.map(bThread => {
-
-          // REPLACE WITH REAL IMPLEMENTATION WHEN NEXT SYNC TO BE EXECUTED ROW IS WORKING
-
-          let rowToBeExecuted = this.counter; //bThread.getNextSyncLineNumber();
-          this.counter+=1;
-          return this._codeEditor.session.addMarker(
-            new Range(rowToBeExecuted, 0, rowToBeExecuted, Infinity),
-            'thread-advanced-marker',
-            'fullLine',
-            false);
-        });
-
-      }
-
-
-    });
+    // this.sharedService.sharedProgram.debugger.subscribeCodeEditor({
+    //   next: (data) => {
+    //     // remove old ones
+    //     this.removeMarkers();
+    //
+    //     // insert new ones
+    //     this.bThreadMarkers = data.map(bThread => {
+    //
+    //       // REPLACE WITH REAL IMPLEMENTATION WHEN NEXT SYNC TO BE EXECUTED ROW IS WORKING
+    //       // "this.counter;" in the next line should be replaced with "bThread.getNextSyncLineNumber();"
+    //       // IN EVERY STEP, THE SERVER SHOULD RETURN THE LINE OF THE NEXT bp.sync TO BE EXECUTED IN EVERY bThread
+    //
+    //       let rowToBeExecuted = this.counter; //bThread.getNextSyncLineNumber();
+    //       this.counter+=1;
+    //       return this._codeEditor.session.addMarker(
+    //         new Range(rowToBeExecuted, 0, rowToBeExecuted, Infinity),
+    //         'thread-advanced-marker',
+    //         'fullLine',
+    //         false);
+    //     });
+    //
+    //   }
+    //
+    //
+    // });
   }
 
   /********************************************************************************************************************/

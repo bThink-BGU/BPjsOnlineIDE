@@ -3,7 +3,12 @@ import {DebugStep} from './DebugStep';
 
 export class BpService {
 
-  private _connection: WebSocketService;
+  // ONLY TO PLACE A MOCK CONNECTION IN APP TESTS
+  set connection(value) {
+    this._connection = value;
+  }
+
+  private _connection;
 
   constructor(url: string) {
     this._connection = new WebSocketService(url);

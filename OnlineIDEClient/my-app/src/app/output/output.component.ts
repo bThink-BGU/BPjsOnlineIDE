@@ -17,7 +17,7 @@ export class OutputComponent implements AfterViewInit {
 
   get output() {
     let textarea = document.getElementById('run_textarea');
-    // textarea.scrollTop = textarea.scrollHeight;
+    textarea.scrollTop = textarea.scrollHeight;
     return this.staticDebugger ? this.sharedService.sharedProgram.debugger.stdout :
       this.sharedService.sharedProgram.runner.stdout;
   }
