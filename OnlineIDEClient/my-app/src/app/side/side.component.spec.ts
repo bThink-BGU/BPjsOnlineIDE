@@ -54,7 +54,7 @@ describe('side component - unit tests', () => {
     expect(sideFixture.debugElement.query(By.css('section.sidenav-content')).nativeElement).toBeTruthy(); // shows up on view
     expect(sideComponent).toBeDefined();
   });
-  //5.2
+  // 5.2
   it('ADD button should call to addExternalEvent() function', async(() => {
     spyOn(sideComponent, 'addExternalEvent');
     let buttons = sideFixture.debugElement.queryAll(By.css('.addExEvButton'));
@@ -227,7 +227,7 @@ describe('side component - integration tests', () => {
     codeEditorFixture.destroy();
   });
 
-  5.8
+  //5.8
   it('should add a sentence to the codeEditor', () => {
     let buttons = sideFixture.nativeElement.querySelectorAll('td');
     let Sentence1Button;
@@ -277,7 +277,7 @@ describe('side component - integration tests', () => {
     expect(sharedService.sharedCodeEditor.session.getValue()).toBe('bp.sync("...")');
   });
 
-  5.9
+  //5.9
   it('should add an event to the Request and Not Block list', () => {
     sharedService.sharedCodeEditor.setValue('bp.registerBThread("welcome", function() {\n' +
       '    bp.sync({\n' +
@@ -309,7 +309,7 @@ describe('side component - integration tests', () => {
     expect(eventsList[0]).toBe('☑ [BEvent name:hello]');
   });
 
-  5.10
+  //5.10
   it('should add an event to the Request and Block list', () => {
     sharedService.sharedCodeEditor.setValue('bp.registerBThread("control-temp", function() {\n' +
       '  bp.sync({\n' +
@@ -348,7 +348,7 @@ describe('side component - integration tests', () => {
   });
 
 
-  5.11
+  //5.11
   it('should add an events to the Trace list', () => {
     sharedService.sharedCodeEditor.setValue('bp.registerBThread(function(){\n' +
       '  bp.sync({request:bp.Event("hello")});\n' +

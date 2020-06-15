@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
+import il.ac.bgu.cs.bp.samplebpjsproject.Message;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,6 +14,12 @@ import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
 import il.ac.bgu.cs.bp.bpjs.model.StringBProgram;
 import il.ac.bgu.cs.bp.samplebpjsproject.Service;
 import il.ac.bgu.cs.bp.samplebpjsproject.StepMessage;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 public class ServiceTest {
 
@@ -32,7 +39,27 @@ public class ServiceTest {
 	
 	@Test //9.2
 	public void run() {
-		// TODO - maybe it can be checked by a stub server
+//		String code = "bp.registerBThread(\"bt-hi\", function(){\n" +
+//				"  bp.sync({request:bp.Event(\"hello\")});\n" +
+//				"  bp.sync({request:bp.Event(\"Guy\")});\n" +
+//				"})\n" +
+//				"\n" +
+//				"bp.registerBThread(\"bt-world\",function(){\n" +
+//				"  bp.sync({request:bp.Event(\"world\")});\n" +
+//				"  bp.sync({request:bp.Event(\"Shuster\")});\n" +
+//				"})\n" +
+//				"\n" +
+//				"bp.registerBThread(\"hello world Patch\", function(){\n" +
+//				"  bp.sync({waitFor:bp.Event(\"hello\"), block:bp.Event(\"world\")});\n" +
+//				"  bp.sync({waitFor:bp.Event(\"Guy\"), block:bp.Event(\"Shuster\")});\n" +
+//				"})";
+//
+//		Client client = ClientBuilder.newClient();
+//		Response response = client.target("ws://localhost:8080/OnlineIDEServer/api")
+//				.request(MediaType.APPLICATION_JSON)
+//				.post(Entity.entity(new Message("init", code), MediaType.APPLICATION_JSON));
+//
+//		System.out.println(response);
 	}
 	
 	@Test //9.3

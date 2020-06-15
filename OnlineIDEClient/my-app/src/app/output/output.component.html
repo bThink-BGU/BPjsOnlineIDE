@@ -19,8 +19,8 @@
               <ng-container *ngIf="bthreadList.includes(bt.bThreadName)">
                 <tr *ngFor="let lv of bt.localVariables | keyvalue">
                   <td width="34%">{{bt.bThreadName}}</td>
-                  <td width="33%">{{lv.key}}</td>
-                  <td width="33%">{{lv.value}}</td>
+                  <td id="local-var-names" width="33%">{{lv.key}}</td>
+                  <td id="local-var-values" width="33%">{{lv.value}}</td>
                 </tr>
               </ng-container>
             </ng-container>
@@ -38,8 +38,8 @@
               <th width="50%">Value</th>
             </tr>
             <tr *ngFor="let gv of globalVariables | keyvalue">
-              <td width="50%">{{gv.key}}</td>
-              <td width="50%">{{gv.value}}</td>
+              <td id="global-var-names" width="50%">{{gv.key}}</td>
+              <td id="global-var-values" width="50%">{{gv.value}}</td>
             </tr>
           </table>
         </div>
