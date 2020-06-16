@@ -3,6 +3,7 @@ import {DebugStep} from '../CL/DebugStep';
 import {BreakPoint} from './BreakPoint';
 import {BThreadInfo} from '../CL/BThreadInfo';
 import {Subject} from 'rxjs';
+import {fakeAsync} from '@angular/core/testing';
 
 export class Debugger {
   private _stepTrace: DebugStep[];
@@ -10,13 +11,15 @@ export class Debugger {
   private _breakPoints: BreakPoint[];
   private _stdout: string;
   private _programEnded: boolean;
+  private _functions: string[];
   private readonly _bpService: BpService;
   private bthreadSubject: Subject<{}>;
 
-  constructor(bpService: BpService) {
+  constructor(bpService: BpService, code: string) {
     this.initDebugger();
     this._bpService = bpService;
     this.bthreadSubject = new Subject<{}>();
+    this.findAllFunctions(code);
   }
 
   subscribeCodeEditor(observer) {
@@ -211,6 +214,79 @@ export class Debugger {
     this.getLastStep().bThreads.forEach(function(b) { if (b.bThreadName === bThreadName) {
       return b.getNextSyncLineNumber(); } });
     return -1;
+  }
+
+  private findAllFunctions(code: string) {
+    let str = code;
+    const i = 0;
+    let inString = false;
+    let inComment = false;
+    while (i < str.length) {
+      const quoteInd = this.getNextQuoteInd(str);
+      const lineCommentInd = str.indexOf('//');
+      const openCommentInd = str.indexOf('/*');
+      const closeCommentInd = str.indexOf('*/');
+      const functionInd = str.indexOf('function');
+
+      if (this.isSmallest(functionInd, [quoteInd, lineCommentInd, openCommentInd, closeCommentInd]) &&
+        !inString && !inComment) { // Function not in string or comment
+        str = str.substring(this.addToFunctions(str, functionInd), str.length);
+      } else if (this.isSmallest(openCommentInd, [quoteInd, lineCommentInd, closeCommentInd]) &&
+        !inString) { // The next is /* and not in string
+        inComment = true;
+        str = str.substring(openCommentInd, str.length);
+      } else if (this.isSmallest(closeCommentInd, [quoteInd, lineCommentInd, openCommentInd]) &&
+        inComment && !inString) { // The next is */ and not in string and not in string and in comment that open wth /*
+        inComment = false;
+        str = str.substring(closeCommentInd, str.length);
+      } else if (this.isSmallest(lineCommentInd, [quoteInd, closeCommentInd, openCommentInd]) &&
+        !inComment && !inString) { // The next is // and not in comment or string
+        str = str.substring(lineCommentInd, str.length);
+        const newLine = str.indexOf('\n');
+        if (newLine > 0) { str = str.substring(newLine + 2, str.length); } else { str = ''; }
+      } else if (this.isSmallest(quoteInd, [closeCommentInd, lineCommentInd, openCommentInd]) &&
+        !inComment && inString) { // The next is ' or '' and in string and not in comment
+        inString = false;
+        str = str.substring(quoteInd, str.length);
+      } else if (this.isSmallest(quoteInd, [closeCommentInd, lineCommentInd, openCommentInd]) &&
+        !inComment && !inString) { // The next is ' or '' and not in string and not in comment
+        inString = true;
+        str = str.substring(quoteInd, str.length);
+      } else {
+        str = str.substring([functionInd, quoteInd, lineCommentInd, openCommentInd, closeCommentInd].sort()[0], str.length);
+      }
+    }
+  }
+
+  private addToFunctions(code, functionInd) {
+    let tmpStr = code.substring(functionInd + 9, code.length);
+    const lastInd = this.getIndOfFirst(tmpStr, ' ', '(');
+    tmpStr = tmpStr.substring(0, lastInd);
+    this._functions.push(tmpStr);
+    return functionInd + 9 + lastInd;
+  }
+
+  private isSmallest(smallest, others) {
+    if (smallest === -1) {
+      return false;
+    }
+    for (const other of others) {
+      if (smallest > other) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  private getIndOfFirst(str, c1, c2) {
+    const ind1 = str.indexOf(c1);
+    const ind2 = str.indexOf(c2);
+    return ind1 === -1 ? ind2 : ind2 === -1 ? ind1 : Math.min(ind1, ind2);
+  }
+
+  private getNextQuoteInd(code: string) {
+    return this.getIndOfFirst(code, '\'', '\"');
   }
 
   get stepTrace(): DebugStep[] {

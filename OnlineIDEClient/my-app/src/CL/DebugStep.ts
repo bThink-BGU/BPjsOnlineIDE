@@ -6,6 +6,7 @@ export class DebugStep {
   private readonly _type: string;
   private readonly _bpss: any[];
   private readonly _globalVariables: Map<object, object>;
+  private _globalVariablesString: Map<string, string>;
   private readonly _bThreads: BThreadInfo[];
   private readonly _reqList: string[];
   private readonly _selectableEvents: string[];
@@ -20,6 +21,9 @@ export class DebugStep {
     this._type = 'step';
     this._bpss = bpss;
     this._globalVariables = gVariables;
+
+    this.toStringGlobalVariables();
+
     this._bThreads = bThreads;
     this._reqList = reqList; // BpEvents' list
     this._selectableEvents = selectableEvents;
@@ -63,6 +67,20 @@ export class DebugStep {
 
   get globalVariables(): Map<any, any> {
     return this._globalVariables;
+  }
+
+  get globalVariablesString(): Map<string, string> {
+    return this._globalVariablesString;
+  }
+
+  toStringGlobalVariables() {
+    if (this._globalVariables === undefined)
+      this._globalVariablesString = undefined;
+    else {
+      this._globalVariablesString = new Map();
+      for (let key of this._globalVariables.keys())
+        this._globalVariablesString.set(JSON.stringify(key), JSON.stringify(this._globalVariables.get(key)));
+    }
   }
 
   get line(): number {

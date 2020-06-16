@@ -6,6 +6,7 @@ export class BThreadInfo {
   private _firstLinePC: number;
   private _localShift: number;
   private _localVariables: Map<object, object>;
+  private _localVariablesString: Map<string, string>;
   private _isAdvanced: boolean;
 
   constructor(bThreadName: string, firstLinePC: number, localShift: number, localVariables: Map<object, object>,
@@ -14,6 +15,9 @@ export class BThreadInfo {
     this._firstLinePC = firstLinePC;
     this._localShift = localShift;
     this._localVariables = localVariables;
+
+    this.toStringLocalVariables();
+
     this._isAdvanced = lastSync === this.getNextSyncLineNumber();
   }
 
@@ -37,10 +41,24 @@ export class BThreadInfo {
     return this._isAdvanced;
   }
 
+  get localVariablesString(): Map<string, string> {
+    return this._localVariablesString;
+  }
+
   getNextSyncLineNumber() {
     // const currCode = this.getLineOfFirstLinePC(code);
     // return this._firstLinePC + this.getLineOfLocalShift(currCode) + 1;
     return this._firstLinePC + 1;
+  }
+
+  toStringLocalVariables() {
+    if(this._localVariables === undefined)
+      this._localVariablesString = undefined;
+    else {
+      this._localVariablesString = new Map();
+      for (let key of this._localVariables.keys())
+        this._localVariablesString.set(JSON.stringify(key), JSON.stringify(this._localVariables.get(key)));
+    }
   }
 
 

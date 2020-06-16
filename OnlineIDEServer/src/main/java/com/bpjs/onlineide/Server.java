@@ -77,7 +77,7 @@ public class Server {
 		try {
 			nextStepMessage = this.service.step(stepMessage);
 			this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(nextStepMessage));
-		} catch (ClassNotFoundException | InterruptedException | IOException e) {
+		} catch (Exception e) {
 			StepMessage nextStepMessageErr = new StepMessage(null, null, null, null, null, null, null, e.getMessage());
 			this.session.getBasicRemote().sendText("\n" + EncodeDecode.encode(nextStepMessageErr));
 			System.out.println("Error in step");

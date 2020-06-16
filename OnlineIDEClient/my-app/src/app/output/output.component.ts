@@ -28,7 +28,7 @@ export class OutputComponent implements AfterViewInit {
   }
 
   get globalVariables() {
-    return this.sharedService.sharedProgram.debugger.getLastStep().globalVariables;
+    return this.sharedService.sharedProgram.debugger.getLastStep().globalVariablesString;
   }
 
   get bthreadList() {
