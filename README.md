@@ -81,5 +81,4 @@ Currently, BPjs highlighting rules are just Javascript highlighting rules.<br/>
 Ace uses Web Workers to check the syntax, and we couldn't find any information online about how to extend 
 the Javascript worker that Ace uses (especially because it uses a JSHint engine underneath, and not an extendable ESLint for example).<br/>
 Information about this subject will be updated, we are working on it...<br/>
-## Deploying The Project:
-Working on it...<br/>
+
