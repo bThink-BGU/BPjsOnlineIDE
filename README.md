@@ -59,26 +59,4 @@ Just don't forget to ctrl+F10 (update server) every time you update your code...
 2. Copy the 'OnlineIDEServer' folder from the 'target' folder into the apache-tomcat-9.0.30\webapps folder (version number is redundant).<br/>
 3. Open the terminal in apache-tomcat-9.0.30\bin and run the 'startup' command. After that, the server should be up and running on localhost:8080/OnlineIDEServer/. Run the 'shutdown' command to terminate.<br/>
 **Please note**: If you choose to edit the code through an the Intellij IDE (or most modern ones), the code will be built automatically every time you update (ctrl+F10) the code (depends on the settings). If you choose to work through a command line only, you will have to do steps 1-3 manually every time you want to test updated code.<br/>
-## Expanding The Project:
-We are continuously updating this section with the latest updates on the project.<br/>
-Besides diving deep into the code and taking the project to your own direction, 
-there are some quick changes and adjustments you can do:<br/>
-
-* The Ace Editor:<br/>
-The 'codeEditor' component in the client side is where all the Ace Editor stuff happens.<br/>
-You can edit the basic editor options, change themes and add shortcuts to your liking, all according to the documentation
-specified in https://ace.c9.io/.<br/>
-**Please note**: Though the Ace editor is a remarkable tool, the Ace documentation is lacking and behind on many subjects.<br/>
-There are not many tutorials online that talk about using Ace in a Typescript based environment such as Angular,
-so you might want to rely on documentation in the 'codeEditor' component as well.<br/>
-We tried to note things that we discovered on our own after "looking for a needle in a haystack" for a while - both in the 
-documentation and in the Ace source code itself.<br/>
-* Adding syntax highlighting rules to Ace:<br/>
-It is possible to add custom highlighting rules in the 'setBpjsMode' method in the 'codeEditor' component, and add custom css styles to accompany these rules in the styles.css file.<br/>
-All of this according to Ace documentation in https://ace.c9.io/#nav=higlighter.<br/>
-* Adding syntax checking rules to Ace:<br/>
-Currently, BPjs highlighting rules are just Javascript highlighting rules.<br/>
-Ace uses Web Workers to check the syntax, and we couldn't find any information online about how to extend 
-the Javascript worker that Ace uses (especially because it uses a JSHint engine underneath, and not an extendable ESLint for example).<br/>
-Information about this subject will be updated, we are working on it...<br/>
 
