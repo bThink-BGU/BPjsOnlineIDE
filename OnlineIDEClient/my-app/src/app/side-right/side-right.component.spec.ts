@@ -7,13 +7,12 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {BrowserModule, By} from "@angular/platform-browser";
 import {CodeEditorComponent} from "../code-editor/code-editor.component";
 import {HeaderComponent} from "../header/header.component";
-import {DebugStep} from "../../CL/DebugStep";
-import {MatSidenav, MatSidenavModule} from "@angular/material/sidenav";
+import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatListModule} from "@angular/material/list";
 import {MatMenuModule} from "@angular/material/menu";
-import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
+import {NoopAnimationsModule} from "@angular/platform-browser/animations";
 import { OutputComponent } from '../output/output.component';
 import {BThreadInfo} from "../../CL/BThreadInfo";
 import {MatTabsModule} from "@angular/material/tabs";
@@ -25,6 +24,7 @@ import {SaveFileDialogComponent} from "../save-file-dialog/save-file-dialog.comp
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {AngularSplitModule} from "angular-split";
+import {DebugElement} from "@angular/core";
 
 /**********************************************************************************************************************/
 // THESE TESTS TEST THAT THE COMPONENT WAS LOADED AND THAT THE BUTTONS CALL THE RIGHT FUNCTIONS WHEN PRESSED
@@ -68,12 +68,13 @@ describe('sideRight component - unit tests', () => {
 
 
 /**********************************************************************************************************************/
-// THESE TESTS TEST THE INTEGRATION BETWEEN THE SIDE AND THE CODE EDITOR AND HEADER COMPONENTS
+// THESE TESTS TEST THE INTEGRATION BETWEEN THE SIDE RIGHT AND THE OUTPUT AND HEADER COMPONENTS
 /**********************************************************************************************************************/
 
-fdescribe('side right component - integration tests', () => {
+describe('side right component - integration tests', () => {
 
   let appComponent: AppComponent;
+  let outputDebugElement: DebugElement;
   let appFixture: ComponentFixture<AppComponent>;
   let sharedService: SharedService;
 
@@ -92,7 +93,7 @@ fdescribe('side right component - integration tests', () => {
       imports: [
         BrowserModule,
         ClarityModule,
-        BrowserAnimationsModule,
+        NoopAnimationsModule,
         FormsModule,
         MatDialogModule,
         MatFormFieldModule,
@@ -112,8 +113,8 @@ fdescribe('side right component - integration tests', () => {
 
     appFixture = TestBed.createComponent(AppComponent);
     appComponent = appFixture.componentInstance;
+    outputDebugElement = appFixture.debugElement.query(By.directive(OutputComponent));
     appFixture.detectChanges();
-
     sharedService = TestBed.get(SharedService);
 
   });
@@ -155,92 +156,7 @@ fdescribe('side right component - integration tests', () => {
       e.nativeElement.innerText);
 
     expect(BTsList[0]).toBe('welcome');
+
   });
 
-  it('should add a global variable to the global variables table', () => {
-    let debugButton = appFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
-      button.nativeElement.innerText.includes('Debug'));
-
-    if (debugButton.length != 1)
-      fail();
-
-    debugButton[0].nativeElement.click();
-    appFixture.detectChanges();
-
-    let BTinfo = {bThreadName :'welcome',firstLinePC: 3, localShift: undefined, localVars: ['x', 'y'], localVals: [3, 5]};
-    let resp ={type: 'step', bpss: undefined, globalVars: ['x', 'y'], globalVals: [3 ,5], bThreads: [BTinfo],
-      reqList: undefined, selectableEvents: undefined, waitList: undefined, blockList: undefined, selectedEvent: undefined};
-
-    sharedService.sharedProgram.debugger.postStep(resp); // as if a response was returned
-    appFixture.detectChanges();
-
-
-    appFixture.debugElement.queryAll(By.css('#tab-group .mat-tab-label'))[2].nativeElement.click();
-    appFixture.detectChanges();
-
-    let globalVars = appFixture.debugElement.query(By.css('#tab-group'));
-    window.alert(globalVars);
-
-    // expect(globalVars[0].nativeElement.innerText).toBe('x');
-    // expect(globalVars[1].nativeElement.innerText).toBe('y');
-  });
-
-  //bad
-  // it('should add a local variable to the local variables table', () => {
-  //   // sharedService.BtrheadsList = ['welcome'];
-  //
-  //   let debugButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
-  //     button.nativeElement.innerText.includes('Debug'));
-  //
-  //   if (debugButton.length != 1)
-  //     fail();
-  //
-  //   spyOn(headerComponent, 'debug').and.callThrough();//()=>{
-  //   // sharedService.nextDebugger(!sharedService.sharedDebuggerMode);
-  //   // });
-  //
-  //   debugButton[0].nativeElement.click();
-  //   expect(headerComponent.debug).toHaveBeenCalled();
-  //
-  //   sharedService.sharedCodeEditor.setValue('bp.registerBThread("welcome", function() {\n' +
-  //     '  let x = 3;\n' +
-  //     '  let y = 5;\n' +
-  //     '  bp.sync({\n' +
-  //     '    request: bp.Event("hello")});\n' +
-  //     '})');
-  //
-  //   sideRightFixture.detectChanges();
-  //   headerFixture.detectChanges();
-  //   outputFixture.detectChanges();
-  //
-  //   let BTinfo = {bThreadName :'welcome',firstLinePC: 3, localShift: undefined, localVars: ['x', 'y'], localVals: [3, 5]};
-  //
-  //   let resp ={type: 'step', bpss: undefined, globalVars: ['x', 'y'], globalVals: [3 ,5], bThreads: [BTinfo],
-  //     reqList: undefined, selectableEvents: undefined, waitList: undefined, blockList: undefined, selectedEvent: undefined};
-  //
-  //   sharedService.sharedProgram.debugger.postStep(resp);
-  //
-  //   let nextStepButton = headerFixture.debugElement.queryAll(By.css('div.debug-view a')).filter(
-  //     button => button.nativeElement.innerText.includes('Next Step'));
-  //
-  //   let previousButton= headerFixture.debugElement.queryAll(By.css('div.debug-view a')).filter(
-  //     button => button.nativeElement.innerText.includes('Previous Step'));
-  //
-  //   spyOn(headerComponent, 'nextStep').and.callFake(()=>{});
-  //   spyOn(headerComponent, 'previousStep').and.callFake(()=>{});
-  //
-  //   nextStepButton[0].nativeElement.click();
-  //   expect(headerComponent.nextStep).toHaveBeenCalled();
-  //   previousButton[0].nativeElement.click();
-  //   expect(headerComponent.previousStep).toHaveBeenCalled();
-  //
-  //   outputFixture.detectChanges();
-  //
-  // outputFixture.debugElement.queryAll(By.css('.mat-tab-label'))[1].nativeElement.click();
-  //
-  //   outputFixture.detectChanges();
-  //
-  //   let globalVars = outputFixture.nativeElement.querySelectorAll('td');
-  //   expect(globalVars[0]).toBe('x');
-  // });
 });

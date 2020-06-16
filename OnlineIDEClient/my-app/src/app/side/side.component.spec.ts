@@ -71,6 +71,7 @@ describe('side component - unit tests', () => {
       expect(sideComponent.addExternalEvent).toHaveBeenCalled();
     });
   }));
+
   //5.3
   it('bp.registerBThread button should call to addSentence(n) function', async(() => {
     spyOn(sideComponent, 'addSentence');

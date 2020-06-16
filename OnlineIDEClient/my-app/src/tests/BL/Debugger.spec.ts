@@ -1,10 +1,9 @@
 import {BpService} from '../../CL/BpService';
 import {Debugger} from '../../BL/Debugger';
 import {DebugStep} from '../../CL/DebugStep';
-import {variable} from '@angular/compiler/src/output/output_ast';
 import {BThreadInfo} from '../../CL/BThreadInfo';
-import {Program} from '../../BL/Program';
 import {BreakPoint} from '../../BL/BreakPoint';
+import {fakeAsync, tick} from "@angular/core/testing";
 
 describe('step', () => {
   let debug: Debugger;
@@ -14,7 +13,7 @@ describe('step', () => {
   });
 
   // 4.1
-  it('stepTraceIsEmpty', done => {
+  it('stepTraceIsEmpty', fakeAsync(() => {
     const observer = {
       next: (response) => {
         expect(response.type).toBe('step');
@@ -26,19 +25,19 @@ describe('step', () => {
         expect(response.waitList).toBe(undefined);
         expect(response.blockList).toBe(undefined);
         expect(response.selectedEvent).toBe(undefined);
-        done();
       },
       error: () => {
-        fail();
-        done();
+        fail('CHECK YOUR INTERNET CONNECTION');
       }
     };
     debug.bpService.subscribeObserver(observer);
     debug.step();
-  });
+
+    tick(3000);
+  }));
 
   // 4.2
-  it('stepTraceNotEmpty', done => {
+  it('stepTraceNotEmpty', fakeAsync(() => {
     const observer = {
       next: (response) => {
         expect(response.type).toEqual('step');
@@ -50,18 +49,18 @@ describe('step', () => {
         expect(response.waitList).toEqual(['e', 'f']);
         expect(response.blockList).toEqual(['g', 'h']);
         expect(response.selectedEvent).toBe(  'e');
-        done();
       },
       error: () => {
-        fail();
-        done();
+        fail('CHECK YOUR INTERNET CONNECTION');
       }
     };
     debug.bpService.subscribeObserver(observer);
     debug.stepTrace.push(new DebugStep(undefined, undefined, [], ['a', 'b'],
       ['c', 'd'], ['e', 'f'], ['g', 'h'], 'e', 1));
     debug.step();
-  });
+
+    tick(3000);
+  }));
 });
 
 describe('stepBack', () => {

@@ -1,5 +1,6 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {SharedService} from "../data.service";
+import {MatTabGroup} from "@angular/material/tabs";
 
 @Component({
   selector: 'app-output',

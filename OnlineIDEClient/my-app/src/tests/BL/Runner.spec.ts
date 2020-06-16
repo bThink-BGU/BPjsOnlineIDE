@@ -1,5 +1,6 @@
 import {Runner} from '../../BL/Runner';
 import {BpService} from '../../CL/BpService';
+import {fakeAsync, tick} from "@angular/core/testing";
 
 describe('run', () => {
   let runner: Runner;
@@ -9,23 +10,23 @@ describe('run', () => {
   });
 
   // 3.1
-  it('run', done => {
+  it('run', fakeAsync(() => {
     const observer = {
       next: () => {
         expect(runner.isError).toBeFalsy();
         expect(runner.stdout).toBe('');
-        done();
       },
       error: () => {
-        fail();
-        done();
+        fail('CHECK YOUR INTERNET CONNECTION');
       }
     };
     runner.bpService.subscribeObserver(observer);
     runner.setIsError(true);
     runner.setStdout('stdout');
     runner.run();
-  });
+
+    tick(3000);
+  }));
 });
 
 describe('postRun', () => {
@@ -103,18 +104,19 @@ describe('stop', () => {
   });
 
   // 3.8
-  it('stop', done => {
+  it('stop', fakeAsync(() => {
     const observer = {
       next: () => {
         expect(runner.stop).toBeTruthy();
-        done();
       },
       error: () => {
-        fail();
-        done();
+        fail('CHECK YOUR INTERNET CONNECTION');
       }
     };
+
     runner.bpService.subscribeObserver(observer);
     runner.stopRun();
-  });
+
+    tick(3000);
+  }));
 });
