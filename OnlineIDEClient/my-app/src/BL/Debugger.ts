@@ -159,7 +159,7 @@ export class Debugger {
     }
     const variables = new Map();
     for (let i = 0; i < vars.length; i++) {
-      variables[vars[i]]= vals[i];
+      variables.set(vars[i], vals[i]);
     }
     return variables;
   }

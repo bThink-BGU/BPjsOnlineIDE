@@ -64,7 +64,7 @@ export class HeaderComponent {
     this._sharedService.sharedProgram.init('initStep', this._sharedService.sharedCode);
     this._sharedService.sharedProgram.runner.setIsError(false);
     this._sharedService.sharedProgram.runner.setStdout('');
-    this._sharedService.sharedProgram.debugger.moveToTheFirstLine();
+    //this._sharedService.sharedProgram.debugger.moveToTheFirstLine();
     this._sharedService.BtrheadsList = this._sharedService.sharedProgram.debugger.getLastStep().bThreads.map(bt => bt.bThreadName);
     this._sharedService.sharedCodeEditor.setReadOnly(true);
     // @ts-ignore

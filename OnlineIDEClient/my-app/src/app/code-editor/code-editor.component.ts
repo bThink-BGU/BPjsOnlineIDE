@@ -94,7 +94,7 @@ export class CodeEditorComponent implements AfterViewInit {
   // UNCOMMENT WHEN NEXT SYNC LINE NUMBER FUNCTIONALITY IS ADDED
   // RIGHT NOW IT JUST PAINTS RANDOM LINES IN EACH DEBUGGER STEP
   private enableDebuggerColoringFeatures() {
-    // this.sharedService.sharedProgram.debugger.subscribeCodeEditor({
+    this.sharedService.sharedProgram.debugger.subscribeCodeEditor({
     //   next: (data) => {
     //     // remove old ones
     //     this.removeMarkers();
@@ -118,7 +118,7 @@ export class CodeEditorComponent implements AfterViewInit {
     //   }
     //
     //
-    // });
+    });
   }
 
   /********************************************************************************************************************/
@@ -133,6 +133,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
       if (this.sharedService.sharedDebuggerMode)
         return;
+
       if (e.domEvent.target.className.indexOf("ace_gutter-cell") == -1)
         return;
       // @ts-ignore
