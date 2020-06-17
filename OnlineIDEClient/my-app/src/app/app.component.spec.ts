@@ -128,6 +128,7 @@ describe('AppComponent', () => {
     appFixture.destroy();
   });
 
+  // 11.1
   it('should run code and update all necessary variables through all the layers', fakeAsync(() => {
     let runButton = appFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Run'));
@@ -149,6 +150,7 @@ describe('AppComponent', () => {
     expect(sharedService.sharedProgram.runner.stop).toBe(false);
   }));
 
+  // 11.2
   it('should stop the run and update all layers', fakeAsync(() => {
     let stopRunButton = appFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Stop'));
@@ -166,6 +168,7 @@ describe('AppComponent', () => {
     expect(sharedService.sharedProgram.runner.stop).toBe(true);
   }));
 
+  // 11.3
   it('should make a step and check all the bindings and variables', fakeAsync(() => {
 
     let headerComponent = appFixture.debugElement.query(By.directive(HeaderComponent)).componentInstance;
@@ -208,13 +211,5 @@ describe('AppComponent', () => {
     expect(sharedService.sharedProgram.debugger.postStep).toHaveBeenCalled();
     expect(sharedService.sharedProgram.debugger.stdout).toBe('\nAn event selected by the server');
   }));
-
-
-
-
-
-
-
-
 
 });
