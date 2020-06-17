@@ -59,6 +59,7 @@ describe('sideRight component - unit tests', () => {
     sideRightFixture.debugElement.nativeElement.remove();
     sideRightFixture.destroy();
   });
+  //14.1
   it('should load the component successfully',  () => {
     expect(sideRightFixture).toBeTruthy();
     expect(sideRightComponent).toBeDefined();
@@ -124,7 +125,7 @@ describe('side right component - integration tests', () => {
     appFixture.destroy();
   });
 
-
+//14.2
   it('should add a Bthread to the Bthreads list', () => {
     sharedService.sharedCodeEditor.setValue('"welcome", bp.registerBThread("welcome", function() {\n' +
       '    bp.sync({\n' +

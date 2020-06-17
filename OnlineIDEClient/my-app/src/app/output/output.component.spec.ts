@@ -78,16 +78,16 @@ describe('side right component - tests', () => {
     appFixture.debugElement.nativeElement.remove();
     appFixture.destroy();
   });
-
+//15.1
   it('should compile', () => {
     expect(appFixture).toBeTruthy();
     expect(appComponent).toBeDefined();
   });
-
+//15.2
   it('There should only be a single tab in run mode', () => {
     expect(appFixture.debugElement.queryAll(By.css('.mat-tab-label')).length).toBe(1);
   });
-
+//15.3
   it('There should be three tabs in debug mode', () => {
     let debugButton = headerDebugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Debug'));

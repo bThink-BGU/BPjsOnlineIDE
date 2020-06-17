@@ -55,12 +55,12 @@ describe('header component - unit tests', () => {
     headerFixture.debugElement.nativeElement.remove();
     headerFixture.destroy();
   });
-
+//6.1
   it('should compile', () => {
     expect(headerFixture).toBeTruthy();
     expect(headerComponent).toBeDefined();
   });
-
+//6.2
   it('should call the run method',  () => {
     let runButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Run'));
@@ -72,7 +72,7 @@ describe('header component - unit tests', () => {
     runButton[0].nativeElement.click();
     expect(headerComponent.run).toHaveBeenCalled();
   });
-
+//6.3
   it('should call the stop run method',  () => {
     let stopRunButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Stop'));
@@ -84,7 +84,7 @@ describe('header component - unit tests', () => {
     stopRunButton[0].nativeElement.click();
     expect(headerComponent.stopRun).toHaveBeenCalled();
   });
-
+//6.4
   it('should switch to debug view and back and check that all debug buttons can be pressed',  () => {
     let debugButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Debug'));
@@ -140,7 +140,7 @@ describe('header component - unit tests', () => {
     });
 
   });
-
+//6.5
   it('should call the beautify method',  () => {
     let beautifyButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Beautify'));
@@ -152,7 +152,7 @@ describe('header component - unit tests', () => {
     beautifyButton[0].nativeElement.click();
     expect(headerComponent.beautify).toHaveBeenCalled();
   });
-
+//6.6
   it('should call the load file method',  () => {
     let input = <HTMLInputElement> headerFixture.debugElement.query(By.css('input[type=file]')).nativeElement;
     let loadFileButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
@@ -172,7 +172,7 @@ describe('header component - unit tests', () => {
     input.dispatchEvent(new Event('change'));
     expect(headerComponent.loadFile).toHaveBeenCalled();
   });
-
+//6.7
   it('should call the download method',  () => {
     let downloadFileButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Download File'));
@@ -184,7 +184,7 @@ describe('header component - unit tests', () => {
     downloadFileButton[0].nativeElement.click();
     expect(headerComponent.downloadFile).toHaveBeenCalled();
   });
-
+//6.8
   it('should open the menu and call the theme method',  () => {
     let themeButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Theme'));
@@ -265,7 +265,7 @@ describe('header component - integration tests', () => {
     codeEditorFixture.debugElement.nativeElement.remove();
     codeEditorFixture.destroy();
   });
-
+//6.9
   it('should change the theme',  () => {
     let themeButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Theme'));
@@ -286,7 +286,7 @@ describe('header component - integration tests', () => {
       }
     });
   });
-
+//6.10
   it('should call the run method',  () => {
     let runButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Run'));
@@ -305,7 +305,7 @@ describe('header component - integration tests', () => {
     outputFixture.detectChanges();
     expect(outputComponent.output).toBe('This is a test');
   });
-
+//6.11
   it('should beautify content',  () => {
     let beautifyButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Beautify'));
@@ -327,7 +327,7 @@ describe('header component - integration tests', () => {
     expect(initialCode).not.toBe(codeAfterFirstPress);
     expect(codeAfterFirstPress).toBe(codeAfterSecondPress);
   });
-
+//6.12
   it('should load a file',  async (() => {
     let loadFileButton = headerFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Load File'));
@@ -355,6 +355,4 @@ describe('header component - integration tests', () => {
       expect(sharedService.sharedCodeEditor.session.setValue).toHaveBeenCalledWith('This is a test');
     });
   }));
-
-
 });

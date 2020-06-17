@@ -128,7 +128,7 @@ describe('AppComponent', () => {
     appFixture.debugElement.nativeElement.remove();
     appFixture.destroy();
   });
-
+//11.1
   it('should run code and update all necessary variables through all the layers', fakeAsync(() => {
     let runButton = appFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Run'));
@@ -166,7 +166,7 @@ describe('AppComponent', () => {
     expect(sharedService.sharedProgram.runner.isError).toBe(false);
     expect(sharedService.sharedProgram.runner.stop).toBe(true);
   }));
-
+//11.2
   it('should make a step and check all the bindings and variables', fakeAsync(() => {
     spyOn(sharedService.sharedProgram, 'init').and.callThrough();
     spyOn(sharedService.sharedProgram.debugger, 'step').and.callThrough();
@@ -186,13 +186,5 @@ describe('AppComponent', () => {
     expect(sharedService.sharedProgram.debugger.postStep).toHaveBeenCalled();
     expect(sharedService.sharedProgram.debugger.stdout).toBe('\nAn event selected by the server');
   }));
-
-
-
-
-
-
-
-
 
 });
