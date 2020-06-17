@@ -17,12 +17,12 @@ export class DebugStep {
 
   constructor(bpss: any[], gVariables: Map<object, object>, bThreads: BThreadInfo[],
               reqList: string[], selectableEvents: string[], waitList: string[], blockList: string[],
-              selectedEvent: string, line: number) {
+              selectedEvent: string, line: number, functions = []) {
     this._type = 'step';
     this._bpss = bpss;
     this._globalVariables = gVariables;
 
-    this.toStringGlobalVariables();
+    this.toStringGlobalVariables(functions);
 
     this._bThreads = bThreads;
     this._reqList = reqList; // BpEvents' list
@@ -73,13 +73,15 @@ export class DebugStep {
     return this._globalVariablesString;
   }
 
-  toStringGlobalVariables() {
+  toStringGlobalVariables(functions) {
     if (this._globalVariables === undefined)
       this._globalVariablesString = undefined;
     else {
       this._globalVariablesString = new Map();
-      for (let key of this._globalVariables.keys())
-        this._globalVariablesString.set(JSON.stringify(key), JSON.stringify(this._globalVariables.get(key)));
+      for (let key of this._globalVariables.keys()){
+        if (!functions.includes(key))
+          this._globalVariablesString.set(JSON.stringify(key), JSON.stringify(this._globalVariables.get(key)));
+      }
     }
   }
 

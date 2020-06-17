@@ -46,17 +46,17 @@ public class StepMessage {
 		}
 	}
 	
-//	public String toString() {
-//		String bThreadsString = "\nbThreadWasNull\n";
-//		if(bThreads != null) {
-//			bThreadsString = "";
-//			for(BThreadInfo b: bThreads) {
-//				bThreadsString += b.toString();
-//			}
-//		}
-//		return "|" + bpss + "|\n|" + "|" + globalVars + "|\n|" + "|" + globalVals + "|\n|" + bThreadsString +
-//				reqList + "|\n|" + "|" + selectableEvents + "|\n|" + "|" + waitList + "|\n|" + "|" + blockList +  "|\n|" + selectedEvent + "|";
-//	}
+	public String toString() {
+		String bThreadsString = "\nbThreadWasNull\n";
+		if(bThreads != null) {
+			bThreadsString = "";
+			for(BThreadInfo b: bThreads) {
+				bThreadsString += b.toString();
+			}
+		}
+		return "|" + bpss + "|\n|" + "|" + globalVars + "|\n|" + "|" + globalVals + "|\n|" + bThreadsString +
+				reqList + "|\n|" + "|" + selectableEvents + "|\n|" + "|" + waitList + "|\n|" + "|" + blockList +  "|\n|" + selectedEvent + "|";
+	}
 
 	
 	public byte[] getBpss() {

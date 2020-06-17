@@ -13,7 +13,7 @@ export class Program {
     this._bpService = new BpService(url);
     this._runner = new Runner(this._bpService);
     this._code = '';
-    this._debugger = new Debugger(this._bpService, this._code);
+    this._debugger = new Debugger(this._bpService);
     this.subscribeOutputStream();
   }
 

@@ -48,7 +48,7 @@ export class BThreadInfo {
   getNextSyncLineNumber() {
     // const currCode = this.getLineOfFirstLinePC(code);
     // return this._firstLinePC + this.getLineOfLocalShift(currCode) + 1;
-    return this._firstLinePC + 1;
+    return this._firstLinePC;
   }
 
   toStringLocalVariables() {
