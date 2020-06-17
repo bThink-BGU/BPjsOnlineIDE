@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
-import il.ac.bgu.cs.bp.samplebpjsproject.Message;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,12 +13,6 @@ import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
 import il.ac.bgu.cs.bp.bpjs.model.StringBProgram;
 import il.ac.bgu.cs.bp.samplebpjsproject.Service;
 import il.ac.bgu.cs.bp.samplebpjsproject.StepMessage;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 public class ServiceTest {
 

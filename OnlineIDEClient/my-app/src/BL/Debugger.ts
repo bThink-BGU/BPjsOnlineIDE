@@ -3,7 +3,6 @@ import {DebugStep} from '../CL/DebugStep';
 import {BreakPoint} from './BreakPoint';
 import {BThreadInfo} from '../CL/BThreadInfo';
 import {Subject} from 'rxjs';
-import {fakeAsync} from '@angular/core/testing';
 
 export class Debugger {
   private _stepTrace: DebugStep[];
@@ -108,10 +107,8 @@ export class Debugger {
   }
 
   stepBackToIndex(stepNumber: number) {
-    // Check the cases: i) length = 0, ii) stepNumber < 0, iii) this._stepTrace.length - stepNumber < 0
-    if (stepNumber <= 0) {
+    if (stepNumber <= 0)
       return;
-    }
     this._stepTrace.splice(stepNumber, this._stepTrace.length - stepNumber);
     this._eventTrace.splice(stepNumber, this._eventTrace.length - stepNumber);
 
@@ -136,41 +133,35 @@ export class Debugger {
   }
 
   private getIndexOfBreakPoint(line) {
-    for (let i = 0; i < this._breakPoints.length; i++) {
-      if (this._breakPoints[i].line === line) {
+    for (let i = 0; i < this._breakPoints.length; i++)
+      if (this._breakPoints[i].line === line)
         return i;
-      }
-    }
     return -1;
   }
 
   getLastStep() {
-    if (!(this._stepTrace.length === 0)) {
+    if (!(this._stepTrace.length === 0))
       return this._stepTrace[this._stepTrace.length - 1];
-    } else {
-      return new DebugStep(undefined, new Map<object, object>(),
-        [], [], [], [],
-        [], '', -1);
-    }
+    else
+      return new DebugStep(undefined, new Map<object, object>(), [], [], [],
+        [], [], '', -1);
   }
 
   private isFinished(response: any) {
-    return response.bpss === undefined && response.globalVariables === undefined &&
-      response.reqList === undefined && response.selectableEvents === undefined &&
-      response.waitList === undefined && response.blockList === undefined;
+    return response.bpss === undefined && response.globalVariables === undefined && response.reqList === undefined &&
+      response.selectableEvents === undefined && response.waitList === undefined && response.blockList === undefined;
   }
 
   private toVarsMap(vars, vals) {
-    if (vars === undefined || vals === undefined) {
+    if (vars === undefined || vals === undefined)
       return undefined;
-    }
     const variables = new Map();
-    for (let i = 0; i < vars.length; i++) {
+    for (let i = 0; i < vars.length; i++)
       variables.set(vars[i], vals[i]);
-    }
     return variables;
   }
 
+  // This function isn't called because there is no line number working (see in Maintenance Manual)
   moveToTheFirstLine() { // Move to the first line with breakpoint
     if (this._breakPoints.length === 0) {
       this.step();
@@ -182,18 +173,16 @@ export class Debugger {
   stepToBreakPoint() {
     while (!this._programEnded) {
       this.step();
-      if (this.getIndexOfBreakPoint(this.getLastStep().line) > -1) {
+      if (this.getIndexOfBreakPoint(this.getLastStep().line) > -1)
         break;
-      }
     }
   }
 
   stepBackToBreakPoint() {
     while (this._stepTrace.length > 1) {
       this.stepBack();
-      if (this.getIndexOfBreakPoint(this.getLastStep().line) > -1) {
+      if (this.getIndexOfBreakPoint(this.getLastStep().line) > -1)
         break;
-      }
     }
   }
 
@@ -206,11 +195,9 @@ export class Debugger {
     currStepBThreads.forEach(function(bt) {
       currLines.push(bt.getNextSyncLineNumber());
     });
-    for (const line of currLines) {
-      if (!nextLines.includes(line)) { // The line already chosen
+    for (const line of currLines)
+      if (!nextLines.includes(line)) // The line already chosen
         return line;
-    }
-      }
     return -1;
   }
 
@@ -220,7 +207,7 @@ export class Debugger {
     return -1;
   }
 
-  private findAllFunctions(code: string) {
+  private findAllFunctions(code: string) { // Get all the functions' names in the code
     let str = code;
     let inString = false;
     let inComment = false;
@@ -230,9 +217,6 @@ export class Debugger {
       const openCommentInd = str.indexOf('/*');
       const closeCommentInd = str.indexOf('*/');
       const functionInd = str.indexOf('function');
-      // window.alert('quoteInd=' + quoteInd + ', lineCommentInd=' + lineCommentInd + ', openCommentInd=' +
-      //   openCommentInd + ', closeCommentInd=' + closeCommentInd + ', functionInd=' + functionInd + ', inString=' +
-      //   inString + ', inComment=' + inComment + '\nstr=' + str);
       if (this.isSmallest(functionInd, [quoteInd, lineCommentInd, openCommentInd, closeCommentInd]) &&
         !inString && !inComment) { // Function not in string or comment
         str = str.substring(this.addToFunctions(str, functionInd), str.length);
@@ -281,14 +265,11 @@ export class Debugger {
   }
 
   private isSmallest(smallest, others) {
-    if (smallest === -1) {
+    if (smallest === -1)
       return false;
-    }
-    for (const other of others) {
-      if (smallest > other && other > -1) {
+    for (const other of others)
+      if (smallest > other && other > -1)
         return false;
-      }
-    }
     return true;
   }
 

@@ -78,10 +78,9 @@ export class DebugStep {
       this._globalVariablesString = undefined;
     else {
       this._globalVariablesString = new Map();
-      for (let key of this._globalVariables.keys()){
-        if (!functions.includes(key))
+      for (const key of this._globalVariables.keys())
+        if (!functions.includes(key)) // If it is not a function
           this._globalVariablesString.set(JSON.stringify(key), JSON.stringify(this._globalVariables.get(key)));
-      }
     }
   }
 
@@ -89,5 +88,3 @@ export class DebugStep {
     return this._line;
   }
 }
-
-

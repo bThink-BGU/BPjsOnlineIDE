@@ -8,7 +8,6 @@ import javax.websocket.Session;
 public class RunLogger {
 
 	Session session;
-	int id;
 	
 	public RunLogger(Session session) {
 		this.session = session;

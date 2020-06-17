@@ -3,18 +3,18 @@ import {DebugStep} from './DebugStep';
 
 export class WebSocketService {
 
-  private readonly _webSocket : WebSocketSubject<any>;
+  private readonly _webSocket: WebSocketSubject<any>;
 
   constructor(url: string) {
     this._webSocket = webSocket({
-      url: url,
+      url,
       serializer: value => JSON.stringify(value), // when sending a message
       deserializer: e => JSON.parse(e.data), // when receiving a message
     });
   }
 
   public sendDataMess(type: string, message: string) {
-    this._webSocket.next({type: type, message: message});
+    this._webSocket.next({type, message});
   }
 
   public sendDataStep(type: string, debugStep: DebugStep) {
@@ -23,7 +23,8 @@ export class WebSocketService {
     let bThreads = [];
     if (debugStep.bThreads === undefined) {
       bThreads = undefined;
-    } else {
+    }
+    else {
       for (let i = 0; i < debugStep.bThreads.length; i++) {
         const b = debugStep.bThreads[i];
         const lv = this.mapVarsToLists(b.localVariables);
@@ -32,10 +33,9 @@ export class WebSocketService {
       }
     }
 
-
-    const response = {type: type, bpss: debugStep.bpss, globalVars: gv[0], globalVals: gv[1],
-      bThreads: bThreads, reqList: debugStep.reqList, selectableEvents: debugStep.selectableEvents,
-      waitList: debugStep.waitList, blockList: debugStep.blockList, selectedEvent: debugStep.selectedEvent};
+    const response = {type, bpss: debugStep.bpss, globalVars: gv[0], globalVals: gv[1], bThreads,
+      reqList: debugStep.reqList, selectableEvents: debugStep.selectableEvents, waitList: debugStep.waitList,
+      blockList: debugStep.blockList, selectedEvent: debugStep.selectedEvent};
 
     this._webSocket.next(response);
   }

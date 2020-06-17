@@ -1,7 +1,6 @@
 
 export class BThreadInfo {
 
-
   private _bThreadName: string;
   private _firstLinePC: number;
   private _localShift: number;
@@ -45,9 +44,9 @@ export class BThreadInfo {
     return this._localVariablesString;
   }
 
+  // TODO - This function needs to return the current line of this thread.
+  //  Right now it returns the line that the bThread is created instead of the current line.
   getNextSyncLineNumber() {
-    // const currCode = this.getLineOfFirstLinePC(code);
-    // return this._firstLinePC + this.getLineOfLocalShift(currCode) + 1;
     return this._firstLinePC;
   }
 
@@ -60,34 +59,4 @@ export class BThreadInfo {
         this._localVariablesString.set(JSON.stringify(key), JSON.stringify(this._localVariables.get(key)));
     }
   }
-
-
-  // private getLineOfFirstLinePC(code: string) {
-  //   let counter = 0;
-  //   let currCode = code;
-  //   let endOfLineIndex = -1;
-  //   while (counter++ < this._firstLinePC) {
-  //     endOfLineIndex = currCode.search('\n');
-  //     currCode = currCode.substr(endOfLineIndex + 1);
-  //   }
-  //   return currCode;
-  // }
-  //
-  // private getLineOfLocalShift(code: string) {
-  //   let lineNumber = 0;
-  //   let counter = 0;
-  //   let currCode = code;
-  //   let endOfLineIndex = -1;
-  //   let line = '';
-  //   while (lineNumber < this._localShift) {
-  //     endOfLineIndex = currCode.search('\n');
-  //     line =  currCode.substr(0, endOfLineIndex);
-  //     currCode = currCode.substr(endOfLineIndex + 1);
-  //     counter++;
-  //     if (line.length === 0 || (line[0] === '/' && line[1] === '/'))
-  //       continue;
-  //     lineNumber++;
-  //   }
-  //     return counter;
-  // }
 }

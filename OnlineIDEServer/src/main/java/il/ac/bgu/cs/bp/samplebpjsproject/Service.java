@@ -1,24 +1,14 @@
 	package il.ac.bgu.cs.bp.samplebpjsproject;
 
-import static java.util.Collections.reverseOrder;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 import javax.websocket.Session;
 
-import il.ac.bgu.cs.bp.bpjs.exceptions.BPjsRuntimeException;
 import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
-import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
-import il.ac.bgu.cs.bp.bpjs.model.BProgramSyncSnapshot;
 import il.ac.bgu.cs.bp.bpjs.model.StringBProgram;
-import il.ac.bgu.cs.bp.bpjs.model.eventselection.EventSelectionResult;
 
 public class Service {
 
@@ -63,9 +53,6 @@ public class Service {
 		return runLogger;
 	}
 
-	public void setRunLogger(RunLogger runLogger) {
-		this.runLogger = runLogger;
-	}
 
 	public void init(String code) {
 		this.code = code;
@@ -114,13 +101,5 @@ public class Service {
 
 	public ExecutorService getExecSvc() {
 		return execSvc;
-	}
-
-	public BProgramRunner getRnr() {
-		return rnr;
-	}
-
-	public void setRnr(BProgramRunner rnr) {
-		this.rnr = rnr;
 	}
 }

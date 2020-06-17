@@ -41,11 +41,5 @@ public class BThreadInfo {
 
 	public List<Object> getLocalVals() {
 		return localVals;
-	}
-	
-//	public String toString() {
-//		return "\n|" + bThreadName + "|\n|" + firstLinePC + "|\n|" + localShift + "|\n|" + localVars + "|\n|" + localVals + "|\n|";
-//	}
-	
-	
+	}	
 }

@@ -2,14 +2,9 @@ package tests;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.concurrent.ExecutorService;
-
-import org.junit.Before;
 import org.junit.Test;
 
-import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
 import il.ac.bgu.cs.bp.samplebpjsproject.Message;
-import il.ac.bgu.cs.bp.samplebpjsproject.Service;
 
 public class MessageTest {
 	

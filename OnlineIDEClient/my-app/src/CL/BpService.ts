@@ -38,5 +38,3 @@ export class BpService {
     this._connection.getObservable().subscribe(observer);
   }
 }
-
-

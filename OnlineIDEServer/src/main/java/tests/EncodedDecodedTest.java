@@ -4,12 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 
-import il.ac.bgu.cs.bp.samplebpjsproject.BThreadInfo;
 import il.ac.bgu.cs.bp.samplebpjsproject.EncodeDecode;
 import il.ac.bgu.cs.bp.samplebpjsproject.Message;
 import il.ac.bgu.cs.bp.samplebpjsproject.StepMessage;
@@ -30,7 +28,6 @@ public class EncodedDecodedTest {
 	public void encodeDecodeStepMessage() {
 		Map<Object, Object> map = new HashMap<>();
 		map.put("x", 7);
-		List<BThreadInfo> bThreads = new LinkedList<>();
 		StepMessage stepMessage = new StepMessage(null, map, new LinkedList<>(), new LinkedList<>(), 
 				new LinkedList<>(), new LinkedList<>(), new LinkedList<>(), "e");
 		String mess = EncodeDecode.encode(stepMessage);

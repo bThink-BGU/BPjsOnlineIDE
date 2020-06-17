@@ -8,7 +8,6 @@ import java.util.Map;
 import org.junit.Test;
 
 import il.ac.bgu.cs.bp.samplebpjsproject.BThreadInfo;
-import il.ac.bgu.cs.bp.samplebpjsproject.Message;
 
 public class BThreadInfoTest {
 	
