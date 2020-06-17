@@ -75,7 +75,6 @@ class FakeWebSocketService {
 
 }
 
-
 describe('AppComponent', () => {
 
   let appComponent: AppComponent;
@@ -128,7 +127,7 @@ describe('AppComponent', () => {
     appFixture.debugElement.nativeElement.remove();
     appFixture.destroy();
   });
-//11.1
+
   it('should run code and update all necessary variables through all the layers', fakeAsync(() => {
     let runButton = appFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Run'));
@@ -166,25 +165,56 @@ describe('AppComponent', () => {
     expect(sharedService.sharedProgram.runner.isError).toBe(false);
     expect(sharedService.sharedProgram.runner.stop).toBe(true);
   }));
-//11.2
+
   it('should make a step and check all the bindings and variables', fakeAsync(() => {
-    spyOn(sharedService.sharedProgram, 'init').and.callThrough();
-    spyOn(sharedService.sharedProgram.debugger, 'step').and.callThrough();
-    spyOn(sharedService.sharedProgram.debugger, 'postStep').and.callThrough();
+
+    let headerComponent = appFixture.debugElement.query(By.directive(HeaderComponent)).componentInstance;
 
     let debugButton = appFixture.debugElement.queryAll(By.css('div.run-view a')).filter(button =>
       button.nativeElement.innerText.includes('Debug'));
+
     if(debugButton.length != 1)
       fail();
-    debugButton[0].nativeElement.click(); //switch to debug view and call init and step
+
+    spyOn(headerComponent, 'debug').and.callFake(()=>{
+      sharedService.nextDebugger(!sharedService.sharedDebuggerMode);
+    });
+
+    debugButton[0].nativeElement.click();
+    expect(headerComponent.debug).toHaveBeenCalled();
+
+    appFixture.detectChanges();
+
+    let newButtons = appFixture.debugElement.queryAll(By.css('div.debug-view a')).map(
+      button => button.nativeElement);
+    let newButtonsText = newButtons.map(button => button.innerText);
+
+    newButtonsText.forEach((text, index) => {
+      if(!text.includes(['Stop','Next Step','Previous Step',
+        'Next Breakpoint','Previous Breakpoint','Theme'][index]))
+        fail();
+    });
+
+    spyOn(headerComponent, 'nextStep').and.callThrough();
+    spyOn(sharedService.sharedProgram.debugger, 'step').and.callThrough();
+    spyOn(sharedService.sharedProgram.debugger, 'postStep').and.callThrough();
+
+    newButtons[1].click();
 
     tick(3000);
 
-    expect(sharedService.sharedProgram.init).toHaveBeenCalledWith('initStep',
-      sharedService.sharedCodeEditor.getValue());
+    expect(headerComponent.nextStep).toHaveBeenCalled();
     expect(sharedService.sharedProgram.debugger.step).toHaveBeenCalled();
     expect(sharedService.sharedProgram.debugger.postStep).toHaveBeenCalled();
     expect(sharedService.sharedProgram.debugger.stdout).toBe('\nAn event selected by the server');
   }));
+
+
+
+
+
+
+
+
 
 });

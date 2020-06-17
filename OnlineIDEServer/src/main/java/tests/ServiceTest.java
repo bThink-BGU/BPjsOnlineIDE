@@ -38,31 +38,6 @@ public class ServiceTest {
 	}
 	
 	@Test //9.2
-	public void run() {
-//		String code = "bp.registerBThread(\"bt-hi\", function(){\n" +
-//				"  bp.sync({request:bp.Event(\"hello\")});\n" +
-//				"  bp.sync({request:bp.Event(\"Guy\")});\n" +
-//				"})\n" +
-//				"\n" +
-//				"bp.registerBThread(\"bt-world\",function(){\n" +
-//				"  bp.sync({request:bp.Event(\"world\")});\n" +
-//				"  bp.sync({request:bp.Event(\"Shuster\")});\n" +
-//				"})\n" +
-//				"\n" +
-//				"bp.registerBThread(\"hello world Patch\", function(){\n" +
-//				"  bp.sync({waitFor:bp.Event(\"hello\"), block:bp.Event(\"world\")});\n" +
-//				"  bp.sync({waitFor:bp.Event(\"Guy\"), block:bp.Event(\"Shuster\")});\n" +
-//				"})";
-//
-//		Client client = ClientBuilder.newClient();
-//		Response response = client.target("ws://localhost:8080/OnlineIDEServer/api")
-//				.request(MediaType.APPLICATION_JSON)
-//				.post(Entity.entity(new Message("init", code), MediaType.APPLICATION_JSON));
-//
-//		System.out.println(response);
-	}
-	
-	@Test //9.3
 	public void firstStep() {  	
 		
 		String code = "PHILOSOPHER_COUNT = 5;\r\n" + 
@@ -160,7 +135,7 @@ public class ServiceTest {
 		}
 	}
 	
-	@Test //9.4
+	@Test //9.3
 	public void step() {
 		
 		String code = "var globalNumber = 3;\r\n" + 
@@ -227,7 +202,7 @@ public class ServiceTest {
 		}
 	}
 	
-	@Test //9.5
+	@Test //9.4
 	public void lastStep() {
 		String code = "var globalNumber = 3;\r\n" + 
 				"var globalStruct = { name:\"gs\", val:3.4 };\r\n" + 
@@ -283,21 +258,5 @@ public class ServiceTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	@Test //9.6
-	public void stop() {
-		//TODO
-//    	this.service.init("bp.registerBThread(\"welcome\", function() {\r\n" + 
-//    			"    let i = 0;\r\n" + 
-//    			"    while(true) {\r\n" + 
-//    			"       bp.sync({\r\n" + 
-//    			"        request: bp.Event(i++)});\r\n" + 
-//    			"    }\r\n" + 
-//    			"})");
-//
-//    	this.service.run();
-//    	this.service.Stop();
-//    	this.service.getRnr().
 	}
 }
