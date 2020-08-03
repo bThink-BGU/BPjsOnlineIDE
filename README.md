@@ -6,6 +6,7 @@ BPjs is an open source project, maintained by a research group in Ben-Gurion Uni
 * The BPjs GitHub repository: https://github.com/bThink-BGU/BPjs
 * The BPjs Website: https://bpjs.readthedocs.io/en/latest/
 * Project website: https://amirdi6.wixsite.com/bpjsonlineide
+* Try it online: http://132.72.23.63:3084/
 
 ## Project Prerequisites:
 #### Client:
